@@ -4,4 +4,5 @@ Bundle-Name: Finder
 Bundle-SymbolicName: org.tomvej.fmassoc.finder
 Bundle-Version: 2.0.0.SNAPSHOT
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.tomvej.fmassoc.model;bundle-version="2.0.0"
+Require-Bundle: org.tomvej.fmassoc.model;bundle-version="2.0.0",
+ org.apache.commons.lang3
