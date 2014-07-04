@@ -1,6 +1,7 @@
 package org.tomvej.fmassoc.finder.priority;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -47,17 +48,20 @@ public class IteratedPriorityDFPathFinder implements PathFinder {
 	 * Specify non-{@code null} pruning sequence.
 	 */
 	public IteratedPriorityDFPathFinder(Iterable<Pruning> pruning) {
-		prune = Validate.notNull(pruning);
+		prune = Validate.noNullElements(pruning);
 	}
 
 	@Override
 	public void findPaths(Consumer<Path> publisher, Table source,
-			Table destination) throws InterruptedException {
-		PathFinder.validateParameters(publisher, source, destination);
+			List<Table> destinations, Set<Table> forbidden)
+			throws InterruptedException {
+
+		PathFinder.validateParameters(publisher, source, destinations,
+				forbidden);
 		Consumer<Path> setPublisher = new SetConsumer(publisher);
 		for (Pruning pruning : prune) {
 			new PriorityDFPathFinder(pruning).findPaths(setPublisher, source,
-					destination);
+					destinations, forbidden);
 		}
 	}
 }

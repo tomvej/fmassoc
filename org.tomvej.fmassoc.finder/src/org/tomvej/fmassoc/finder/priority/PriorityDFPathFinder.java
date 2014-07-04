@@ -1,5 +1,10 @@
 package org.tomvej.fmassoc.finder.priority;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import org.apache.commons.lang3.Validate;
@@ -28,18 +33,24 @@ public class PriorityDFPathFinder implements PathFinder {
 
 	private class Computation {
 		private final Consumer<Path> publish;
-		private final Table src, dst;
-		private final PathBuilder path = new PathBuilder(
-				prune.getUsedProperties());
+		private final Table src;
+		private final List<Table> dst;
+		private final Set<Table> forbid, inner;
+		private PathBuilder path;
+		private ListIterator<Table> iter;
 
 		public Computation(Consumer<Path> publisher, Table source,
-				Table destination) {
+				List<Table> destinations, Set<Table> forbidden) {
 			publish = publisher;
 			src = source;
-			dst = destination;
+			dst = new ArrayList<>(destinations);
+			inner = new HashSet<>(destinations);
+			forbid = new HashSet<>(forbidden);
 		}
 
 		public void process() throws InterruptedException {
+			path = new PathBuilder(prune.getUsedProperties());
+			iter = dst.listIterator();
 			process(src);
 		}
 
@@ -47,9 +58,17 @@ public class PriorityDFPathFinder implements PathFinder {
 			if (Thread.interrupted()) {
 				throw new InterruptedException();
 			}
-			if (current.equals(dst)) {
+			if (!iter.hasNext()) {
 				publish.accept(path.createPath());
 			} else if (!current.isSink()) {
+				boolean reached = iter.next().equals(current);
+				if (!reached) {
+					iter.previous();
+					if (forbid.contains(current) || inner.contains(current)) {
+						return;
+					}
+				}
+
 				for (AssociationProperty association : current
 						.getAssociations()) {
 					if (path.push(association)) {
@@ -57,18 +76,23 @@ public class PriorityDFPathFinder implements PathFinder {
 							process(association.getDestination());
 						}
 						path.pop();
+						if (reached) {
+							iter.previous();
+						}
 					}
 				}
 			}
-
 		}
 	}
 
+
 	@Override
 	public void findPaths(Consumer<Path> publisher, Table source,
-			Table destination) throws InterruptedException {
-		PathFinder.validateParameters(publisher, source, destination);
-		new Computation(publisher, source, destination).process();
+			List<Table> destinations, Set<Table> forbidden)
+			throws InterruptedException {
+		PathFinder.validateParameters(publisher, source, destinations,
+				forbidden);
+		new Computation(publisher, source, destinations, forbidden).process();
 	}
 
 }

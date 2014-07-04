@@ -1,6 +1,11 @@
 package org.tomvej.fmassoc.finder;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import org.tomvej.fmassoc.model.compute.PathFinder;
@@ -21,18 +26,24 @@ public enum DFPathFinder implements PathFinder {
 	INSTANCE;
 	private static class Computation {
 		private final Consumer<Path> publisher;
-		private final PathBuilder path = new PathBuilder(
-				Collections.<PathProperty<?>> emptyList());
-		private final Table source, destination;
+		private final Table source;
+		private final List<Table> destinations;
+		private final Set<Table> forbidden, inner;
+		private PathBuilder path;
+		private ListIterator<Table> iter;
 
 		public Computation(Consumer<Path> publisher, Table source,
-				Table destination) {
+				List<Table> destinations, Set<Table> forbidden) {
 			this.publisher = publisher;
 			this.source = source;
-			this.destination = destination;
+			this.destinations = new ArrayList<>(destinations);
+			this.forbidden = new HashSet<>(forbidden);
+			inner = new HashSet<>(destinations);
 		}
 
 		public void process() throws InterruptedException {
+			path = new PathBuilder(Collections.<PathProperty<?>> emptyList());
+			iter = destinations.listIterator();
 			process(source);
 		}
 
@@ -40,14 +51,25 @@ public enum DFPathFinder implements PathFinder {
 			if (Thread.interrupted()) {
 				throw new InterruptedException();
 			}
-			if (current.equals(destination)) {
+			if (!iter.hasNext()) {
 				publisher.accept(path.createPath());
 			} else if (!current.isSink()) {
+				boolean reached = iter.next().equals(current);
+				if (!reached) {
+					iter.previous();
+					if (forbidden.contains(current) || inner.contains(current)) {
+						return;
+					}
+				}
+
 				for (AssociationProperty association : current
 						.getAssociations()) {
 					if (path.push(association)) {
 						process(association.getDestination());
 						path.pop();
+						if (reached) {
+							iter.previous();
+						}
 					}
 				}
 			}
@@ -56,9 +78,9 @@ public enum DFPathFinder implements PathFinder {
 
 	@Override
 	public void findPaths(Consumer<Path> publisher, Table source,
-			Table destination) throws InterruptedException {
-		PathFinder.validateParameters(publisher, source, destination);
-		new Computation(publisher, source, destination).process();
+			List<Table> destinations, Set<Table> forbidden)
+			throws InterruptedException {
+		new Computation(publisher, source, destinations, forbidden).process();
 	}
 
 	/**
