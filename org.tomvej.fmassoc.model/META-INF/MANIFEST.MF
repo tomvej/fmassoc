@@ -5,3 +5,7 @@ Bundle-SymbolicName: org.tomvej.fmassoc.model
 Bundle-Version: 2.0.0.SNAPSHOT
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.apache.commons.lang3;bundle-version="3.1.0"
+Export-Package: org.tomvej.fmassoc.model.compute,
+ org.tomvej.fmassoc.model.db,
+ org.tomvej.fmassoc.model.path,
+ org.tomvej.fmassoc.model.property
