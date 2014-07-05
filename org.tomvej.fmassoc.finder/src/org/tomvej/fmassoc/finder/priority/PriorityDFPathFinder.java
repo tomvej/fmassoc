@@ -1,9 +1,9 @@
 package org.tomvej.fmassoc.finder.priority;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -31,60 +31,62 @@ public class PriorityDFPathFinder implements PathFinder {
 		prune = Validate.notNull(pruning);
 	}
 
+
 	private class Computation {
-		private final Consumer<Path> publish;
-		private final Table src;
-		private final List<Table> dst;
-		private final Set<Table> forbid, inner;
-		private PathBuilder path;
-		private ListIterator<Table> iter;
+		private final Consumer<Path> publisher;
+		private final Set<Table> forbid;
+		private final PathBuilder path = new PathBuilder(
+				prune.getUsedProperties());
 
 		public Computation(Consumer<Path> publisher, Table source,
-				List<Table> destinations, Set<Table> forbidden) {
-			publish = publisher;
-			src = source;
-			dst = new ArrayList<>(destinations);
-			inner = new HashSet<>(destinations);
-			forbid = new HashSet<>(forbidden);
+				List<Table> destinations, Set<Table> forbidden)
+				throws InterruptedException {
+			this.publisher = publisher;
+			forbid = Collections.unmodifiableSet(forbidden);
+
+			new SubComputation(Collections.unmodifiableList(destinations))
+					.processNext(source);
 		}
 
-		public void process() throws InterruptedException {
-			path = new PathBuilder(prune.getUsedProperties());
-			iter = dst.listIterator();
-			process(src);
-		}
+		private class SubComputation {
+			private final Table dst;
+			private final List<Table> destinations;
 
-		private void process(Table current) throws InterruptedException {
-			if (Thread.interrupted()) {
-				throw new InterruptedException();
+			public SubComputation(List<Table> destinations) {
+				dst = destinations.get(0);
+				this.destinations = destinations
+						.subList(1, destinations.size());
 			}
-			if (!iter.hasNext()) {
-				publish.accept(path.createPath());
-			} else if (!current.isSink()) {
-				boolean reached = iter.next().equals(current);
-				if (!reached) {
-					iter.previous();
-					if (forbid.contains(current) || inner.contains(current)) {
-						return;
-					}
-				}
 
+			private void process(Table current) throws InterruptedException {
+				if (Thread.interrupted()) {
+					throw new InterruptedException();
+				}
+				if (current.equals(dst)) {
+					if (destinations.isEmpty()) {
+						publisher.accept(path.createPath());
+					} else {
+						new SubComputation(destinations).processNext(current);
+					}
+				} else if (!current.isSink() && !forbid.contains(current)) {
+					processNext(current);
+				}
+			}
+
+			public void processNext(Table current) throws InterruptedException {
 				for (AssociationProperty association : current
 						.getAssociations()) {
 					if (path.push(association)) {
-						if (!prune.prune(path)) {
+						if (prune.prune(path)) {
 							process(association.getDestination());
 						}
 						path.pop();
-						if (reached) {
-							iter.previous();
-						}
 					}
 				}
 			}
+
 		}
 	}
-
 
 	@Override
 	public void findPaths(Consumer<Path> publisher, Table source,
@@ -92,7 +94,9 @@ public class PriorityDFPathFinder implements PathFinder {
 			throws InterruptedException {
 		PathFinder.validateParameters(publisher, source, destinations,
 				forbidden);
-		new Computation(publisher, source, destinations, forbidden).process();
+		Set<Table> forbid = new HashSet<Table>(forbidden);
+		forbid.addAll(destinations);
+		new Computation(publisher, source, new ArrayList<>(destinations),
+				forbid);
 	}
-
 }
