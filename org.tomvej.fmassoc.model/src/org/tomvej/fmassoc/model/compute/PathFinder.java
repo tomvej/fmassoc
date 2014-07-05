@@ -98,5 +98,7 @@ public interface PathFinder {
 				"Destination table list contains null element(s)!");
 		Validate.isTrue(destinations.size() == inter.size(),
 				"Destination table list contains duplicates!");
+		Validate.isTrue(!destinations.contains(source),
+				"Destination table list contains source table!");
 	}
 }
