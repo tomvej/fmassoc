@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Eclipse RCP toolbox
+Bundle-SymbolicName: org.tomvej.fmassoc.e4toolbox
+Bundle-Version: 2.0.0.SNAPSHOT
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
