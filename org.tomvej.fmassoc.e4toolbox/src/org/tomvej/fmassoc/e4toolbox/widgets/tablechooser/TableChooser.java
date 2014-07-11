@@ -1,6 +1,7 @@
 package org.tomvej.fmassoc.e4toolbox.widgets.tablechooser;
 
 import java.util.Collection;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -10,6 +11,7 @@ import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -41,6 +43,7 @@ public class TableChooser extends Composite {
 
 	private final Text search;
 	private final TableViewer tables;
+	private Consumer<Table> listener;
 	private Pattern pattern = Pattern.compile("");
 
 	public TableChooser(Composite parent) {
@@ -67,13 +70,20 @@ public class TableChooser extends Composite {
 		tables.addFilter(new ViewerFilterWrapper<Table>(
 				table -> pattern.matcher(table.getName()).find()
 						&& pattern.matcher(table.getImplName()).find()));
+		tables.addSelectionChangedListener(event -> {
+			if (listener != null) {
+				listener.accept(getSelection());
+			}
+		});
 
+		/* "name" column */
 		TableViewerColumn nameClmn = new TableViewerColumn(tables, SWT.NONE);
 		nameClmn.getColumn().setText("Name");
 		nameClmn.setLabelProvider(new LabelProvider(table -> table.getName()));
 		tableLayout.setColumnData(nameClmn.getColumn(),
 				new ColumnWeightData(1, true));
 
+		/* "implementation name" column */
 		TableViewerColumn implNameClmn = new TableViewerColumn(tables, SWT.NONE);
 		implNameClmn.getColumn().setText("Implementation name");
 		implNameClmn.setLabelProvider(
@@ -84,6 +94,15 @@ public class TableChooser extends Composite {
 
 	public void setTables(Collection<Table> tables) {
 		this.tables.setInput(tables);
+	}
+
+	public void setTableListener(Consumer<Table> listener) {
+		this.listener = listener;
+	}
+
+	public Table getSelection() {
+		return (Table) ((IStructuredSelection) tables.getSelection())
+				.getFirstElement();
 	}
 
 	private void textModified(ModifyEvent event) {
