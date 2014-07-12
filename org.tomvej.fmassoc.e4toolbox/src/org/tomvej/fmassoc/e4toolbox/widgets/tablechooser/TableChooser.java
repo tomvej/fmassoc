@@ -1,6 +1,8 @@
 package org.tomvej.fmassoc.e4toolbox.widgets.tablechooser;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -22,6 +24,12 @@ import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.e4toolbox.wrappers.ViewerFilterWrapper;
 import org.tomvej.fmassoc.model.db.Table;
 
+/**
+ * Widget which allows user to select among a list of tables. Entails a regular
+ * expression filter.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class TableChooser extends Composite {
 	/**
 	 * Allows {@link ColumnLabelProvider} to be used functionally.
@@ -45,7 +53,11 @@ public class TableChooser extends Composite {
 	private final TableViewer tables;
 	private Consumer<Table> listener;
 	private Pattern pattern = Pattern.compile("");
+	private Set<Table> filter = Collections.emptySet();
 
+	/**
+	 * Create this widget.
+	 */
 	public TableChooser(Composite parent) {
 		super(parent, SWT.NONE);
 		setLayout(new GridLayout(1, false));
@@ -70,6 +82,8 @@ public class TableChooser extends Composite {
 		tables.addFilter(new ViewerFilterWrapper<Table>(
 				table -> pattern.matcher(table.getName()).find()
 						&& pattern.matcher(table.getImplName()).find()));
+		tables.addFilter(new ViewerFilterWrapper<Table>(
+				table -> !filter.contains(table)));
 		tables.addSelectionChangedListener(event -> {
 			if (listener != null) {
 				listener.accept(getSelection());
@@ -92,14 +106,38 @@ public class TableChooser extends Composite {
 				new ColumnWeightData(1, true));
 	}
 
+	/**
+	 * Set tables to be chosen from.
+	 */
 	public void setTables(Collection<Table> tables) {
 		this.tables.setInput(tables);
 	}
 
+	/**
+	 * Filter a some tables out of the table list.
+	 */
+	public void setFilter(Set<Table> tables) {
+		if (tables == null) {
+			filter = Collections.emptySet();
+		} else {
+			filter = tables;
+		}
+		this.tables.refresh();
+	}
+
+	/**
+	 * Attach a listener which registers selected table changes.
+	 * 
+	 * @param listener
+	 *            A listener or {@code null} to disable listening.
+	 */
 	public void setTableListener(Consumer<Table> listener) {
 		this.listener = listener;
 	}
 
+	/**
+	 * Return currently selected table (or {@code null}).
+	 */
 	public Table getSelection() {
 		return (Table) ((IStructuredSelection) tables.getSelection())
 				.getFirstElement();
