@@ -21,6 +21,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.tomvej.fmassoc.e4toolbox.tables.ColumnSortSupport;
 import org.tomvej.fmassoc.e4toolbox.wrappers.ViewerFilterWrapper;
 import org.tomvej.fmassoc.model.db.Table;
 
@@ -104,6 +105,8 @@ public class TableChooser extends Composite {
 				new LabelProvider(table -> table.getImplName()));
 		tableLayout.setColumnData(implNameClmn.getColumn(),
 				new ColumnWeightData(1, true));
+		
+		new ColumnSortSupport(tables).sortByFirstColumn();
 	}
 
 	/**
