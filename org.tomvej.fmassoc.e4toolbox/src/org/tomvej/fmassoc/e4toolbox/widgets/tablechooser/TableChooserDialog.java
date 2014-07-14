@@ -1,8 +1,7 @@
 package org.tomvej.fmassoc.e4toolbox.widgets.tablechooser;
 
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.IMessageProvider;
-import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -10,7 +9,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.tomvej.fmassoc.model.db.Table;
 
-public class TableChooserDialog extends TitleAreaDialog {
+public class TableChooserDialog extends Dialog {
 	private TableChooser chooser;
 	private Table selected;
 
@@ -21,8 +20,7 @@ public class TableChooserDialog extends TitleAreaDialog {
 	@Override
 	public void create() {
 		super.create();
-		setTitle("Select a Table");
-		setMessage("", IMessageProvider.INFORMATION);
+		getShell().setText("Select Table");
 	}
 
 	@Override
