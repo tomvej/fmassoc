@@ -78,24 +78,30 @@ public class ColumnSortSupport {
 	 * Sort the table by the first column.
 	 */
 	public void sortByFirstColumn() {
-		setDescending(false);
-		sortedBy = table.getTable().getColumn(0);
+		sortByColumn(table.getTable().getColumn(0), false);
+	}
+	
+	/**
+	 * Sort table by target column.
+	 */
+	public void sortByColumn(TableColumn column, boolean descending) {
+		setDescending(descending);
+		sortedBy = column;
 		table.getTable().setSortColumn(sortedBy);
 		table.refresh();
 	}
 	
+	/**
+	 * Sort table by target column.
+	 */
+	public void sortByColumn(TableViewerColumn column, boolean descending) {
+		sortByColumn(column.getColumn(), descending);
+	}
+	
 	private void build() {
 		for (TableColumn column : table.getTable().getColumns()) {
-			column.addSelectionListener(new SelectionWrapper(event -> {
-				if (column.equals(sortedBy)) {
-					setDescending(!descending);
-				} else {
-					setDescending(false);
-				}
-				sortedBy = column;
-				table.getTable().setSortColumn(sortedBy);
-				table.refresh();
-			}));
+			column.addSelectionListener(new SelectionWrapper(
+					event -> sortByColumn(column, column.equals(sortedBy) ? !descending : false)));
 		}
 	}
 	
