@@ -21,13 +21,14 @@ public class SelectionWrapper extends SelectionAdapter {
 	/**
 	 * Specify action for {@link SelectionListener#widgetSelected(SelectionEvent)}.
 	 * @param listener
+	 * 		Performed for {@link SelectionListener#widgetSelected(SelectionEvent)}
 	 */
 	public SelectionWrapper(Consumer<SelectionEvent> listener) {
 		this.listener = Validate.notNull(listener);
 	}
 	
 	@Override
-	public void widgetDefaultSelected(SelectionEvent e) {
+	public void widgetSelected(SelectionEvent e) {
 		listener.accept(e);
 	}
 }
