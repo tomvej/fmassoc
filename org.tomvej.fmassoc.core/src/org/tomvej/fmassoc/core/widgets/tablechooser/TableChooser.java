@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.e4toolbox.widgets.tablechooser;
+package org.tomvej.fmassoc.core.widgets.tablechooser;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -21,8 +21,8 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-import org.tomvej.fmassoc.e4toolbox.tables.ColumnSortSupport;
-import org.tomvej.fmassoc.e4toolbox.wrappers.ViewerFilterWrapper;
+import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
+import org.tomvej.fmassoc.core.wrappers.ViewerFilterWrapper;
 import org.tomvej.fmassoc.model.db.Table;
 
 /**

@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.e4toolbox.tables;
+package org.tomvej.fmassoc.core.tables;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.TableColumn;
-import org.tomvej.fmassoc.e4toolbox.wrappers.SelectionWrapper;
+import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 
 /**
  * Support for sorting by individual table columns.

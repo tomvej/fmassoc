@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.e4toolbox.widgets.tablechooser;
+package org.tomvej.fmassoc.core.widgets.tablechooser;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;

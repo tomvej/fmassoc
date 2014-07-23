@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.e4toolbox.wrappers;
+package org.tomvej.fmassoc.core.wrappers;
 
 import java.util.function.Predicate;
 
