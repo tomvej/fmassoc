@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Eclipse RCP toolbox
+Bundle-Name: Association Search RCP Core
 Bundle-SymbolicName: org.tomvej.fmassoc.core
 Bundle-Version: 2.0.0.SNAPSHOT
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
