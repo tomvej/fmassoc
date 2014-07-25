@@ -7,8 +7,7 @@ package org.tomvej.fmassoc.model.db;
  * @author Tomáš Vejpustek
  * 
  */
-public interface AssociationProperty extends Association, AssociationInfo,
-		Property {
+public interface AssociationProperty extends Association, AssociationInfo, Property {
 
 	/**
 	 * Checks whether the actual association in data model corresponds to this

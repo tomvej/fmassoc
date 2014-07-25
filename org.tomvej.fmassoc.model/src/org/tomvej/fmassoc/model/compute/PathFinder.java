@@ -32,10 +32,8 @@ public interface PathFinder {
 	 * @throws InterruptedException
 	 *             When it was interrupted.
 	 */
-	default void findPaths(Consumer<Path> publisher, Table source,
-			Table destination) throws InterruptedException {
-		findPaths(publisher, source, Collections.singletonList(destination),
-				Collections.emptySet());
+	default void findPaths(Consumer<Path> publisher, Table source, Table destination) throws InterruptedException {
+		findPaths(publisher, source, Collections.singletonList(destination), Collections.emptySet());
 	}
 
 	/**
@@ -63,42 +61,33 @@ public interface PathFinder {
 	 * @throws InterruptedException
 	 *             When computation was interrupted.
 	 */
-	void findPaths(Consumer<Path> publisher, Table source,
-			List<Table> destinations, Set<Table> forbidden)
+	void findPaths(Consumer<Path> publisher, Table source, List<Table> destinations, Set<Table> forbidden)
 			throws InterruptedException;
 
 	/**
 	 * Can be used to validate parameters for finders. Checks parameters are not
 	 * null and source and destination table are not equal.
 	 */
-	static void validateParameters(Consumer<Path> publisher, Table source,
-			Table destination) {
+	static void validateParameters(Consumer<Path> publisher, Table source, Table destination) {
 		Validate.notNull(publisher);
 		Validate.notNull(source);
 		Validate.notNull(destination);
-		Validate.isTrue(!source.equals(destination),
-				"Source and destination tables are equal.");
+		Validate.isTrue(!source.equals(destination), "Source and destination tables are equal.");
 	}
 
 	/**
 	 * Can be used to validate parameters for finders.
 	 */
-	static void validateParameters(Consumer<Path> publisher, Table source,
-			List<Table> destinations, Set<Table> forbidden) {
+	static void validateParameters(Consumer<Path> publisher, Table source, List<Table> destinations, Set<Table> forbidden) {
 		Validate.notNull(publisher);
 		Validate.notNull(source);
 		Validate.notNull(forbidden);
 		Set<Table> inter = new HashSet<>(destinations);
 
-		Validate.notEmpty(destinations,
-				"There has to be at least one destination.");
-		Validate.isTrue(!forbidden.contains(null),
-				"Forbidden table list contains null element!");
-		Validate.isTrue(!inter.contains(null),
-				"Destination table list contains null element(s)!");
-		Validate.isTrue(destinations.size() == inter.size(),
-				"Destination table list contains duplicates!");
-		Validate.isTrue(!destinations.contains(source),
-				"Destination table list contains source table!");
+		Validate.notEmpty(destinations, "There has to be at least one destination.");
+		Validate.isTrue(!forbidden.contains(null), "Forbidden table list contains null element!");
+		Validate.isTrue(!inter.contains(null), "Destination table list contains null element(s)!");
+		Validate.isTrue(destinations.size() == inter.size(), "Destination table list contains duplicates!");
+		Validate.isTrue(!destinations.contains(source), "Destination table list contains source table!");
 	}
 }

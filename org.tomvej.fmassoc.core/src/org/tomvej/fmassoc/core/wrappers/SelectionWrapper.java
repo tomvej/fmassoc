@@ -17,16 +17,19 @@ import org.eclipse.swt.events.SelectionListener;
  */
 public class SelectionWrapper extends SelectionAdapter {
 	private final Consumer<SelectionEvent> listener;
-	
+
 	/**
-	 * Specify action for {@link SelectionListener#widgetSelected(SelectionEvent)}.
+	 * Specify action for
+	 * {@link SelectionListener#widgetSelected(SelectionEvent)}.
+	 * 
 	 * @param listener
-	 * 		Performed for {@link SelectionListener#widgetSelected(SelectionEvent)}
+	 *            Performed for
+	 *            {@link SelectionListener#widgetSelected(SelectionEvent)}
 	 */
 	public SelectionWrapper(Consumer<SelectionEvent> listener) {
 		this.listener = Validate.notNull(listener);
 	}
-	
+
 	@Override
 	public void widgetSelected(SelectionEvent e) {
 		listener.accept(e);

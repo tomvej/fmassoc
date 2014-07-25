@@ -31,8 +31,7 @@ public class StackPathPropertyBuilder<T, S> implements PathPropertyBuilder<T> {
 	 * @param bottomValue
 	 *            Value at the bottom of the stack.
 	 */
-	public StackPathPropertyBuilder(StackPathProperty<T, S> property,
-			S bottomValue) {
+	public StackPathPropertyBuilder(StackPathProperty<T, S> property, S bottomValue) {
 		this.property = Validate.notNull(property);
 		stack.push(bottomValue);
 	}
@@ -44,8 +43,7 @@ public class StackPathPropertyBuilder<T, S> implements PathPropertyBuilder<T> {
 
 	@Override
 	public void pop(AssociationInfo target) {
-		Validate.validState(stack.size() > 1,
-				"Cannot remove associations from an empty path.");
+		Validate.validState(stack.size() > 1, "Cannot remove associations from an empty path.");
 		stack.pop();
 	}
 

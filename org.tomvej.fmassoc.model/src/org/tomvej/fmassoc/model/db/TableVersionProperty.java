@@ -6,5 +6,4 @@ package org.tomvej.fmassoc.model.db;
  * @author Tomáš Vejpustek
  *
  */
-public interface TableVersionProperty extends Property {
-}
+public interface TableVersionProperty extends Property {}

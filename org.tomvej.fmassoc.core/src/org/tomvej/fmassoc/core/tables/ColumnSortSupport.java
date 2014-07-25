@@ -28,7 +28,7 @@ public class ColumnSortSupport {
 	private final ViewerComparator comparator = new ViewerComparator() {
 		public int compare(Viewer viewer, Object e1, Object e2) {
 			int result = 0;
-			
+
 			Comparator custom = comparators.get(sortedBy);
 			if (custom != null) {
 				result = custom.compare(e1, e2);
@@ -42,11 +42,12 @@ public class ColumnSortSupport {
 			return descending ? -result : result;
 		}
 	};
-	
+
 	/**
 	 * Add column sort support to table.
 	 * 
-	 * @param viewer Target table, no columns should be aded when this is invoked.
+	 * @param viewer
+	 *            Target table, no columns should be aded when this is invoked.
 	 */
 	public ColumnSortSupport(TableViewer viewer) {
 		table = Validate.notNull(viewer);
@@ -54,10 +55,10 @@ public class ColumnSortSupport {
 		build();
 		setDescending(false);
 	}
-	
+
 	/**
 	 * Set comparator for a table column.
-	 * Note: comparator must compare table elements, not column values. 
+	 * Note: comparator must compare table elements, not column values.
 	 */
 	public void setComparator(TableColumn column, Comparator comparator) {
 		comparators.put(column, comparator);
@@ -65,22 +66,22 @@ public class ColumnSortSupport {
 			table.refresh();
 		}
 	}
-	
+
 	/**
 	 * Set comparator for a table column.
-	 * Note: comparator must compare table elements, not column values. 
+	 * Note: comparator must compare table elements, not column values.
 	 */
 	public void setComparator(TableViewerColumn column, Comparator comparator) {
 		setComparator(column.getColumn(), comparator);
 	}
-	
+
 	/**
 	 * Sort the table by the first column.
 	 */
 	public void sortByFirstColumn() {
 		sortByColumn(table.getTable().getColumn(0), false);
 	}
-	
+
 	/**
 	 * Sort table by target column.
 	 */
@@ -90,24 +91,24 @@ public class ColumnSortSupport {
 		table.getTable().setSortColumn(sortedBy);
 		table.refresh();
 	}
-	
+
 	/**
 	 * Sort table by target column.
 	 */
 	public void sortByColumn(TableViewerColumn column, boolean descending) {
 		sortByColumn(column.getColumn(), descending);
 	}
-	
+
 	private void build() {
 		for (TableColumn column : table.getTable().getColumns()) {
 			column.addSelectionListener(new SelectionWrapper(
 					event -> sortByColumn(column, column.equals(sortedBy) ? !descending : false)));
 		}
 	}
-	
+
 	private void setDescending(boolean descending) {
 		this.descending = descending;
 		table.getTable().setSortDirection(descending ? SWT.DOWN : SWT.UP);
 	}
-	
+
 }

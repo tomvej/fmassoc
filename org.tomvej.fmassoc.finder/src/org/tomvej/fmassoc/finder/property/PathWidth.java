@@ -28,19 +28,14 @@ public enum PathWidth implements PathProperty<Integer> {
 	/** Singleton instance */
 	INSTANCE;
 
-	private static enum StackProperty implements
-			StackPathProperty<Integer, Pair<Multiplicity, Integer>> {
+	private static enum StackProperty implements StackPathProperty<Integer, Pair<Multiplicity, Integer>> {
 		INSTANCE;
 
 		@Override
-		public Pair<Multiplicity, Integer> getNewValue(
-				Pair<Multiplicity, Integer> previousValue,
-				AssociationInfo target) {
-			Multiplicity joint = previousValue.getLeft().join(
-					target.getMultiplicity());
+		public Pair<Multiplicity, Integer> getNewValue(Pair<Multiplicity, Integer> previousValue, AssociationInfo target) {
+			Multiplicity joint = previousValue.getLeft().join(target.getMultiplicity());
 			if (Multiplicity.MANY_TO_MANY.equals(joint)) {
-				return Pair.of(target.getMultiplicity(),
-						previousValue.getRight() + 1);
+				return Pair.of(target.getMultiplicity(), previousValue.getRight() + 1);
 			} else {
 				return Pair.of(joint, previousValue.getRight());
 			}

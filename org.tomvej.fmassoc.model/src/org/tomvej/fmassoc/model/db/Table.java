@@ -26,14 +26,14 @@ public interface Table extends Named {
 	 * Properties other than associations and {@code ID_OBJECT}.
 	 */
 	Collection<Property> getProperties();
-	
+
 	/**
 	 * Returns implementation name (see {@link Named}) of id property.
 	 */
 	String getIDImplName();
-	
+
 	/**
-	 * When a table is a sink, it can only be at the beginning or end of a path. 
+	 * When a table is a sink, it can only be at the beginning or end of a path.
 	 * 
 	 * @return {@code true} when this table is a sink, {@code false} otherwise.
 	 */

@@ -55,8 +55,7 @@ public class PathBuilder extends AbstractPath {
 			tables.add(target.getSource());
 		} else {
 			// associations must join on tables
-			if (!associations.peek().getDestination()
-					.equals(target.getSource())) {
+			if (!associations.peek().getDestination().equals(target.getSource())) {
 				return false;
 			}
 			// no cycles
@@ -124,8 +123,7 @@ public class PathBuilder extends AbstractPath {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getProperty(PathProperty<T> property) {
-		PathPropertyBuilder<T> builder = (PathPropertyBuilder<T>) properties
-				.get(property);
+		PathPropertyBuilder<T> builder = (PathPropertyBuilder<T>) properties.get(property);
 		if (builder == null) {
 			return null;
 		}

@@ -32,8 +32,7 @@ public enum DFPathFinder implements PathFinder {
 		private PathBuilder path;
 		private ListIterator<Table> iter;
 
-		public Computation(Consumer<Path> publisher, Table source,
-				List<Table> destinations, Set<Table> forbidden) {
+		public Computation(Consumer<Path> publisher, Table source, List<Table> destinations, Set<Table> forbidden) {
 			this.publisher = publisher;
 			this.source = source;
 			this.destinations = new ArrayList<>(destinations);
@@ -62,8 +61,7 @@ public enum DFPathFinder implements PathFinder {
 					}
 				}
 
-				for (AssociationProperty association : current
-						.getAssociations()) {
+				for (AssociationProperty association : current.getAssociations()) {
 					if (path.push(association)) {
 						process(association.getDestination());
 						path.pop();
@@ -77,8 +75,7 @@ public enum DFPathFinder implements PathFinder {
 	}
 
 	@Override
-	public void findPaths(Consumer<Path> publisher, Table source,
-			List<Table> destinations, Set<Table> forbidden)
+	public void findPaths(Consumer<Path> publisher, Table source, List<Table> destinations, Set<Table> forbidden)
 			throws InterruptedException {
 		new Computation(publisher, source, destinations, forbidden).process();
 	}

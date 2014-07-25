@@ -5,9 +5,11 @@ import org.tomvej.fmassoc.model.db.AssociationInfo;
 /**
  * Algorithm which computes property value for a path by building the path
  * and updating property value when each association is added/removed.
+ * 
  * @author Tomáš Vejpustek
  *
- * @param <T> Type of property values.
+ * @param <T>
+ *            Type of property values.
  */
 public interface PathPropertyBuilder<T> {
 	/**

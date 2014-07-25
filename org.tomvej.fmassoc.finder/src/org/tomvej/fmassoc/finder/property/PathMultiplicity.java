@@ -17,13 +17,11 @@ public enum PathMultiplicity implements PathProperty<Multiplicity> {
 	/** Singleton instance */
 	INSTANCE;
 
-	private static enum StackProperty implements
-			StackPathProperty<Multiplicity, Multiplicity> {
+	private static enum StackProperty implements StackPathProperty<Multiplicity, Multiplicity> {
 		INSTANCE;
 
 		@Override
-		public Multiplicity getNewValue(Multiplicity previousValue,
-				AssociationInfo target) {
+		public Multiplicity getNewValue(Multiplicity previousValue, AssociationInfo target) {
 			return previousValue.join(target.getMultiplicity());
 		}
 
@@ -34,8 +32,7 @@ public enum PathMultiplicity implements PathProperty<Multiplicity> {
 	}
 
 	public PathPropertyBuilder<Multiplicity> getBuilder() {
-		return new StackPathPropertyBuilder<Multiplicity, Multiplicity>(
-				StackProperty.INSTANCE, Multiplicity.ONE_TO_ONE);
+		return new StackPathPropertyBuilder<Multiplicity, Multiplicity>(StackProperty.INSTANCE, Multiplicity.ONE_TO_ONE);
 	};
 
 	/**

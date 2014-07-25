@@ -75,16 +75,13 @@ public class TableChooser extends Composite {
 		TableColumnLayout tableLayout = new TableColumnLayout();
 		tableComposite.setLayout(tableLayout);
 
-		tables = new TableViewer(tableComposite, SWT.SINGLE | SWT.V_SCROLL
-				| SWT.FULL_SELECTION | SWT.BORDER);
+		tables = new TableViewer(tableComposite, SWT.SINGLE | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		tables.getTable().setHeaderVisible(true);
 		tables.getTable().setLinesVisible(true);
 		tables.setContentProvider(ArrayContentProvider.getInstance());
 		tables.addFilter(new ViewerFilterWrapper<Table>(
-				table -> pattern.matcher(table.getName()).find()
-						&& pattern.matcher(table.getImplName()).find()));
-		tables.addFilter(new ViewerFilterWrapper<Table>(
-				table -> !filter.contains(table)));
+				table -> pattern.matcher(table.getName()).find() && pattern.matcher(table.getImplName()).find()));
+		tables.addFilter(new ViewerFilterWrapper<Table>(table -> !filter.contains(table)));
 		tables.addSelectionChangedListener(event -> {
 			if (listener != null) {
 				listener.accept(getSelection());
@@ -95,17 +92,14 @@ public class TableChooser extends Composite {
 		TableViewerColumn nameClmn = new TableViewerColumn(tables, SWT.NONE);
 		nameClmn.getColumn().setText("Name");
 		nameClmn.setLabelProvider(new LabelProvider(table -> table.getName()));
-		tableLayout.setColumnData(nameClmn.getColumn(),
-				new ColumnWeightData(1, true));
+		tableLayout.setColumnData(nameClmn.getColumn(), new ColumnWeightData(1, true));
 
 		/* "implementation name" column */
 		TableViewerColumn implNameClmn = new TableViewerColumn(tables, SWT.NONE);
 		implNameClmn.getColumn().setText("Implementation name");
-		implNameClmn.setLabelProvider(
-				new LabelProvider(table -> table.getImplName()));
-		tableLayout.setColumnData(implNameClmn.getColumn(),
-				new ColumnWeightData(1, true));
-		
+		implNameClmn.setLabelProvider(new LabelProvider(table -> table.getImplName()));
+		tableLayout.setColumnData(implNameClmn.getColumn(), new ColumnWeightData(1, true));
+
 		new ColumnSortSupport(tables).sortByFirstColumn();
 	}
 
@@ -142,8 +136,7 @@ public class TableChooser extends Composite {
 	 * Return currently selected table (or {@code null}).
 	 */
 	public Table getSelection() {
-		return (Table) ((IStructuredSelection) tables.getSelection())
-				.getFirstElement();
+		return (Table) ((IStructuredSelection) tables.getSelection()).getFirstElement();
 	}
 
 	private void textModified(ModifyEvent event) {
@@ -151,8 +144,7 @@ public class TableChooser extends Composite {
 		try {
 			pattern = Pattern.compile(text, Pattern.CASE_INSENSITIVE);
 		} catch (PatternSyntaxException pse) {
-			pattern = Pattern.compile(text,
-					Pattern.CASE_INSENSITIVE | Pattern.LITERAL);
+			pattern = Pattern.compile(text, Pattern.CASE_INSENSITIVE | Pattern.LITERAL);
 		}
 		tables.refresh();
 	}

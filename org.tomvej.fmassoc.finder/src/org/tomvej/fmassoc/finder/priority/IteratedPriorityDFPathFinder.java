@@ -52,16 +52,13 @@ public class IteratedPriorityDFPathFinder implements PathFinder {
 	}
 
 	@Override
-	public void findPaths(Consumer<Path> publisher, Table source,
-			List<Table> destinations, Set<Table> forbidden)
+	public void findPaths(Consumer<Path> publisher, Table source, List<Table> destinations, Set<Table> forbidden)
 			throws InterruptedException {
 
-		PathFinder.validateParameters(publisher, source, destinations,
-				forbidden);
+		PathFinder.validateParameters(publisher, source, destinations, forbidden);
 		Consumer<Path> setPublisher = new SetConsumer(publisher);
 		for (Pruning pruning : prune) {
-			new PriorityDFPathFinder(pruning).findPaths(setPublisher, source,
-					destinations, forbidden);
+			new PriorityDFPathFinder(pruning).findPaths(setPublisher, source, destinations, forbidden);
 		}
 	}
 }

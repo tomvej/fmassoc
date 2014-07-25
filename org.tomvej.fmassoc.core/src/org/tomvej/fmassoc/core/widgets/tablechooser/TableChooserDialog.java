@@ -28,17 +28,14 @@ public class TableChooserDialog extends Dialog {
 		chooser = new TableChooser(parent);
 		chooser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		chooser.setTableListener(table -> getButton(IDialogConstants.OK_ID)
-				.setEnabled(table != null));
+		chooser.setTableListener(table -> getButton(IDialogConstants.OK_ID).setEnabled(table != null));
 		return chooser;
 	}
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
-				true);
-		createButton(parent, IDialogConstants.CANCEL_ID,
-				IDialogConstants.CANCEL_LABEL, false);
+		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
+		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
 		getButton(IDialogConstants.OK_ID).setEnabled(false);
 	}
 

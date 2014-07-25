@@ -17,11 +17,14 @@ import org.eclipse.swt.events.SelectionListener;
  */
 public class DefaultSelectionWrapper extends SelectionAdapter {
 	private final Consumer<SelectionEvent> listener;
-	
+
 	/**
-	 * Specify action for {@link SelectionListener#widgetDefaultSelected(SelectionEvent)}.
+	 * Specify action for
+	 * {@link SelectionListener#widgetDefaultSelected(SelectionEvent)}.
+	 * 
 	 * @param listener
-	 * 		Performed for {@link SelectionListener#widgetDefaultSelected(SelectionEvent)}
+	 *            Performed for
+	 *            {@link SelectionListener#widgetDefaultSelected(SelectionEvent)}
 	 */
 	public DefaultSelectionWrapper(Consumer<SelectionEvent> listener) {
 		this.listener = Validate.notNull(listener);

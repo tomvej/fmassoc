@@ -35,17 +35,14 @@ public class PriorityDFPathFinder implements PathFinder {
 	private class Computation {
 		private final Consumer<Path> publisher;
 		private final Set<Table> forbid;
-		private final PathBuilder path = new PathBuilder(
-				prune.getUsedProperties());
+		private final PathBuilder path = new PathBuilder(prune.getUsedProperties());
 
-		public Computation(Consumer<Path> publisher, Table source,
-				List<Table> destinations, Set<Table> forbidden)
+		public Computation(Consumer<Path> publisher, Table source, List<Table> destinations, Set<Table> forbidden)
 				throws InterruptedException {
 			this.publisher = publisher;
 			forbid = Collections.unmodifiableSet(forbidden);
 
-			new SubComputation(Collections.unmodifiableList(destinations))
-					.processNext(source);
+			new SubComputation(Collections.unmodifiableList(destinations)).processNext(source);
 		}
 
 		private class SubComputation {
@@ -54,8 +51,7 @@ public class PriorityDFPathFinder implements PathFinder {
 
 			public SubComputation(List<Table> destinations) {
 				dst = destinations.get(0);
-				this.destinations = destinations
-						.subList(1, destinations.size());
+				this.destinations = destinations.subList(1, destinations.size());
 			}
 
 			private void process(Table current) throws InterruptedException {
@@ -74,8 +70,7 @@ public class PriorityDFPathFinder implements PathFinder {
 			}
 
 			public void processNext(Table current) throws InterruptedException {
-				for (AssociationProperty association : current
-						.getAssociations()) {
+				for (AssociationProperty association : current.getAssociations()) {
 					if (path.push(association)) {
 						if (prune.prune(path)) {
 							process(association.getDestination());
@@ -89,14 +84,11 @@ public class PriorityDFPathFinder implements PathFinder {
 	}
 
 	@Override
-	public void findPaths(Consumer<Path> publisher, Table source,
-			List<Table> destinations, Set<Table> forbidden)
+	public void findPaths(Consumer<Path> publisher, Table source, List<Table> destinations, Set<Table> forbidden)
 			throws InterruptedException {
-		PathFinder.validateParameters(publisher, source, destinations,
-				forbidden);
+		PathFinder.validateParameters(publisher, source, destinations, forbidden);
 		Set<Table> forbid = new HashSet<Table>(forbidden);
 		forbid.addAll(destinations);
-		new Computation(publisher, source, new ArrayList<>(destinations),
-				forbid);
+		new Computation(publisher, source, new ArrayList<>(destinations), forbid);
 	}
 }
