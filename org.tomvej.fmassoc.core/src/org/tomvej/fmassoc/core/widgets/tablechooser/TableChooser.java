@@ -2,7 +2,6 @@ package org.tomvej.fmassoc.core.widgets.tablechooser;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -35,7 +34,7 @@ public class TableChooser extends Composite {
 	private final TableViewer tables;
 	private Consumer<Table> listener;
 	private Pattern pattern = Pattern.compile("");
-	private Set<Table> filter = Collections.emptySet();
+	private Collection<Object> filter = Collections.emptySet();
 
 	/**
 	 * Create this widget.
@@ -88,7 +87,7 @@ public class TableChooser extends Composite {
 	/**
 	 * Filter a some tables out of the table list.
 	 */
-	public void setFilter(Set<Table> tables) {
+	public void setFilter(Collection<Object> tables) {
 		if (tables == null) {
 			filter = Collections.emptySet();
 		} else {
