@@ -80,7 +80,7 @@ public class TableChooser extends Composite {
 		tables.getTable().setLinesVisible(true);
 		tables.setContentProvider(ArrayContentProvider.getInstance());
 		tables.addFilter(new ViewerFilterWrapper<Table>(
-				table -> pattern.matcher(table.getName()).find() && pattern.matcher(table.getImplName()).find()));
+				table -> pattern.matcher(table.getName()).find() || pattern.matcher(table.getImplName()).find()));
 		tables.addFilter(new ViewerFilterWrapper<Table>(table -> !filter.contains(table)));
 		tables.addSelectionChangedListener(event -> {
 			if (listener != null) {
