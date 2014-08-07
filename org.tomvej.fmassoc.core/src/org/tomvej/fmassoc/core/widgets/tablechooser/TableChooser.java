@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import org.apache.commons.lang3.Validate;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -81,7 +82,7 @@ public class TableChooser extends Composite {
 	 * Set tables to be chosen from.
 	 */
 	public void setTables(Collection<Table> tables) {
-		this.tables.setInput(tables);
+		this.tables.setInput(Validate.notNull(tables));
 	}
 
 	/**
