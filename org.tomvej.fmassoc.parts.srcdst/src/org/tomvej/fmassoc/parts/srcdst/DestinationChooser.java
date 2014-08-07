@@ -50,6 +50,7 @@ public class DestinationChooser extends Group {
 		switcher.addSelectionListener(new SelectionWrapper(this::multiSwitched));
 
 		destinationComposite.setLayout(new GridLayout(2, false));
+		// FIXME -- should be correct viewer
 		ListViewer view = new ListViewer(destinationComposite);
 		view.getList().setLayoutData(layout.grab(true, true).span(1, 4).create());
 
@@ -79,6 +80,7 @@ public class DestinationChooser extends Group {
 		destinationComposite.setVisible(isMulti());
 		destinationData.exclude = !isMulti();
 		layout();
+		setText("Destination Table" + (isMulti() ? "s" : ""));
 
 		/* data concerns */
 		// FIXME
