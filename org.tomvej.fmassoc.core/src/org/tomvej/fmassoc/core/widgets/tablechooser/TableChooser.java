@@ -8,9 +8,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -20,6 +18,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
+import org.tomvej.fmassoc.core.tables.TableLayoutSupport;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.core.wrappers.ViewerFilterWrapper;
 import org.tomvej.fmassoc.model.db.Table;
@@ -53,8 +52,6 @@ public class TableChooser extends Composite {
 		// so that column layout can be used
 		Composite tableComposite = new Composite(this, SWT.NONE);
 		tableComposite.setLayoutData(layout.grab(true, true).create());
-		TableColumnLayout tableLayout = new TableColumnLayout();
-		tableComposite.setLayout(tableLayout);
 
 		tables = new TableViewer(tableComposite, SWT.SINGLE | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		tables.getTable().setHeaderVisible(true);
@@ -73,15 +70,14 @@ public class TableChooser extends Composite {
 		TableViewerColumn nameClmn = new TableViewerColumn(tables, SWT.NONE);
 		nameClmn.getColumn().setText("Name");
 		nameClmn.setLabelProvider(new TextColumnLabelProvider<Table>(table -> table.getName()));
-		tableLayout.setColumnData(nameClmn.getColumn(), new ColumnWeightData(1, true));
 
 		/* "implementation name" column */
 		TableViewerColumn implNameClmn = new TableViewerColumn(tables, SWT.NONE);
 		implNameClmn.getColumn().setText("Implementation name");
 		implNameClmn.setLabelProvider(new TextColumnLabelProvider<Table>(table -> table.getImplName()));
-		tableLayout.setColumnData(implNameClmn.getColumn(), new ColumnWeightData(1, true));
 
 		new ColumnSortSupport(tables).sortByFirstColumn();
+		TableLayoutSupport.create(tables, 1, true, nameClmn, implNameClmn);
 	}
 
 	/**
