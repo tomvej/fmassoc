@@ -49,11 +49,8 @@ public class TableChooser extends Composite {
 		search.setMessage("Table filter");
 		search.addModifyListener(this::textModified);
 
-		// so that column layout can be used
-		Composite tableComposite = new Composite(this, SWT.NONE);
-		tableComposite.setLayoutData(layout.grab(true, true).create());
-
-		tables = new TableViewer(tableComposite, SWT.SINGLE | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+		tables = TableLayoutSupport.createTableViewer(this, SWT.SINGLE | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER,
+				layout.grab(true, true).create());
 		tables.getTable().setHeaderVisible(true);
 		tables.getTable().setLinesVisible(true);
 		tables.setContentProvider(ArrayContentProvider.getInstance());

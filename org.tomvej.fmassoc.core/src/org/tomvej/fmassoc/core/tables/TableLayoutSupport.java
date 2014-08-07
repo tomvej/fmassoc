@@ -7,6 +7,8 @@ import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
@@ -110,6 +112,24 @@ public class TableLayoutSupport {
 	public static TableLayoutSupport create(TableViewer viewer, int weight, boolean resizable, TableViewerColumn... columns) {
 		TableLayoutSupport result = new TableLayoutSupport(viewer);
 		Arrays.asList(columns).forEach(col -> result.setupColumn(col, weight, resizable));
+		return result;
+	}
+
+	/**
+	 * Create table viewer so that it is wrapped in a separate component.
+	 * 
+	 * @param parent
+	 *            Parent component.
+	 * @param style
+	 *            Table viewer style.
+	 * @param layoutData
+	 *            Layout data wrt parent component.
+	 * @return New table viewer.
+	 */
+	public static TableViewer createTableViewer(Composite parent, int style, Object layoutData) {
+		Composite tableComposite = new Composite(parent, SWT.NONE);
+		tableComposite.setLayoutData(layoutData);
+		TableViewer result = new TableViewer(tableComposite, style);
 		return result;
 	}
 }
