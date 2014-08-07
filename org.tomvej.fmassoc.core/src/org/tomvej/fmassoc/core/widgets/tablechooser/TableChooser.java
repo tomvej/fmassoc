@@ -4,14 +4,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -22,6 +20,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
+import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.core.wrappers.ViewerFilterWrapper;
 import org.tomvej.fmassoc.model.db.Table;
 
@@ -32,24 +31,6 @@ import org.tomvej.fmassoc.model.db.Table;
  * @author Tomáš Vejpustek
  */
 public class TableChooser extends Composite {
-	/**
-	 * Allows {@link ColumnLabelProvider} to be used functionally.
-	 */
-	private static class LabelProvider extends ColumnLabelProvider {
-		private final Function<Table, String> provider;
-
-		public LabelProvider(Function<Table, String> labelProvider) {
-			provider = labelProvider;
-		}
-
-		@Override
-		public String getText(Object element) {
-			Table target = (Table) element;
-			return provider.apply(target);
-		}
-
-	}
-
 	private final Text search;
 	private final TableViewer tables;
 	private Consumer<Table> listener;
@@ -91,13 +72,13 @@ public class TableChooser extends Composite {
 		/* "name" column */
 		TableViewerColumn nameClmn = new TableViewerColumn(tables, SWT.NONE);
 		nameClmn.getColumn().setText("Name");
-		nameClmn.setLabelProvider(new LabelProvider(table -> table.getName()));
+		nameClmn.setLabelProvider(new TextColumnLabelProvider<Table>(table -> table.getName()));
 		tableLayout.setColumnData(nameClmn.getColumn(), new ColumnWeightData(1, true));
 
 		/* "implementation name" column */
 		TableViewerColumn implNameClmn = new TableViewerColumn(tables, SWT.NONE);
 		implNameClmn.getColumn().setText("Implementation name");
-		implNameClmn.setLabelProvider(new LabelProvider(table -> table.getImplName()));
+		implNameClmn.setLabelProvider(new TextColumnLabelProvider<Table>(table -> table.getImplName()));
 		tableLayout.setColumnData(implNameClmn.getColumn(), new ColumnWeightData(1, true));
 
 		new ColumnSortSupport(tables).sortByFirstColumn();
