@@ -2,6 +2,7 @@ package org.tomvej.fmassoc.parts.srcdst;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -187,10 +188,9 @@ public class DestinationChooser extends Group {
 		refreshFilter();
 	}
 
-	@SuppressWarnings("unchecked")
 	private void fireChanges() {
 		if (listener != null) {
-			listener.accept(destinations);
+			listener.accept(getSelection());
 		}
 	}
 
@@ -211,5 +211,13 @@ public class DestinationChooser extends Group {
 			destinations.clear();
 			fireChanges();
 		}
+	}
+
+	/**
+	 * Retrieve current destination tables.
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Table> getSelection() {
+		return Collections.unmodifiableList(destinations);
 	}
 }
