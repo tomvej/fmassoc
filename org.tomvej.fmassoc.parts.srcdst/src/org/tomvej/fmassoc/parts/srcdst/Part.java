@@ -1,22 +1,36 @@
 package org.tomvej.fmassoc.parts.srcdst;
 
-import javax.annotation.PostConstruct;
+import java.util.Collection;
+import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.tomvej.fmassoc.core.communicate.SearchInput;
 import org.tomvej.fmassoc.core.widgets.tablechooser.TableChooser;
+import org.tomvej.fmassoc.model.db.DataModel;
+import org.tomvej.fmassoc.model.db.Table;
 
 public class Part {
 	private TableChooser source;
 	private DestinationChooser destination;
 
-	@PostConstruct
-	public void createComponents(Composite parent) {
-		parent.setLayout(new GridLayout(2, true));
+	private IEclipseContext context;
 
+	@PostConstruct
+	public void createComponents(Composite parent, @Optional DataModel model, MPerspective perspective) {
+		context = perspective.getContext();
+
+		parent.setLayout(new GridLayout(2, true));
 		GridDataFactory layout = GridDataFactory.fillDefaults().grab(true, true);
 
 		Group grp = new Group(parent, SWT.SHADOW_ETCHED_OUT);
@@ -28,5 +42,36 @@ public class Part {
 
 		destination = new DestinationChooser(parent);
 		destination.setLayoutData(layout.create());
+
+		source.setTableListener(t -> selectionChanged());
+		destination.setTableListener(t -> selectionChanged());
+
+		if (model != null) {
+			setTables(model);
+		}
+	}
+
+	@Inject
+	@Optional
+	public void dataModelChange(@UIEventTopic("TODO: DBMODEL") DataModel model) {
+		if (source != null && destination != null) {
+			setTables(model);
+		}
+	}
+
+	private void setTables(DataModel model) {
+		Collection<Table> tables = model != null ? model.getTables() : null;
+		source.setTables(tables);
+		destination.setTables(tables);
+	}
+
+	private void selectionChanged() {
+		Table source = this.source.getSelection();
+		List<Table> destinations = destination.getSelection();
+		if (source == null || destinations == null || destinations.isEmpty()) {
+			context.set(SearchInput.class, null);
+		} else {
+			context.set(SearchInput.class, new SearchInput(source, destinations));
+		}
 	}
 }
