@@ -2,7 +2,6 @@ package org.tomvej.fmassoc.parts.srcdst;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -11,7 +10,6 @@ import org.eclipse.core.databinding.property.Properties;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -58,13 +56,11 @@ public class DestinationChooser extends Group {
 		switcher = new Button(this, SWT.CHECK);
 		switcher.setLayoutData(layout.grab(false, false).create());
 		switcher.setText("Multiple successive destination tables");
-		switcher.setSelection(true);
-		switcher.addSelectionListener(new SelectionWrapper(this::multiSwitched));
+		switcher.addSelectionListener(new SelectionWrapper(e -> multiSwitched()));
 
 		destinationComposite.setLayout(new GridLayout(2, false));
 		dstTable = TableLayoutSupport.createTableViewer(destinationComposite, SWT.BORDER | SWT.MULTI
 				| SWT.FULL_SELECTION | SWT.V_SCROLL, layout.grab(true, true).span(1, 4).create());
-		dstTable.addSelectionChangedListener(this::destinationSelected);
 
 		TableViewerColumn column = new TableViewerColumn(dstTable, SWT.LEFT);
 		column.getColumn().setText("Name");
@@ -76,10 +72,17 @@ public class DestinationChooser extends Group {
 		destinations = Properties.selfList(Table.class).observe(new ArrayList<>());
 		dstTable.setInput(destinations);
 
-		addBtn = createDestinationCompositeButton("Add", this::addTable);
-		delBtn = createDestinationCompositeButton("Remove", this::removeTables);
-		upBtn = createDestinationCompositeButton("Up", e -> {});
-		downBtn = createDestinationCompositeButton("Down", e -> {});
+		dstTable.addSelectionChangedListener(e -> refreshButtons());
+		destinations.addChangeListener(e -> refreshButtons());
+
+		addBtn = createDestinationCompositeButton("Add", e -> addSelected());
+		addBtn.setEnabled(false);
+		delBtn = createDestinationCompositeButton("Remove", e -> removeSelected());
+		upBtn = createDestinationCompositeButton("Up", e -> moveSelected(true));
+		downBtn = createDestinationCompositeButton("Down", e -> moveSelected(false));
+
+		setLayout();
+		refreshButtons();
 	}
 
 	private Button createDestinationCompositeButton(String text, Consumer<SelectionEvent> action) {
@@ -90,23 +93,44 @@ public class DestinationChooser extends Group {
 		return result;
 	}
 
-	private void tableSelected(Table target) {
-		boolean selected = target != null;
-		addBtn.setEnabled(selected);
-		if (!isMulti() && listener != null) {
-			listener.accept(selected ? Collections.singletonList(target) : null);
-		}
-	}
-
-	private void multiSwitched(SelectionEvent event) {
-		/* layout concerns */
+	private void setLayout() {
 		destinationComposite.setVisible(isMulti());
 		destinationData.exclude = !isMulti();
 		layout();
 		setText("Destination Table" + (isMulti() ? "s" : ""));
+	}
+
+	private void multiSwitched() {
+		setLayout();
 
 		/* data concerns */
-		// FIXME
+		if (!isMulti()) {
+			tables.setFilter(null);
+			if (destinations.size() > 1) {
+				destinations.clear();
+			} else if (destinations.isEmpty() && tables.getSelection() != null) {
+				destinations.add(tables.getSelection());
+			} else {
+				return;
+			}
+			fireChanges();
+		} else {
+			refreshFilter();
+		}
+	}
+
+	private void tableSelected(Table selection) {
+		boolean selected = selection != null;
+		addBtn.setEnabled(selected);
+		if (!isMulti()) {
+			if (selected || !destinations.isEmpty()) {
+				destinations.clear();
+				if (selected) {
+					destinations.add(selection);
+				}
+				fireChanges();
+			}
+		}
 	}
 
 	private boolean isMulti() {
@@ -118,18 +142,45 @@ public class DestinationChooser extends Group {
 		tables.setFilter(destinations);
 	}
 
-	private void destinationSelected(SelectionChangedEvent event) {
+	private void refreshButtons() {
 		delBtn.setEnabled(!dstTable.getSelection().isEmpty());
+		boolean single = dstTable.getTable().getSelectionCount() == 1;
+		int index = dstTable.getTable().getSelectionIndex();
+		upBtn.setEnabled(single && index != 0);
+		downBtn.setEnabled(single && index != destinations.size() - 1);
 	}
 
-	private void addTable(SelectionEvent event) {
+	private void moveSelected(boolean up) {
+		int index = dstTable.getTable().getSelectionIndex();
+		int newIndex = index + (up ? -1 : +1);
+		destinations.set(index, destinations.set(newIndex, destinations.get(index)));
+		fireChanges();
+
+		dstTable.getTable().setSelection(newIndex);
+		refreshButtons();
+		// without another refresh looks weird for two tables and down table
+	}
+
+	private void addSelected() {
 		destinations.add(tables.getSelection());
+		fireChanges();
+
+		refreshFilter();
+		addBtn.setEnabled(false);
+	}
+
+	private void removeSelected() {
+		destinations.removeAll(((IStructuredSelection) dstTable.getSelection()).toList());
+		fireChanges();
+
 		refreshFilter();
 	}
 
-	private void removeTables(SelectionEvent event) {
-		destinations.removeAll(((IStructuredSelection) dstTable.getSelection()).toList());
-		refreshFilter();
+	@SuppressWarnings("unchecked")
+	private void fireChanges() {
+		if (listener != null) {
+			listener.accept(destinations);
+		}
 	}
 
 	public void setTableListener(Consumer<List<Table>> listener) {
@@ -138,6 +189,9 @@ public class DestinationChooser extends Group {
 
 	public void setTables(Collection<Table> tables) {
 		this.tables.setTables(tables);
+		if (destinations.isEmpty()) {
+			destinations.clear();
+			fireChanges();
+		}
 	}
-
 }
