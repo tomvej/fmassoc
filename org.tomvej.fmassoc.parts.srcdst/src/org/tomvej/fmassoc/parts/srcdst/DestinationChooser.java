@@ -25,6 +25,14 @@ import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.model.db.Table;
 
+/**
+ * 
+ * Component used to choose destinations table -- either single or multiple
+ * destinations.
+ * 
+ * @author Tomáš Vejpustek
+ *
+ */
 public class DestinationChooser extends Group {
 	@Override
 	protected void checkSubclass() {} // allow subclassing
@@ -40,6 +48,9 @@ public class DestinationChooser extends Group {
 
 	private Consumer<List<Table>> listener;
 
+	/**
+	 * Specify parent composite.
+	 */
 	public DestinationChooser(Composite parent) {
 		super(parent, SWT.SHADOW_ETCHED_OUT);
 		setLayout(new GridLayout());
@@ -183,10 +194,17 @@ public class DestinationChooser extends Group {
 		}
 	}
 
+	/**
+	 * Specify a listener which is notified when selected destination tables
+	 * change.
+	 */
 	public void setTableListener(Consumer<List<Table>> listener) {
 		this.listener = listener;
 	}
 
+	/**
+	 * Specify tables among which destination tables may be chosen.
+	 */
 	public void setTables(Collection<Table> tables) {
 		this.tables.setTables(tables);
 		if (destinations.isEmpty()) {
