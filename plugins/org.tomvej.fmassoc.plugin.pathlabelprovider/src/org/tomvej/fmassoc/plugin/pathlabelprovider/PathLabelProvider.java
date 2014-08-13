@@ -1,10 +1,17 @@
 package org.tomvej.fmassoc.plugin.pathlabelprovider;
 
 import org.tomvej.fmassoc.model.db.AssociationProperty;
+import org.tomvej.fmassoc.model.db.Multiplicity;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.parts.paths.labelprovider.TextPathLabelProvider;
 
 public class PathLabelProvider extends TextPathLabelProvider {
+	private static final MultiplicityFormatter ARROW_FORMATTER = new MultiplicityFormatter().
+			add(Multiplicity.ONE_TO_ONE, "=").add(Multiplicity.ONE_TO_MANY, "<")
+			.add(Multiplicity.MANY_TO_ONE, ">").add(Multiplicity.MANY_TO_MANY, "x");
+	private static final MultiplicityFormatter VERTICAL_FORMATTER = new MultiplicityFormatter().
+			add(Multiplicity.ONE_TO_ONE, "||").add(Multiplicity.ONE_TO_MANY, "&land;").
+			add(Multiplicity.MANY_TO_ONE, "&lor;").add(Multiplicity.MANY_TO_MANY, "X");
 
 	@Override
 	protected String getTableText(Table target) {
@@ -13,8 +20,12 @@ public class PathLabelProvider extends TextPathLabelProvider {
 
 	@Override
 	protected String getAssociationText(AssociationProperty target) {
-		// TODO add formatter
-		return " " + " ";
+		String arrow = ARROW_FORMATTER.toString(target.getMultiplicity());
+		StringBuilder result = new StringBuilder(" ").append(arrow);
+		if (target.isMandatory()) {
+			result.append(arrow);
+		}
+		return result.append(" ").toString();
 	}
 
 	@Override
@@ -24,7 +35,14 @@ public class PathLabelProvider extends TextPathLabelProvider {
 
 	@Override
 	protected String getAssociationToolTipText(AssociationProperty target) {
-		// TODO add formatter
-		return "   " + " " + target.getName() + "\n";
+		StringBuilder result = new StringBuilder("   ");
+		if (target.isMandatory()) {
+			result.append("(");
+		}
+		result.append(VERTICAL_FORMATTER.toString(target.getMultiplicity()));
+		if (target.isMandatory()) {
+			result.append(")");
+		}
+		return result.append(" ").append(target.getName()).append("\n").toString();
 	}
 }
