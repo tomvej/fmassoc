@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_J4aToCN-EeSIYYTJAOONGw">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_KtceMCN-EeSIYYTJAOONGw" featurename="children" parentElementId="org.tomvej.fmassoc.core.trimbar.top">
+    <elements xsi:type="menu:ToolBar" xmi:id="_cyuokCN-EeSIYYTJAOONGw" elementId="org.tomvej.fmassoc.parts.model.toolbar">
+      <children xsi:type="menu:ToolControl" xmi:id="_oa4XcCN-EeSIYYTJAOONGw" elementId="org.tomvej.fmassoc.parts.model.toolcontrol.chooser" contributionURI="bundleclass://org.tomvej.fmassoc.parts.model/org.tomvej.fmassoc.parts.model.ModelChooser"/>
+    </elements>
+  </fragments>
+</fragment:ModelFragments>
