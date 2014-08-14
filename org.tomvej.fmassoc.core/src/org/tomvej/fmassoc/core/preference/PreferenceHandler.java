@@ -3,11 +3,14 @@ package org.tomvej.fmassoc.core.preference;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Named;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.e4.core.di.annotations.Execute;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.PreferenceDialog;
@@ -18,7 +21,8 @@ import org.eclipse.swt.widgets.Shell;
 public class PreferenceHandler {
 
 	@Execute
-	public void execute(Shell shell, IExtensionRegistry registry, Logger logger) {
+	public void execute(Shell shell, IExtensionRegistry registry, Logger logger,
+			@Optional @Named("org.eclipse.ui.window.preferences.pageid") String pageId) {
 		IConfigurationElement[] config = registry.getConfigurationElementsFor("org.tomvej.fmassoc.core.preferencePage");
 		Map<String, Pair<PreferenceNode, String>> nodes = new HashMap<>();
 		for (IConfigurationElement elem : config) {
@@ -50,6 +54,10 @@ public class PreferenceHandler {
 			}
 		}
 
-		new PreferenceDialog(shell, manager).open();
+		PreferenceDialog dialog = new PreferenceDialog(shell, manager);
+		if (pageId != null) {
+			dialog.setSelectedNode(pageId);
+		}
+		dialog.open();
 	}
 }

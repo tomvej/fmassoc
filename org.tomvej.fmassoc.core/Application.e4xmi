@@ -8,7 +8,9 @@
     </children>
   </children>
   <handlers xmi:id="_WzQ0YCMZEeSLr8eP527IEg" elementId="org.tomvej.fmassoc.core.handler.preferences" contributionURI="bundleclass://org.tomvej.fmassoc.core/org.tomvej.fmassoc.core.preference.PreferenceHandler" command="_MtRb0CMZEeSLr8eP527IEg"/>
-  <commands xmi:id="_MtRb0CMZEeSLr8eP527IEg" elementId="org.eclipse.ui.window.preferences" commandName="Preferences"/>
+  <commands xmi:id="_MtRb0CMZEeSLr8eP527IEg" elementId="org.eclipse.ui.window.preferences" commandName="Preferences">
+    <parameters xmi:id="_UOkzACN6EeSIYYTJAOONGw" elementId="org.eclipse.ui.window.preferences.pageid" name="Page ID"/>
+  </commands>
   <addons xmi:id="_TnMFwRPKEeSoD5WQk9Aqhg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_TnMFwhPKEeSoD5WQk9Aqhg" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_TnMFwxPKEeSoD5WQk9Aqhg" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
