@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.parts.model;
+package org.tomvej.fmassoc.parts.model.core;
 
 import javax.annotation.PostConstruct;
 
@@ -8,7 +8,7 @@ public class ModelChooser {
 
 	@PostConstruct
 	public void createComponents(Composite parent) {
-		// TODO
+
 	}
 
 }
