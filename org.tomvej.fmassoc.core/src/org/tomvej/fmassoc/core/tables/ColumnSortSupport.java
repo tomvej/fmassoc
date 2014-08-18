@@ -20,12 +20,14 @@ import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
  * 
  * @author Tomáš Vejpustek
  */
+@SuppressWarnings("rawtypes")
 public class ColumnSortSupport {
 	private final TableViewer table;
 	private TableColumn sortedBy;
 	private boolean descending;
 	private final Map<TableColumn, Comparator> comparators = new HashMap<>();
 	private final ViewerComparator comparator = new ViewerComparator() {
+		@SuppressWarnings("unchecked")
 		public int compare(Viewer viewer, Object e1, Object e2) {
 			int result = 0;
 
