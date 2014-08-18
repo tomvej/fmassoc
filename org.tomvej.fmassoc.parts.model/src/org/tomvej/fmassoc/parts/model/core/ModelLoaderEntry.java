@@ -13,7 +13,7 @@ public class ModelLoaderEntry {
 	private final String name, description;
 	private final ModelLoader loader;
 
-	public ModelLoaderEntry(String name, String description, ModelLoader loader) {
+	ModelLoaderEntry(String name, String description, ModelLoader loader) {
 		this.name = name;
 		this.description = description;
 		this.loader = Validate.notNull(loader);
