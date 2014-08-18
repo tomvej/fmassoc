@@ -18,8 +18,18 @@ import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.swt.widgets.Shell;
 
+/**
+ * 
+ * Loads and displays all available preference pages.
+ * 
+ * @author Tomáš Vejpustek
+ *
+ */
 public class PreferenceHandler {
 
+	/**
+	 * Load and display available preference pages.
+	 */
 	@Execute
 	public void execute(Shell shell, IExtensionRegistry registry, Logger logger,
 			@Optional @Named("org.eclipse.ui.window.preferences.pageid") String pageId) {

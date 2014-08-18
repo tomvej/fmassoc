@@ -14,6 +14,12 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
+/**
+ * Manager of the model store.
+ * 
+ * @author Tomáš Vejpustek
+ *
+ */
 public class PreferenceModelManager {
 	private final Preferences loaders, labels;
 
@@ -31,12 +37,27 @@ public class PreferenceModelManager {
 		labels = preference.node("labels");
 	}
 
+	/**
+	 * Remove model from storage.
+	 */
 	public void remove(ModelEntry model) {
 		String id = Validate.notNull(model).getId();
 		loaders.remove(id);
 		labels.remove(id);
 	}
 
+	/**
+	 * Add new model to storage. Generates internal id (
+	 * {@link ModelEntry#getId()}). The actual configuration may not be
+	 * specified yet.
+	 * 
+	 * @param label
+	 *            Descriptive label of the model ({@link ModelEntry#getLabel()}.
+	 * @param loader
+	 *            Loader used to load the model.
+	 * @return The newly created model entry, {@code null} if it could not be
+	 *         created.
+	 */
 	public ModelEntry add(String label, ModelLoaderEntry loader) {
 		String id = getUniqueId();
 		if (id == null) {
@@ -59,6 +80,16 @@ public class PreferenceModelManager {
 		return null;
 	}
 
+	/**
+	 * Load models from configuration.
+	 * 
+	 * @param target
+	 *            List to add loaded models.
+	 * @param modelLoaders
+	 *            List of available model loaders.
+	 * @return {@link Status#OK_STATUS} when loading was successful, status
+	 *         containing errors otherwise.
+	 */
 	public IStatus loadModels(List<ModelEntry> target, List<ModelLoaderEntry> modelLoaders) {
 		Validate.notNull(target);
 

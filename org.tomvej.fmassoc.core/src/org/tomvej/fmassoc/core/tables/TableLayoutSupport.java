@@ -99,7 +99,7 @@ public class TableLayoutSupport {
 	/**
 	 * Create a new table
 	 * 
-	 * @param table
+	 * @param viewer
 	 *            Target table.
 	 * @param weight
 	 *            Weight of all columns.

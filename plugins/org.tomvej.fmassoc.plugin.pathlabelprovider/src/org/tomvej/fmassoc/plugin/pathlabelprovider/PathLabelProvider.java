@@ -5,6 +5,14 @@ import org.tomvej.fmassoc.model.db.Multiplicity;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.parts.paths.labelprovider.TextPathLabelProvider;
 
+/**
+ * Displays path as list of comprising tables separated by =, <, > according to
+ * multiplicity. Tooltip is displayed vertically with association names and
+ * multiplicities.
+ * 
+ * @author Tomáš Vejpustek
+ *
+ */
 public class PathLabelProvider extends TextPathLabelProvider {
 	private static final MultiplicityFormatter ARROW_FORMATTER = new MultiplicityFormatter().
 			add(Multiplicity.ONE_TO_ONE, "=").add(Multiplicity.ONE_TO_MANY, "<")

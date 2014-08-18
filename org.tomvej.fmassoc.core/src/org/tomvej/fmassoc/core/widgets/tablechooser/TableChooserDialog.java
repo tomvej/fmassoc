@@ -9,10 +9,21 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.tomvej.fmassoc.model.db.Table;
 
+/**
+ * Dialog for choosing a table. Based on {@link TableChooser}.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class TableChooserDialog extends Dialog {
 	private TableChooser chooser;
 	private Table selected;
 
+	/**
+	 * Create the dialog.
+	 * 
+	 * @param parent
+	 *            Parent shell.
+	 */
 	public TableChooserDialog(Shell parent) {
 		super(parent);
 	}
@@ -45,6 +56,9 @@ public class TableChooserDialog extends Dialog {
 		super.okPressed();
 	}
 
+	/**
+	 * Return selected table (only after OK has been pressed).
+	 */
 	public Table getSelectedTable() {
 		return selected;
 	}

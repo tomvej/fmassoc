@@ -3,6 +3,12 @@ package org.tomvej.fmassoc.parts.model.core;
 import org.apache.commons.lang3.Validate;
 import org.tomvej.fmassoc.parts.model.ModelLoader;
 
+/**
+ * Describes model loader.
+ * 
+ * @author Tomáš Vejpustek
+ *
+ */
 public class ModelLoaderEntry {
 	private final String name, description;
 	private final ModelLoader loader;
@@ -13,14 +19,23 @@ public class ModelLoaderEntry {
 		this.loader = Validate.notNull(loader);
 	}
 
+	/**
+	 * Return model loader name.
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Return longer description.
+	 */
 	public String getDescription() {
 		return description;
 	}
 
+	/**
+	 * Return the actual model loader.
+	 */
 	public ModelLoader getLoader() {
 		return loader;
 	}

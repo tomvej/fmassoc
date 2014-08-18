@@ -2,6 +2,12 @@ package org.tomvej.fmassoc.parts.model.core;
 
 import org.apache.commons.lang3.Validate;
 
+/**
+ * Contains information necessary for data model loading and display.
+ * 
+ * @author Tomáš Vejpustek
+ *
+ */
 public class ModelEntry {
 	private final ModelLoaderEntry loader;
 	private final String id;
@@ -13,14 +19,23 @@ public class ModelEntry {
 		this.loader = Validate.notNull(loader);
 	}
 
+	/**
+	 * Return model loader used to load this model.
+	 */
 	public ModelLoaderEntry getLoader() {
 		return loader;
 	}
 
+	/**
+	 * Return unique data model id (generated internally).
+	 */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Return descriptive label.
+	 */
 	public String getLabel() {
 		return label;
 	}

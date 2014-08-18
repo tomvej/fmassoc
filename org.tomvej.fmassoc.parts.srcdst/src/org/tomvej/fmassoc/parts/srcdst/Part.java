@@ -20,12 +20,21 @@ import org.tomvej.fmassoc.core.widgets.tablechooser.TableChooser;
 import org.tomvej.fmassoc.model.db.DataModel;
 import org.tomvej.fmassoc.model.db.Table;
 
+/**
+ * Part for choosing source and destination tables.
+ * 
+ * @author Tomáš Vejpustek
+ *
+ */
 public class Part {
 	private TableChooser source;
 	private DestinationChooser destination;
 
 	private IEclipseContext context;
 
+	/**
+	 * Create components comprising this part.
+	 */
 	@PostConstruct
 	public void createComponents(Composite parent, @Optional DataModel model, MPerspective perspective) {
 		context = perspective.getContext();
@@ -51,6 +60,9 @@ public class Part {
 		}
 	}
 
+	/**
+	 * Listen to data model changes.
+	 */
 	@Inject
 	@Optional
 	public void dataModelChange(@UIEventTopic("TODO: DBMODEL") DataModel model) {

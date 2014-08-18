@@ -9,9 +9,18 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
+/**
+ * Part with found paths table.
+ * 
+ * @author Tomáš Vejpustek
+ *
+ */
 public class Part {
 	private TableViewer pathTable;
 
+	/**
+	 * Create components comprising the found table part.
+	 */
 	@PostConstruct
 	public void createComponents(Composite parent, ESelectionService selectionService) {
 		pathTable = new TableViewer(parent, SWT.SINGLE | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL);

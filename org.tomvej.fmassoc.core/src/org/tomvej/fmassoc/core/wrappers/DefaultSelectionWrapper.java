@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import org.apache.commons.lang3.Validate;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 
 /**
  * 
@@ -14,7 +15,7 @@ import org.eclipse.swt.events.SelectionEvent;
  * @author Tomáš Vejpustek
  *
  */
-public class DefaultSelectionWrapper extends SelectionAdapter {
+public class DefaultSelectionWrapper extends SelectionAdapter implements SelectionListener {
 	private final Consumer<SelectionEvent> listener;
 
 	/**
