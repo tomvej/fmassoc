@@ -8,7 +8,7 @@ package org.tomvej.fmassoc.parts.model;
  */
 public class ModelLoadingException extends Exception {
 
-	private static final long serialVersionUID = 1459120304486382595L;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Specify message and cause.
