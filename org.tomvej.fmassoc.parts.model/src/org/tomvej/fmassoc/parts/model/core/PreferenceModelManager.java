@@ -31,6 +31,9 @@ public class PreferenceModelManager {
 		return loaders.stream().collect(Collectors.toMap(PreferenceModelManager::getLoaderId, Function.identity()));
 	}
 
+	/**
+	 * Specify preference storage.
+	 */
 	public PreferenceModelManager(IEclipsePreferences preference) {
 		Validate.notNull(preference);
 		loaders = preference.node("loaders");
