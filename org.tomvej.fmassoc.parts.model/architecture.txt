@@ -1,6 +1,6 @@
 Each model has a unique ID -- this is generated using UUID (still, it might be better to check if UUIDs clash).
 
-A model entry is stored in the node `org.tomvej.fmassoc.parts.models' and subnodes (IEclipsePreferences.node())
+A model entry is stored in the node `org.tomvej.fmassoc.parts.model.models' and subnodes (IEclipsePreferences.node())
 labels: UUID=label
 loaders: UUID=loader id (class name)
 
