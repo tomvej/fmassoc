@@ -7,8 +7,8 @@ import javax.inject.Inject;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -17,12 +17,12 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.tomvej.fmassoc.core.tables.TableLayoutSupport;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
-import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
+import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
 import org.tomvej.fmassoc.parts.model.core.ModelEntry;
 
 public class ModelManagerDialog extends TitleAreaDialog {
+	private ListViewer list;
 	private TableViewer table;
 	private Button addBtn, editBtn, removeBtn;
 
@@ -38,12 +38,9 @@ public class ModelManagerDialog extends TitleAreaDialog {
 		container.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
 		container.setLayout(new GridLayout(2, false));
 
-		table = TableLayoutSupport.createTableViewer(container, SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER,
-				GridDataFactory.fillDefaults().grab(true, true).span(1, 3).create());
-		TableViewerColumn column = new TableViewerColumn(table, SWT.LEFT);
-		column.setLabelProvider(new TextColumnLabelProvider<ModelEntry>(model -> model.getLabel()));
-		TableLayoutSupport.create(table, 1, false, column);
-
+		list = new ListViewer(container, SWT.SINGLE | SWT.BORDER | SWT.V_SCROLL);
+		list.getList().setLayoutData(GridDataFactory.fillDefaults().grab(true, true).span(1, 3).create());
+		list.setLabelProvider(new TextLabelProvider<ModelEntry>(model -> model.getLabel()));
 
 		addBtn = createButton(container, "Add", e -> {});
 		editBtn = createButton(container, "Edit", e -> {});
