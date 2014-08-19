@@ -2,6 +2,8 @@ package org.tomvej.fmassoc.parts.model.manager;
 
 import java.util.function.Consumer;
 
+import javax.inject.Inject;
+
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -24,6 +26,7 @@ public class ModelManagerDialog extends TitleAreaDialog {
 	private TableViewer table;
 	private Button addBtn, editBtn, removeBtn;
 
+	@Inject
 	public ModelManagerDialog(Shell parentShell) {
 		super(parentShell);
 	}
