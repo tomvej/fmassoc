@@ -11,6 +11,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.e4.core.services.log.Logger;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
@@ -22,6 +23,7 @@ import org.osgi.service.prefs.Preferences;
  */
 public class PreferenceModelManager {
 	private final Preferences loaders, labels;
+	private final Logger logger;
 
 	private static String getLoaderId(ModelLoaderEntry loader) {
 		return loader.getLoader().getClass().getCanonicalName();
@@ -34,10 +36,11 @@ public class PreferenceModelManager {
 	/**
 	 * Specify preference storage.
 	 */
-	public PreferenceModelManager(IEclipsePreferences preference) {
+	public PreferenceModelManager(IEclipsePreferences preference, Logger logger) {
 		Validate.notNull(preference);
 		loaders = preference.node("loaders");
 		labels = preference.node("labels");
+		this.logger = Validate.notNull(logger);
 	}
 
 	/**
@@ -47,6 +50,7 @@ public class PreferenceModelManager {
 		String id = Validate.notNull(model).getId();
 		loaders.remove(id);
 		labels.remove(id);
+		logger.info("Model removed: " + model);
 	}
 
 	/**
@@ -64,12 +68,14 @@ public class PreferenceModelManager {
 	public ModelEntry add(String label, ModelLoaderEntry loader) {
 		String id = getUniqueId();
 		if (id == null) {
+			logger.error("Cannot generate id for model " + label + " [" + loader + "]");
 			return null;
 		}
 
 		ModelEntry result = new ModelEntry(id, label, loader);
 		loaders.put(id, getLoaderId(loader));
 		labels.put(id, label);
+		logger.info("Model added: " + result);
 		return result;
 	}
 
@@ -100,7 +106,9 @@ public class PreferenceModelManager {
 		try {
 			ids = loaders.keys();
 		} catch (BackingStoreException bse) {
-			return new Status(IStatus.ERROR, Constants.PLUGIN_ID, "Cannot get the list of stored models.", bse);
+			String message = "Cannot get the list of stored models.";
+			logger.error(bse, message);
+			return new Status(IStatus.ERROR, Constants.PLUGIN_ID, message, bse);
 		}
 
 		Map<String, ModelLoaderEntry> loadersById = prepareLoaderMap(modelLoaders);
@@ -111,8 +119,10 @@ public class PreferenceModelManager {
 			String loaderId = loaders.get(id, null);
 			ModelLoaderEntry loader = loadersById.get(loaderId);
 			if (loader == null) {
-				status.add(new Status(IStatus.WARNING, Constants.PLUGIN_ID,
-						"Unable to load model " + label + "(" + id + "): There is no associated model loader " + loaderId));
+				String message = "Unable to load model " + label + "(" + id + "): There is no associated model loader "
+						+ loaderId;
+				logger.error(message);
+				status.add(new Status(IStatus.WARNING, Constants.PLUGIN_ID, message));
 			} else {
 				target.add(new ModelEntry(id, label, loader));
 			}

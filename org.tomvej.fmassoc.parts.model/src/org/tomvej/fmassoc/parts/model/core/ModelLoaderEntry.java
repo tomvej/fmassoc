@@ -56,4 +56,9 @@ public class ModelLoaderEntry {
 		return ((ModelLoaderEntry) obj).getLoader().equals(getLoader());
 	}
 
+	@Override
+	public String toString() {
+		return "ModelLoader " + getName() + " [" + getLoader().getClass().getCanonicalName() + "]";
+	}
+
 }

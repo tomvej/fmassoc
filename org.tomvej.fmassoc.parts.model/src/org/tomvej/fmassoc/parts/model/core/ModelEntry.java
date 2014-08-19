@@ -55,4 +55,9 @@ public class ModelEntry {
 		}
 		return ((ModelEntry) obj).getId().equals(getId());
 	}
+
+	@Override
+	public String toString() {
+		return "Model " + getLabel() + " [" + getId() + ", " + getLoader().toString() + "]";
+	}
 }
