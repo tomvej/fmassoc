@@ -16,9 +16,13 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
 import org.tomvej.fmassoc.parts.model.ModelLoader;
 
 /**
@@ -31,6 +35,7 @@ public class ModelChooser {
 	@Inject
 	private Logger logger;
 	private ModelList models;
+	private ComboViewer switcher;
 
 	/**
 	 * Create components comprising this widget.
@@ -53,7 +58,11 @@ public class ModelChooser {
 		models = new ModelList(manager, modelEntries);
 		app.getContext().set(ModelList.class, models);
 
-
+		switcher = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
+		switcher.setContentProvider(new ObservableListContentProvider());
+		switcher.setLabelProvider(new TextLabelProvider<ModelEntry>(entry -> entry.getLabel()));
+		switcher.setInput(models);
+		switcher.addSelectionChangedListener(event -> loadSelectedModel());
 	}
 
 	private List<ModelLoaderEntry> loadModelLoaders(IExtensionRegistry registry, Shell parent) {
@@ -77,5 +86,9 @@ public class ModelChooser {
 					status);
 		}
 		return result;
+	}
+
+	private void loadSelectedModel() {
+		// FIXME
 	}
 }
