@@ -113,7 +113,7 @@ public class PreferenceModelManager {
 
 		Map<String, ModelLoaderEntry> loadersById = prepareLoaderMap(modelLoaders);
 
-		MultiStatus status = new MultiStatus(Constants.PLUGIN_ID, IStatus.OK, "Some models cannot be loaded.", null);
+		MultiStatus status = new MultiStatus(Constants.PLUGIN_ID, IStatus.OK, "", null);
 		for (String id : ids) {
 			String label = labels.get(id, "");
 			String loaderId = loaders.get(id, null);
