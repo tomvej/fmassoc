@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="ASCII"?>
-<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_J4aToCN-EeSIYYTJAOONGw">
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_J4aToCN-EeSIYYTJAOONGw">
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_KtceMCN-EeSIYYTJAOONGw" featurename="children" parentElementId="org.tomvej.fmassoc.core.trimbar.top">
     <elements xsi:type="menu:ToolBar" xmi:id="_cyuokCN-EeSIYYTJAOONGw" elementId="org.tomvej.fmassoc.parts.model.toolbar">
       <children xsi:type="menu:ToolControl" xmi:id="_oa4XcCN-EeSIYYTJAOONGw" elementId="org.tomvej.fmassoc.parts.model.toolcontrol.chooser" contributionURI="bundleclass://org.tomvej.fmassoc.parts.model/org.tomvej.fmassoc.parts.model.core.ModelChooser"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_1ti2gCeTEeSPHd9uLDo2og" elementId="org.tomvej.fmassoc.parts.model.handledtoolitem.showmanager" label="Models" command="_oyWLYCeTEeSPHd9uLDo2og"/>
     </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_jwTN0CeTEeSPHd9uLDo2og" featurename="commands" parentElementId="org.tomvej.fmassoc.core.application">
+    <elements xsi:type="commands:Command" xmi:id="_oyWLYCeTEeSPHd9uLDo2og" elementId="org.tomvej.fmassoc.parts.model.command.showmanager" commandName="Models"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_saAOkCeTEeSPHd9uLDo2og" featurename="handlers" parentElementId="org.tomvej.fmassoc.core.application">
+    <elements xsi:type="commands:Handler" xmi:id="_vnQNsCeTEeSPHd9uLDo2og" elementId="org.tomvej.fmassoc.parts.model.handler.showmanager" contributionURI="bundleclass://org.tomvej.fmassoc.parts.model/org.tomvej.fmassoc.parts.model.manager.ShowModelManager" command="_oyWLYCeTEeSPHd9uLDo2og"/>
   </fragments>
 </fragment:ModelFragments>
