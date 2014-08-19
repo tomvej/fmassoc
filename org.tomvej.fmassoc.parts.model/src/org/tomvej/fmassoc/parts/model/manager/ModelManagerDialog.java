@@ -1,14 +1,16 @@
 package org.tomvej.fmassoc.parts.model.manager;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
+import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ListViewer;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -19,13 +21,32 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
+import org.tomvej.fmassoc.parts.model.core.Constants;
 import org.tomvej.fmassoc.parts.model.core.ModelEntry;
+import org.tomvej.fmassoc.parts.model.core.ModelList;
+import org.tomvej.fmassoc.parts.model.core.ModelLoaderEntry;
 
+/**
+ * Dialog used to manage (add, edit, remove) available data models. Uses
+ * dependency injection -- must be created from context.
+ * 
+ * @author Tomáš Vejpustek
+ *
+ */
 public class ModelManagerDialog extends TitleAreaDialog {
+	@Inject
+	private ModelList models;
+	@Inject
+	@Named(Constants.MODEL_LOADER_REGISTRY)
+	private List<ModelLoaderEntry> loaders;
+
 	private ListViewer list;
-	private TableViewer table;
 	private Button addBtn, editBtn, removeBtn;
 
+	/**
+	 * Create model manager dialog. Not to be used explicitly, only from
+	 * dependency injection.
+	 */
 	@Inject
 	public ModelManagerDialog(Shell parentShell) {
 		super(parentShell);
@@ -41,10 +62,14 @@ public class ModelManagerDialog extends TitleAreaDialog {
 		list = new ListViewer(container, SWT.SINGLE | SWT.BORDER | SWT.V_SCROLL);
 		list.getList().setLayoutData(GridDataFactory.fillDefaults().grab(true, true).span(1, 3).create());
 		list.setLabelProvider(new TextLabelProvider<ModelEntry>(model -> model.getLabel()));
+		list.setContentProvider(new ObservableListContentProvider());
+		list.setInput(models);
+		list.addSelectionChangedListener(e -> refreshButtons());
 
 		addBtn = createButton(container, "Add", e -> {});
 		editBtn = createButton(container, "Edit", e -> {});
-		removeBtn = createButton(container, "Remove", e -> {});
+		removeBtn = createButton(container, "Remove", e -> models.remove(list.getList().getSelectionIndex()));
+		refreshButtons();
 		return dialog;
 	}
 
@@ -54,6 +79,12 @@ public class ModelManagerDialog extends TitleAreaDialog {
 		result.addSelectionListener(new SelectionWrapper(action));
 		result.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false));
 		return result;
+	}
+
+	private void refreshButtons() {
+		boolean selected = !list.getSelection().isEmpty();
+		editBtn.setEnabled(selected);
+		removeBtn.setEnabled(selected);
 	}
 
 	@Override
