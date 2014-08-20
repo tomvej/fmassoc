@@ -21,7 +21,7 @@ public class TableBuilder {
 	/**
 	 * Initialize all values.
 	 */
-	public TableBuilder(Integer number, String name, String implName, String idImplName) {
+	public TableBuilder(int number, String name, String implName, String idImplName) {
 		this.number = number;
 		this.name = name;
 		this.implName = implName;

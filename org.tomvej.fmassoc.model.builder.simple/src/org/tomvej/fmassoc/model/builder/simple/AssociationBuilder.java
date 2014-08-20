@@ -23,7 +23,7 @@ public class AssociationBuilder {
 	/**
 	 * Initialize all values.
 	 */
-	public AssociationBuilder(String name, String implName, Multiplicity mult, Boolean mandatory, String reverseName) {
+	public AssociationBuilder(String name, String implName, Multiplicity mult, boolean mandatory, String reverseName) {
 		this.name = name;
 		this.implName = implName;
 		this.mult = mult;
