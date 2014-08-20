@@ -32,15 +32,6 @@ public class AssociationBuilder {
 	}
 
 	/**
-	 * Get logical name.
-	 * 
-	 * @see AssociationProperty#getName()
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
 	 * Set logical name.
 	 * 
 	 * @see AssociationProperty#getName()
@@ -54,15 +45,6 @@ public class AssociationBuilder {
 	}
 
 	/**
-	 * Get database name.
-	 * 
-	 * @see AssociationProperty#getImplName()
-	 */
-	public String getImplName() {
-		return implName;
-	}
-
-	/**
 	 * Set database name.
 	 * 
 	 * @return This builder.
@@ -71,15 +53,6 @@ public class AssociationBuilder {
 	public AssociationBuilder setImplName(String implName) {
 		this.implName = implName;
 		return this;
-	}
-
-	/**
-	 * Get multiplicity.
-	 * 
-	 * @see AssociationProperty#getMultiplicity()
-	 */
-	public Multiplicity getMultiplicity() {
-		return mult;
 	}
 
 	/**
@@ -95,15 +68,6 @@ public class AssociationBuilder {
 
 
 	/**
-	 * Get whether the association is mandatory.
-	 * 
-	 * @see AssociationProperty#isMandatory()
-	 */
-	public boolean isMandatory() {
-		return mandatory;
-	}
-
-	/**
 	 * Set whether the association is mandatory.
 	 * 
 	 * @return This builder.
@@ -112,16 +76,6 @@ public class AssociationBuilder {
 	public AssociationBuilder setMandatory(boolean optional) {
 		this.mandatory = optional;
 		return this;
-	}
-
-	/**
-	 * Get logical name of the reverse association.
-	 * 
-	 * @see AssociationProperty#getName()
-	 * @see AssociationProperty#isReverse()
-	 */
-	public String getReverseName() {
-		return reverseName;
 	}
 
 	/**
@@ -138,7 +92,6 @@ public class AssociationBuilder {
 
 	AssociationPropertyImpl create(Table source, Table destination) {
 		Validate.validState(mandatory != null, "Optionality must be set.");
-		return new AssociationPropertyImpl(getName(), getImplName(), isMandatory(), getMultiplicity(), getReverseName(),
-				source, destination);
+		return new AssociationPropertyImpl(name, implName, mandatory, mult, reverseName, source, destination);
 	}
 }

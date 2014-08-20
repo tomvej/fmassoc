@@ -25,15 +25,6 @@ public class PropertyBuilder {
 	}
 
 	/**
-	 * Get logical name.
-	 *
-	 * @see Property#getName()
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
 	 * Set logical name.
 	 * 
 	 * @return This builder.
@@ -42,15 +33,6 @@ public class PropertyBuilder {
 	public PropertyBuilder setName(String name) {
 		this.name = name;
 		return this;
-	}
-
-	/**
-	 * Get database name.
-	 * 
-	 * @see Property#getImplName()
-	 */
-	public String getImplName() {
-		return implName;
 	}
 
 	/**
@@ -65,6 +47,6 @@ public class PropertyBuilder {
 	}
 
 	Property create(Table parent) {
-		return new PropertyImpl(getName(), getImplName(), parent);
+		return new PropertyImpl(name, implName, parent);
 	}
 }

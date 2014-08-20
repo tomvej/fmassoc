@@ -29,15 +29,6 @@ public class TableBuilder {
 	}
 
 	/**
-	 * Get number.
-	 * 
-	 * @see Table#getNumber()
-	 */
-	public int getNumber() {
-		return number;
-	}
-
-	/**
 	 * Set number.
 	 * 
 	 * @return This builder.
@@ -46,15 +37,6 @@ public class TableBuilder {
 	public TableBuilder setNumber(int number) {
 		this.number = number;
 		return this;
-	}
-
-	/**
-	 * Get logical name.
-	 * 
-	 * @see Table#getName()
-	 */
-	public String getName() {
-		return name;
 	}
 
 	/**
@@ -69,15 +51,6 @@ public class TableBuilder {
 	}
 
 	/**
-	 * Get database name.
-	 * 
-	 * @see Table#getImplName()
-	 */
-	public String getImplName() {
-		return implName;
-	}
-
-	/**
 	 * Set database name.
 	 * 
 	 * @return This builder.
@@ -86,15 +59,6 @@ public class TableBuilder {
 	public TableBuilder setImplName(String implName) {
 		this.implName = implName;
 		return this;
-	}
-
-	/**
-	 * Get database name of the primary key column.
-	 * 
-	 * @see Table#getIDImplName()
-	 */
-	public String getIdImplName() {
-		return idImplName;
 	}
 
 	/**
@@ -110,6 +74,6 @@ public class TableBuilder {
 
 	TableImpl create() {
 		Validate.validState(name != null, "Name must be set.");
-		return new TableImpl(getName(), getImplName(), getIdImplName(), getNumber());
+		return new TableImpl(name, implName, idImplName, number);
 	}
 }
