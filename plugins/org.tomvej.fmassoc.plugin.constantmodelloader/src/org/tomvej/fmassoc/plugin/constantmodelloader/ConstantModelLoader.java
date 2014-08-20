@@ -1,5 +1,6 @@
 package org.tomvej.fmassoc.plugin.constantmodelloader;
 
+import org.eclipse.jface.wizard.IWizard;
 import org.tomvej.fmassoc.model.builder.simple.AssociationBuilder;
 import org.tomvej.fmassoc.model.builder.simple.DataModelBuilder;
 import org.tomvej.fmassoc.model.builder.simple.TableBuilder;
@@ -73,4 +74,16 @@ public class ConstantModelLoader implements ModelLoader {
 		addAssociation(model, rcr182, mwork166, true, true, "is_working_on", "is_performed_by", "ID_O_MOBILEWORK");
 		return model.create();
 	}
+
+	@Override
+	public IWizard createNewWizard(String id) {
+		return new OnePageWizard(new NewWizardPage());
+	}
+
+	@Override
+	public IWizard createEditWizard(String id) {
+		return new OnePageWizard(new EditWizardPage());
+	}
+
+
 }
