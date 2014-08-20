@@ -1,5 +1,8 @@
 package org.tomvej.fmassoc.parts.model.builders;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,21 +17,40 @@ import org.tomvej.fmassoc.model.db.DataModel;
  */
 public class DataModelBuilder {
 	private Set<TableImpl> tables = new HashSet<>();
+	private Collection<TableCache<?>> caches;
+
+	/**
+	 * Initialize builder.
+	 */
+	public DataModelBuilder() {
+		caches = Collections.emptyList();
+	}
+
+	/**
+	 * Initialize builder. Plug in caches which facilitate table search and
+	 * ensure tables are unique wrt given keys.
+	 * 
+	 * @see TableCache
+	 */
+	public DataModelBuilder(TableCache<?>... cache) {
+		caches = Arrays.asList(cache);
+	}
 
 	/**
 	 * Add a table.
 	 * 
 	 * @param builder
 	 *            Specifies table information; is copied.
-	 * @return Resulting table.
+	 * @return Resulting table or {@code null} when it cannot be added.
 	 */
 	public TableImpl addTable(TableBuilder builder) {
 		TableImpl result = builder.create();
-		if (tables.contains(result)) {
+		if (caches.stream().anyMatch(cache -> cache.containsKey(result))) {
 			return null;
-		} else {
-			return result;
 		}
+		tables.add(result);
+		caches.forEach(cache -> cache.add(result));
+		return result;
 	}
 
 	/**

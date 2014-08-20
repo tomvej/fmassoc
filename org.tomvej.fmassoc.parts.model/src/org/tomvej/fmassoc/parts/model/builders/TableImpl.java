@@ -9,6 +9,13 @@ import org.tomvej.fmassoc.model.db.AssociationProperty;
 import org.tomvej.fmassoc.model.db.Property;
 import org.tomvej.fmassoc.model.db.Table;
 
+/**
+ * Implementation of {@link Table} interface. Is not immutable, however,
+ * mutating methods are package-private.
+ * 
+ * @author Tomáš Vejpustek
+ *
+ */
 public class TableImpl extends NamedImpl implements Table {
 	private final String idImplName;
 	private final int number;
