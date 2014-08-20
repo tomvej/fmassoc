@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.parts.model.builders;
+package org.tomvej.fmassoc.model.builder.simple;
 
 import org.apache.commons.lang3.Validate;
 import org.tomvej.fmassoc.model.db.Named;

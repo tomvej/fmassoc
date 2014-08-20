@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.parts.model.builders;
+package org.tomvej.fmassoc.model.builder.simple;
 
 import java.util.Arrays;
 import java.util.Collection;
