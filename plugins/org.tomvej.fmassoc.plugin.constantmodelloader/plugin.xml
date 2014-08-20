@@ -4,7 +4,9 @@
    <extension
          point="org.tomvej.fmassoc.parts.model.modelLoader">
       <client
-            class="org.tomvej.fmassoc.plugin.constantmodelloader.ConstantModelLoader">
+            class="org.tomvej.fmassoc.plugin.constantmodelloader.ConstantModelLoader"
+            description="Loads one sample model regardless of settings. Used for testing purposes."
+            name="Constant Model">
       </client>
    </extension>
 
