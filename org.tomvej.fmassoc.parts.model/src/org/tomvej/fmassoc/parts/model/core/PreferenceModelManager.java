@@ -22,7 +22,7 @@ import org.osgi.service.prefs.Preferences;
  *
  */
 public class PreferenceModelManager {
-	private final Preferences loaders, labels;
+	private final IEclipsePreferences preferences;
 	private final Logger logger;
 
 	private static String getLoaderId(ModelLoaderEntry loader) {
@@ -33,13 +33,19 @@ public class PreferenceModelManager {
 		return loaders.stream().collect(Collectors.toMap(PreferenceModelManager::getLoaderId, Function.identity()));
 	}
 
+	private Preferences getLoaders() {
+		return preferences.node("loaders");
+	}
+
+	private Preferences getLabels() {
+		return preferences.node("labels");
+	}
+
 	/**
 	 * Specify preference storage.
 	 */
 	public PreferenceModelManager(IEclipsePreferences preference, Logger logger) {
-		Validate.notNull(preference);
-		loaders = preference.node("loaders");
-		labels = preference.node("labels");
+		this.preferences = Validate.notNull(preference);
 		this.logger = Validate.notNull(logger);
 	}
 
@@ -48,9 +54,14 @@ public class PreferenceModelManager {
 	 */
 	public void remove(ModelEntry model) {
 		String id = Validate.notNull(model).getId();
-		loaders.remove(id);
-		labels.remove(id);
-		logger.info("Model removed: " + model);
+		getLoaders().remove(id);
+		getLabels().remove(id);
+		try {
+			preferences.flush();
+			logger.info("Model removed: " + model);
+		} catch (BackingStoreException bse) {
+			logger.error(bse, "Unable to remove model: " + model);
+		}
 	}
 
 	/**
@@ -73,16 +84,25 @@ public class PreferenceModelManager {
 		}
 
 		ModelEntry result = new ModelEntry(id, label, loader);
-		loaders.put(id, getLoaderId(loader));
-		labels.put(id, label);
-		logger.info("Model added: " + result);
-		return result;
+		getLoaders().put(id, getLoaderId(loader));
+		getLabels().put(id, label);
+		try {
+			preferences.flush();
+			logger.info("Model added: " + result);
+			return result;
+		} catch (BackingStoreException bse) {
+			logger.error(bse, "Unable to add model: " + result);
+			// rollback
+			getLoaders().remove(id);
+			getLabels().remove(id);
+			return null;
+		}
 	}
 
 	private String getUniqueId() {
 		for (int tries = 10; tries > 0; tries--) {
 			String id = UUID.randomUUID().toString();
-			if (loaders.get(id, null) == null) {
+			if (getLoaders().get(id, null) == null) {
 				return id;
 			}
 		}
@@ -104,7 +124,7 @@ public class PreferenceModelManager {
 
 		String[] ids;
 		try {
-			ids = loaders.keys();
+			ids = getLoaders().keys();
 		} catch (BackingStoreException bse) {
 			String message = "Cannot get the list of stored models.";
 			logger.error(bse, message);
@@ -115,8 +135,8 @@ public class PreferenceModelManager {
 
 		MultiStatus status = new MultiStatus(Constants.PLUGIN_ID, IStatus.OK, "", null);
 		for (String id : ids) {
-			String label = labels.get(id, "");
-			String loaderId = loaders.get(id, null);
+			String label = getLabels().get(id, "");
+			String loaderId = getLoaders().get(id, null);
 			ModelLoaderEntry loader = loadersById.get(loaderId);
 			if (loader == null) {
 				String message = "Unable to load model " + label + "(" + id + "): There is no associated model loader "
