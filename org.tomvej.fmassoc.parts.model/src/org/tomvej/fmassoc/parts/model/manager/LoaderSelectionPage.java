@@ -32,6 +32,7 @@ class LoaderSelectionPage extends WizardSelectionPage implements IWizardNode {
 	private ListViewer loaders;
 	private final List<ModelLoaderEntry> loaderRegistry;
 	private final ModelList models;
+	private WizardDialog dialog;
 	private IWizard currentWizard;
 	private ModelEntry currentModel;
 
@@ -116,7 +117,7 @@ class LoaderSelectionPage extends WizardSelectionPage implements IWizardNode {
 			} else {
 				MessageDialog.openError(parentShell, "Cannot create model", "The model " + currentModel.getLabel()
 						+ " (" + currentModel.getLoader().getName() + ") could not be created.");
-				// FIXME close the dialog
+				dialog.close();
 			}
 		}
 		return currentWizard;
@@ -163,6 +164,6 @@ class LoaderSelectionPage extends WizardSelectionPage implements IWizardNode {
 	}
 
 	public WizardDialog getNewModelDialog() {
-		return new Dialog();
+		return dialog = new Dialog();
 	}
 }
