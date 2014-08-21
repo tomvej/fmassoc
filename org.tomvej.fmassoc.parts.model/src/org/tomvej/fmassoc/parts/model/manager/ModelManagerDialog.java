@@ -11,6 +11,8 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -68,8 +70,10 @@ public class ModelManagerDialog extends TitleAreaDialog {
 
 		addBtn = createButton(container, "Add",
 				e -> new LoaderSelectionPage(getParentShell(), loaders, models).getNewModelDialog().open());
-		editBtn = createButton(container, "Edit", e -> {});
-		removeBtn = createButton(container, "Remove", e -> models.remove(list.getList().getSelectionIndex()));
+		editBtn = createButton(container, "Edit",
+				e -> new WizardDialog(getParentShell(), getSelected().createEditWizard()).open());
+		removeBtn = createButton(container, "Remove",
+				e -> models.remove(list.getList().getSelectionIndex()));
 		refreshButtons();
 		return dialog;
 	}
@@ -86,6 +90,10 @@ public class ModelManagerDialog extends TitleAreaDialog {
 		boolean selected = !list.getSelection().isEmpty();
 		editBtn.setEnabled(selected);
 		removeBtn.setEnabled(selected);
+	}
+
+	private ModelEntry getSelected() {
+		return (ModelEntry) ((StructuredSelection) list.getSelection()).getFirstElement();
 	}
 
 	@Override

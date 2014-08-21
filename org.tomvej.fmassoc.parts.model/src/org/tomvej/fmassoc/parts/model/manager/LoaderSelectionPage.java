@@ -112,7 +112,7 @@ class LoaderSelectionPage extends WizardSelectionPage implements IWizardNode {
 		if (currentWizard == null) {
 			currentModel = models.add(name.getText(), getSelected());
 			if (currentModel != null) {
-				currentWizard = currentModel.getLoader().getLoader().createNewWizard(currentModel.getId());
+				currentWizard = currentModel.createNewWizard();
 			} else {
 				MessageDialog.openError(parentShell, "Cannot create model", "The model " + currentModel.getLabel()
 						+ " (" + currentModel.getLoader().getName() + ") could not be created.");
