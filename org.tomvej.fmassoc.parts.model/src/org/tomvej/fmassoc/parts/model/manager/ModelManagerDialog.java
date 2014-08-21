@@ -66,7 +66,8 @@ public class ModelManagerDialog extends TitleAreaDialog {
 		list.setInput(models);
 		list.addSelectionChangedListener(e -> refreshButtons());
 
-		addBtn = createButton(container, "Add", e -> {});
+		addBtn = createButton(container, "Add",
+				e -> new LoaderSelectionPage(getParentShell(), loaders, models).getNewModelDialog().open());
 		editBtn = createButton(container, "Edit", e -> {});
 		removeBtn = createButton(container, "Remove", e -> models.remove(list.getList().getSelectionIndex()));
 		refreshButtons();

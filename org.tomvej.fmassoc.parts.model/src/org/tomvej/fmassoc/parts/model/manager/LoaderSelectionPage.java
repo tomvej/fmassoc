@@ -2,30 +2,46 @@ package org.tomvej.fmassoc.parts.model.manager;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.wizard.IWizard;
+import org.eclipse.jface.wizard.IWizardNode;
+import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardSelectionPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
+import org.tomvej.fmassoc.parts.model.core.ModelEntry;
+import org.tomvej.fmassoc.parts.model.core.ModelList;
 import org.tomvej.fmassoc.parts.model.core.ModelLoaderEntry;
 
-public class LoaderSelectionPage extends WizardSelectionPage {
+class LoaderSelectionPage extends WizardSelectionPage implements IWizardNode {
+	private final Shell parentShell;
 	private Text name, description;
 	private ListViewer loaders;
 	private final List<ModelLoaderEntry> loaderRegistry;
+	private final ModelList models;
+	private IWizard currentWizard;
+	private ModelEntry currentModel;
 
-	public LoaderSelectionPage(List<ModelLoaderEntry> loaders) {
+	LoaderSelectionPage(Shell parent, List<ModelLoaderEntry> loaders, ModelList models) {
 		super("New Model");
 		setTitle("New Model");
 		setDescription("Select model name and type");
 		this.loaderRegistry = Validate.notNull(loaders);
+		this.parentShell = Validate.notNull(parent);
+		this.models = Validate.notNull(models);
 	}
 
 	@Override
@@ -52,22 +68,101 @@ public class LoaderSelectionPage extends WizardSelectionPage {
 		name.addModifyListener(e -> refresh());
 
 		loaders.setLabelProvider(new TextLabelProvider<ModelLoaderEntry>(e -> e.getName()));
-		loaders.addSelectionChangedListener(e -> loaderSelected());
+		loaders.addSelectionChangedListener(e -> refresh());
 		loaders.setContentProvider(ArrayContentProvider.getInstance());
 		loaders.setInput(loaderRegistry);
 
 		setControl(container);
 	}
 
-	private void loaderSelected() {
-		ModelLoaderEntry selected = (ModelLoaderEntry) ((StructuredSelection) loaders.getSelection()).getFirstElement();
-		if (selected != null) {
-			description.setText(selected.getDescription());
-		}
-		refresh();
+	private ModelLoaderEntry getSelected() {
+		return (ModelLoaderEntry) ((StructuredSelection) loaders.getSelection()).getFirstElement();
 	}
 
 	private void refresh() {
+		boolean selected = !loaders.getSelection().isEmpty();
+		description.setText(selected ? getSelected().getDescription() : "");
+		if (selected && StringUtils.isNotBlank(name.getText())) {
+			setSelectedNode(this);
+		} else {
+			setSelectedNode(null);
+		}
+	}
 
+	private void removeCurrentModel() {
+		if (currentModel != null) {
+			models.remove(currentModel);
+			currentModel = null;
+		}
+	}
+
+	// IWizardNode methods
+	@Override
+	public boolean isContentCreated() {
+		return currentWizard != null;
+	}
+
+	@Override
+	public void dispose() {
+		currentWizard = null;
+	}
+
+	@Override
+	public IWizard getWizard() {
+		if (currentWizard == null) {
+			currentModel = models.add(name.getText(), getSelected());
+			if (currentModel != null) {
+				currentWizard = currentModel.getLoader().getLoader().createNewWizard(currentModel.getId());
+			} else {
+				MessageDialog.openError(parentShell, "Cannot create model", "The model " + currentModel.getLabel()
+						+ " (" + currentModel.getLoader().getName() + ") could not be created.");
+				// FIXME close the dialog
+			}
+		}
+		return currentWizard;
+	}
+
+	@Override
+	public Point getExtent() {
+		return new Point(-1, -1);
+	}
+
+
+	// WizardDialog
+	private class InnerWizard extends Wizard {
+		public InnerWizard() {
+			setForcePreviousAndNextButtons(true);
+		}
+
+		@Override
+		public void addPages() {
+			addPage(LoaderSelectionPage.this);
+		}
+
+		@Override
+		public boolean performFinish() {
+			return true;
+		}
+	}
+
+	private class Dialog extends WizardDialog {
+		public Dialog() {
+			super(parentShell, new InnerWizard());
+			addPageChangingListener(e -> {
+				if (LoaderSelectionPage.this.equals(e.getTargetPage())) {
+					removeCurrentModel();
+				}
+			});
+		}
+
+		@Override
+		protected void cancelPressed() {
+			removeCurrentModel();
+			super.cancelPressed();
+		}
+	}
+
+	public WizardDialog getNewModelDialog() {
+		return new Dialog();
 	}
 }
