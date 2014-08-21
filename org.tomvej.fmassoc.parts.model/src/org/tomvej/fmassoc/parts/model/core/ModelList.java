@@ -19,7 +19,7 @@ public class ModelList extends WritableList {
 	private final PreferenceModelManager manager;
 
 	/**
-	 * Specifypreference manager and initial list of models (does not load
+	 * Specify preference manager and initial list of models (does not load
 	 * models from preferences).
 	 */
 	public ModelList(PreferenceModelManager preferenceManager, List<ModelEntry> initialModels) {
@@ -41,7 +41,11 @@ public class ModelList extends WritableList {
 	 *         successful.
 	 */
 	public ModelEntry add(String label, ModelLoaderEntry loader) {
-		return manager.add(label, loader);
+		ModelEntry model = manager.add(label, loader);
+		if (model != null) {
+			super.add(model);
+		}
+		return model;
 	}
 
 	@Override
