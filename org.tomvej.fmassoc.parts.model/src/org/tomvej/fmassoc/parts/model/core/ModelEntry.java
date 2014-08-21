@@ -1,6 +1,7 @@
 package org.tomvej.fmassoc.parts.model.core;
 
 import org.apache.commons.lang3.Validate;
+import org.eclipse.jface.wizard.IWizard;
 
 /**
  * Contains information necessary for data model loading and display.
@@ -38,6 +39,20 @@ public class ModelEntry {
 	 */
 	public String getLabel() {
 		return label;
+	}
+
+	/**
+	 * Create new wizard for this model from the associated loader.
+	 */
+	public IWizard createNewWizard() {
+		return getLoader().getLoader().createNewWizard(getId());
+	}
+
+	/**
+	 * Create edit wizard for this model from the associated loader.
+	 */
+	public IWizard createEditWizard() {
+		return getLoader().getLoader().createEditWizard(getId());
 	}
 
 	@Override
