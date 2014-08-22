@@ -26,6 +26,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.tomvej.fmassoc.core.communicate.DataModelTopic;
 import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
 import org.tomvej.fmassoc.model.db.DataModel;
 import org.tomvej.fmassoc.parts.model.ModelLoader;
@@ -123,6 +124,6 @@ public class ModelChooser {
 
 	private void dataModelChanged(DataModel model) {
 		appContext.set(DataModel.class, model);
-		eventBroker.post("TODO_DBMODEL", model);
+		eventBroker.post(DataModelTopic.MODEL_CHANGED, model);
 	}
 }

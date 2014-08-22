@@ -15,6 +15,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.tomvej.fmassoc.core.communicate.DataModelTopic;
 import org.tomvej.fmassoc.core.communicate.SearchInput;
 import org.tomvej.fmassoc.core.widgets.tablechooser.TableChooser;
 import org.tomvej.fmassoc.model.db.DataModel;
@@ -65,7 +66,7 @@ public class Part {
 	 */
 	@Inject
 	@Optional
-	public void dataModelChange(@UIEventTopic("TODO_DBMODEL") DataModel model) {
+	public void dataModelChange(@UIEventTopic(DataModelTopic.MODEL_CHANGED) DataModel model) {
 		if (source != null && destination != null) {
 			setTables(model);
 		}
