@@ -83,6 +83,7 @@ class LoaderSelectionPage extends WizardSelectionPage implements IWizardNode {
 	private void refresh() {
 		boolean selected = !loaders.getSelection().isEmpty();
 		description.setText(selected ? getSelected().getDescription() : "");
+		removeCurrentModel();
 		if (selected && StringUtils.isNotBlank(name.getText())) {
 			setSelectedNode(this);
 		} else {
@@ -110,7 +111,7 @@ class LoaderSelectionPage extends WizardSelectionPage implements IWizardNode {
 
 	@Override
 	public IWizard getWizard() {
-		if (currentWizard == null) {
+		if (currentModel == null) {
 			currentModel = models.add(name.getText(), getSelected());
 			if (currentModel != null) {
 				currentWizard = currentModel.createNewWizard();
@@ -149,11 +150,6 @@ class LoaderSelectionPage extends WizardSelectionPage implements IWizardNode {
 	private class Dialog extends WizardDialog {
 		public Dialog() {
 			super(parentShell, new InnerWizard());
-			addPageChangingListener(e -> {
-				if (LoaderSelectionPage.this.equals(e.getTargetPage())) {
-					removeCurrentModel();
-				}
-			});
 		}
 
 		@Override
