@@ -112,7 +112,9 @@ public class ModelChooser {
 			DataModel dataModel = model.load();
 			appContext.set(DataModel.class, dataModel);
 			eventBroker.post("TODO_DBMODEL", dataModel);
+			logger.info("Model loaded: " + model);
 		} catch (ModelLoadingException mle) {
+			logger.error(mle, "Unable to load model " + model);
 			MessageDialog.openError(parentShell, "Cannot load model",
 					"Unable to load model " + model.getDescription() + ":" + mle.getLocalizedMessage());
 			switcher.setSelection(StructuredSelection.EMPTY);
