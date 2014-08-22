@@ -13,17 +13,23 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.extensions.Preference;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
+import org.tomvej.fmassoc.model.db.DataModel;
 import org.tomvej.fmassoc.parts.model.ModelLoader;
+import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 
 /**
  * Toolbar widget used to switch data models.
@@ -34,8 +40,12 @@ import org.tomvej.fmassoc.parts.model.ModelLoader;
 public class ModelChooser {
 	@Inject
 	private Logger logger;
+	@Inject
+	private IEventBroker eventBroker;
+	private IEclipseContext appContext;
 	private ModelList models;
 	private ComboViewer switcher;
+	private Shell parentShell;
 
 	/**
 	 * Create components comprising this widget.
@@ -43,10 +53,12 @@ public class ModelChooser {
 	@PostConstruct
 	public void createComponents(Composite parent, Shell parentShell, IExtensionRegistry registry, MApplication app,
 			@Preference("org.tomvej.fmassoc.parts.model.models") IEclipsePreferences modelPreference) {
+		this.parentShell = parentShell;
+		appContext = app.getContext();
 
 		// load model loaders and put them into context
 		List<ModelLoaderEntry> loaders = loadModelLoaders(registry, parentShell);
-		app.getContext().set(Constants.MODEL_LOADER_REGISTRY, loaders);
+		appContext.set(Constants.MODEL_LOADER_REGISTRY, loaders);
 
 		// read models and put them into context
 		PreferenceModelManager manager = new PreferenceModelManager(modelPreference, logger);
@@ -56,7 +68,7 @@ public class ModelChooser {
 			ErrorDialog.openError(parentShell, "Unaccessible Models", "Some models could not be loaded.", status);
 		}
 		models = new ModelList(manager, modelEntries);
-		app.getContext().set(ModelList.class, models);
+		appContext.set(ModelList.class, models);
 
 		switcher = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		switcher.setContentProvider(new ObservableListContentProvider());
@@ -88,7 +100,22 @@ public class ModelChooser {
 		return result;
 	}
 
-	private void loadSelectedModel() {
-		// FIXME
+	/**
+	 * Tries to load the selected model.
+	 */
+	public void loadSelectedModel() {
+		ModelEntry model = (ModelEntry) ((StructuredSelection) switcher.getSelection()).getFirstElement();
+		if (model == null) {
+			return;
+		}
+		try {
+			DataModel dataModel = model.load();
+			appContext.set(DataModel.class, dataModel);
+			eventBroker.post("TODO_DBMODEL", dataModel);
+		} catch (ModelLoadingException mle) {
+			MessageDialog.openError(parentShell, "Cannot load model",
+					"Unable to load model " + model.getDescription() + ":" + mle.getLocalizedMessage());
+			switcher.setSelection(StructuredSelection.EMPTY);
+		}
 	}
 }

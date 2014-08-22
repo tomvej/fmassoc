@@ -2,6 +2,8 @@ package org.tomvej.fmassoc.parts.model.core;
 
 import org.apache.commons.lang3.Validate;
 import org.eclipse.jface.wizard.IWizard;
+import org.tomvej.fmassoc.model.db.DataModel;
+import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 
 /**
  * Contains information necessary for data model loading and display.
@@ -53,6 +55,24 @@ public class ModelEntry {
 	 */
 	public IWizard createEditWizard() {
 		return getLoader().getLoader().createEditWizard(getId());
+	}
+
+	/**
+	 * Load the model with the associated loader.
+	 * 
+	 * @return Loaded model.
+	 * @throws ModelLoadingException
+	 *             when the loading was not successful.
+	 */
+	public DataModel load() throws ModelLoadingException {
+		return getLoader().getLoader().loadModel(getId());
+	}
+
+	/**
+	 * Return string describing this model. To be used mostly in error dialogs.
+	 */
+	public String getDescription() {
+		return getLabel() + " (" + getLoader().getName() + ")";
 	}
 
 	@Override

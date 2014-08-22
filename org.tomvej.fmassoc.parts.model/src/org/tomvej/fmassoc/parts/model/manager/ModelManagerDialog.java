@@ -43,7 +43,7 @@ public class ModelManagerDialog extends TitleAreaDialog {
 	private List<ModelLoaderEntry> loaders;
 
 	private ListViewer list;
-	private Button addBtn, editBtn, removeBtn;
+	private Button editBtn, removeBtn;
 
 	/**
 	 * Create model manager dialog. Not to be used explicitly, only from
@@ -68,7 +68,7 @@ public class ModelManagerDialog extends TitleAreaDialog {
 		list.setInput(models);
 		list.addSelectionChangedListener(e -> refreshButtons());
 
-		addBtn = createButton(container, "Add",
+		createButton(container, "Add",
 				e -> new LoaderSelectionPage(getParentShell(), loaders, models).getNewModelDialog().open());
 		editBtn = createButton(container, "Edit",
 				e -> new WizardDialog(getParentShell(), getSelected().createEditWizard()).open());

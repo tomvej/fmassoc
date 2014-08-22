@@ -65,7 +65,7 @@ public class Part {
 	 */
 	@Inject
 	@Optional
-	public void dataModelChange(@UIEventTopic("TODO: DBMODEL") DataModel model) {
+	public void dataModelChange(@UIEventTopic("TODO_DBMODEL") DataModel model) {
 		if (source != null && destination != null) {
 			setTables(model);
 		}
