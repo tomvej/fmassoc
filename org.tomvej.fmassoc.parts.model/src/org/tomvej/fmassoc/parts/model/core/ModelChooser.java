@@ -21,10 +21,13 @@ import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.tomvej.fmassoc.core.communicate.DataModelTopic;
 import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
@@ -52,10 +55,13 @@ public class ModelChooser {
 	 * Create components comprising this widget.
 	 */
 	@PostConstruct
-	public void createComponents(Composite parent, Shell parentShell, IExtensionRegistry registry, MApplication app,
+	public void createComponents(Composite container, Shell parentShell, IExtensionRegistry registry, MApplication app,
 			@Preference("org.tomvej.fmassoc.parts.model.models") IEclipsePreferences modelPreference) {
 		this.parentShell = parentShell;
 		appContext = app.getContext();
+
+		Composite parent = new Composite(container, SWT.NONE);
+		parent.setLayout(new GridLayout(3, false));
 
 		// load model loaders and put them into context
 		List<ModelLoaderEntry> loaders = loadModelLoaders(registry, parentShell);
@@ -71,7 +77,13 @@ public class ModelChooser {
 		models = new ModelList(manager, modelEntries);
 		appContext.set(ModelList.class, models);
 
+		Label lbl = new Label(parent, SWT.NONE);
+		lbl.setText("Model:");
+		lbl.setLayoutData(GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER).create());
+
 		switcher = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
+		switcher.getCombo().setLayoutData(GridDataFactory.fillDefaults().hint(120, 0).create());
+
 		switcher.setContentProvider(new ObservableListContentProvider());
 		switcher.setLabelProvider(new TextLabelProvider<ModelEntry>(entry -> entry.getLabel()));
 		switcher.setInput(models);
