@@ -110,14 +110,19 @@ public class ModelChooser {
 		}
 		try {
 			DataModel dataModel = model.load();
-			appContext.set(DataModel.class, dataModel);
-			eventBroker.post("TODO_DBMODEL", dataModel);
+			dataModelChanged(dataModel);
 			logger.info("Model loaded: " + model);
 		} catch (ModelLoadingException mle) {
+			dataModelChanged(null);
 			logger.error(mle, "Unable to load model " + model);
 			MessageDialog.openError(parentShell, "Cannot load model",
 					"Unable to load model " + model.getDescription() + ":" + mle.getLocalizedMessage());
 			switcher.setSelection(StructuredSelection.EMPTY);
 		}
+	}
+
+	private void dataModelChanged(DataModel model) {
+		appContext.set(DataModel.class, model);
+		eventBroker.post("TODO_DBMODEL", model);
 	}
 }
