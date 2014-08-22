@@ -6,6 +6,7 @@ import org.tomvej.fmassoc.model.builder.simple.DataModelBuilder;
 import org.tomvej.fmassoc.model.builder.simple.TableBuilder;
 import org.tomvej.fmassoc.model.builder.simple.TableImpl;
 import org.tomvej.fmassoc.model.db.DataModel;
+import org.tomvej.fmassoc.model.db.Multiplicity;
 import org.tomvej.fmassoc.parts.model.ModelLoader;
 import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 
@@ -34,7 +35,8 @@ public class ConstantModelLoader implements ModelLoader {
 
 	private static void addAssociation(DataModelBuilder builder, TableImpl src, TableImpl dst, boolean many, boolean opt,
 			String name, String reverseName, String implName) {
-		builder.addAssociation(new AssociationBuilder(name, implName, null, !opt, reverseName), src, dst);
+		builder.addAssociation(new AssociationBuilder(name, implName,
+				many ? Multiplicity.MANY_TO_ONE : Multiplicity.ONE_TO_ONE, !opt, reverseName), src, dst);
 	}
 
 	@Override
