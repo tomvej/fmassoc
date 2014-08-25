@@ -118,11 +118,11 @@ public class ModelChooser {
 	private void modelSelected() {
 		ModelEntry model = (ModelEntry) ((StructuredSelection) switcher.getSelection()).getFirstElement();
 		appContext.set(ModelEntry.class, model);
-		if (model == null) {
-			return;
+		if (model != null) {
+			handlerService.executeHandler(
+					commandService.createCommand("org.tomvej.fmassoc.parts.model.command.loadmodel",
+							Collections.emptyMap()));
 		}
-		handlerService.executeHandler(
-				commandService.createCommand("org.tomvej.fmassoc.parts.model.command.loadmodel", Collections.emptyMap()));
 	}
 
 	/**
