@@ -1,6 +1,7 @@
 package org.tomvej.fmassoc.parts.model.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -13,14 +14,16 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.e4.core.commands.ECommandService;
+import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.di.extensions.Preference;
-import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.log.Logger;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -33,7 +36,6 @@ import org.tomvej.fmassoc.core.communicate.DataModelTopic;
 import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
 import org.tomvej.fmassoc.model.db.DataModel;
 import org.tomvej.fmassoc.parts.model.ModelLoader;
-import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 
 /**
  * Toolbar widget used to switch data models.
@@ -45,11 +47,12 @@ public class ModelChooser {
 	@Inject
 	private Logger logger;
 	@Inject
-	private IEventBroker eventBroker;
+	private ECommandService commandService;
+	@Inject
+	private EHandlerService handlerService;
 	private IEclipseContext appContext;
 	private ModelList models;
 	private ComboViewer switcher;
-	private Shell parentShell;
 
 	/**
 	 * Create components comprising this widget.
@@ -57,7 +60,6 @@ public class ModelChooser {
 	@PostConstruct
 	public void createComponents(Composite container, Shell parentShell, IExtensionRegistry registry, MApplication app,
 			@Preference("org.tomvej.fmassoc.parts.model.models") IEclipsePreferences modelPreference) {
-		this.parentShell = parentShell;
 		appContext = app.getContext();
 
 		Composite parent = new Composite(container, SWT.NONE);
@@ -87,7 +89,7 @@ public class ModelChooser {
 		switcher.setContentProvider(new ObservableListContentProvider());
 		switcher.setLabelProvider(new TextLabelProvider<ModelEntry>(entry -> entry.getLabel()));
 		switcher.setInput(models);
-		switcher.addSelectionChangedListener(event -> loadSelectedModel());
+		switcher.addSelectionChangedListener(event -> modelSelected());
 	}
 
 	private List<ModelLoaderEntry> loadModelLoaders(IExtensionRegistry registry, Shell parent) {
@@ -113,29 +115,25 @@ public class ModelChooser {
 		return result;
 	}
 
-	/**
-	 * Tries to load the selected model.
-	 */
-	public void loadSelectedModel() {
+	private void modelSelected() {
 		ModelEntry model = (ModelEntry) ((StructuredSelection) switcher.getSelection()).getFirstElement();
+		appContext.set(ModelEntry.class, model);
 		if (model == null) {
 			return;
 		}
-		try {
-			DataModel dataModel = model.load();
-			dataModelChanged(dataModel);
-			logger.info("Model loaded: " + model);
-		} catch (ModelLoadingException mle) {
-			dataModelChanged(null);
-			logger.error(mle, "Unable to load model " + model);
-			MessageDialog.openError(parentShell, "Cannot load model",
-					"Unable to load model " + model.getDescription() + ":" + mle.getLocalizedMessage());
-			switcher.setSelection(StructuredSelection.EMPTY);
-		}
+		handlerService.executeHandler(
+				commandService.createCommand("org.tomvej.fmassoc.parts.model.command.loadmodel", Collections.emptyMap()));
 	}
 
-	private void dataModelChanged(DataModel model) {
-		appContext.set(DataModel.class, model);
-		eventBroker.post(DataModelTopic.MODEL_CHANGED, model);
+	/**
+	 * Informs model chooser when model was not loaded that it should be
+	 * unselected.
+	 */
+	@Inject
+	@Optional
+	public void modelLoaded(@UIEventTopic(DataModelTopic.MODEL_CHANGED) DataModel model) {
+		if (model == null) {
+			switcher.setSelection(StructuredSelection.EMPTY);
+		}
 	}
 }

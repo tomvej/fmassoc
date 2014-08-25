@@ -20,5 +20,7 @@ Require-Bundle: org.tomvej.fmassoc.core;bundle-version="2.0.0",
  org.eclipse.jface;bundle-version="3.10.0",
  org.eclipse.jface.databinding;bundle-version="1.6.200",
  javax.inject,
- org.eclipse.e4.ui.workbench;bundle-version="1.1.0"
+ org.eclipse.e4.ui.workbench;bundle-version="1.1.0",
+ org.eclipse.e4.core.commands;bundle-version="0.10.2",
+ org.eclipse.e4.ui.di;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

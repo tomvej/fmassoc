@@ -8,8 +8,10 @@
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_jwTN0CeTEeSPHd9uLDo2og" featurename="commands" parentElementId="org.tomvej.fmassoc.core.application">
     <elements xsi:type="commands:Command" xmi:id="_oyWLYCeTEeSPHd9uLDo2og" elementId="org.tomvej.fmassoc.parts.model.command.showmanager" commandName="Models"/>
+    <elements xsi:type="commands:Command" xmi:id="_VOFzICwpEeSv0PD7byId9w" elementId="org.tomvej.fmassoc.parts.model.command.loadmodel" commandName="Load Model"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_saAOkCeTEeSPHd9uLDo2og" featurename="handlers" parentElementId="org.tomvej.fmassoc.core.application">
     <elements xsi:type="commands:Handler" xmi:id="_vnQNsCeTEeSPHd9uLDo2og" elementId="org.tomvej.fmassoc.parts.model.handler.showmanager" contributionURI="bundleclass://org.tomvej.fmassoc.parts.model/org.tomvej.fmassoc.parts.model.manager.ShowModelManager" command="_oyWLYCeTEeSPHd9uLDo2og"/>
+    <elements xsi:type="commands:Handler" xmi:id="_nKFeoCwpEeSv0PD7byId9w" elementId="org.tomvej.fmassoc.parts.model.handler.loadmodel" contributionURI="bundleclass://org.tomvej.fmassoc.parts.model/org.tomvej.fmassoc.parts.model.core.LoadModel" command="_VOFzICwpEeSv0PD7byId9w"/>
   </fragments>
 </fragment:ModelFragments>
