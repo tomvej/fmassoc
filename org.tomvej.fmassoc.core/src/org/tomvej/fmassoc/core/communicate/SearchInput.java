@@ -36,4 +36,30 @@ public class SearchInput {
 		return destinations;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof SearchInput)) {
+			return false;
+		}
+		SearchInput other = (SearchInput) obj;
+		return other.getSource().equals(getSource()) && other.getDestinations().equals(other.getDestinations());
+	}
+
+	@Override
+	public int hashCode() {
+		return getDestinations().hashCode() + 59 * getSource().hashCode();
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder("Search Input [").append(getSource().getName());
+		for (Table destination : getDestinations()) {
+			result.append(" -> ").append(destination.getName());
+		}
+		return result.append("]").toString();
+	}
+
 }

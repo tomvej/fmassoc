@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -28,6 +29,8 @@ import org.tomvej.fmassoc.model.db.Table;
  *
  */
 public class Part {
+	@Inject
+	private Logger logger;
 	private TableChooser source;
 	private DestinationChooser destination;
 
@@ -82,9 +85,15 @@ public class Part {
 		Table source = this.source.getSelection();
 		List<Table> destinations = destination.getSelection();
 		if (source == null || destinations == null || destinations.isEmpty()) {
-			context.set(SearchInput.class, null);
+			if (context.get(SearchInput.class) != null) {
+				context.set(SearchInput.class, null);
+				logger.info("Search input cleared.");
+			}
 		} else {
-			context.set(SearchInput.class, new SearchInput(source, destinations));
+			SearchInput input = new SearchInput(source, destinations);
+			context.set(SearchInput.class, input);
+			logger.info("Search input changed to: " + input);
 		}
+
 	}
 }
