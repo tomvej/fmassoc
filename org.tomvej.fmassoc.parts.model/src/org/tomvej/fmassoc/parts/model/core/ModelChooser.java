@@ -32,6 +32,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.osgi.service.prefs.BackingStoreException;
 import org.tomvej.fmassoc.core.communicate.DataModelTopic;
 import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
 import org.tomvej.fmassoc.model.db.DataModel;
@@ -44,12 +45,18 @@ import org.tomvej.fmassoc.parts.model.ModelLoader;
  *
  */
 public class ModelChooser {
+	private static final String LAST_SELECTED_MODEL = "last_selected_model";
+
 	@Inject
 	private Logger logger;
 	@Inject
 	private ECommandService commandService;
 	@Inject
 	private EHandlerService handlerService;
+	@Inject
+	@Preference("org.tomvej.fmassoc.parts.model.models")
+	private IEclipsePreferences modelPreference;
+
 	private IEclipseContext appContext;
 	private ModelList models;
 	private ComboViewer switcher;
@@ -58,8 +65,7 @@ public class ModelChooser {
 	 * Create components comprising this widget.
 	 */
 	@PostConstruct
-	public void createComponents(Composite container, Shell parentShell, IExtensionRegistry registry, MApplication app,
-			@Preference("org.tomvej.fmassoc.parts.model.models") IEclipsePreferences modelPreference) {
+	public void createComponents(Composite container, Shell parentShell, IExtensionRegistry registry, MApplication app) {
 		appContext = app.getContext();
 
 		Composite parent = new Composite(container, SWT.NONE);
@@ -90,6 +96,8 @@ public class ModelChooser {
 		switcher.setLabelProvider(new TextLabelProvider<ModelEntry>(entry -> entry.getLabel()));
 		switcher.setInput(models);
 		switcher.addSelectionChangedListener(event -> modelSelected());
+
+		loadSelectedModel();
 	}
 
 	private List<ModelLoaderEntry> loadModelLoaders(IExtensionRegistry registry, Shell parent) {
@@ -118,12 +126,14 @@ public class ModelChooser {
 	private void modelSelected() {
 		ModelEntry model = (ModelEntry) ((StructuredSelection) switcher.getSelection()).getFirstElement();
 		appContext.set(ModelEntry.class, model);
+		saveSelectedModel(model);
 		if (model != null) {
 			handlerService.executeHandler(
 					commandService.createCommand("org.tomvej.fmassoc.parts.model.command.loadmodel",
 							Collections.emptyMap()));
 		}
 	}
+
 
 	/**
 	 * Informs model chooser when model was not loaded that it should be
@@ -134,6 +144,30 @@ public class ModelChooser {
 	public void modelLoaded(@UIEventTopic(DataModelTopic.MODEL_CHANGED) DataModel model) {
 		if (model == null) {
 			switcher.setSelection(StructuredSelection.EMPTY);
+		}
+	}
+
+
+	private void saveSelectedModel(ModelEntry selected) {
+		modelPreference.put(LAST_SELECTED_MODEL, selected != null ? selected.getId() : "");
+		try {
+			modelPreference.flush();
+		} catch (BackingStoreException bse) {
+			logger.error(bse, "Unable to store selected model.");
+		}
+	}
+
+	private void loadSelectedModel() {
+		String selectedModel = modelPreference.get(LAST_SELECTED_MODEL, "");
+		if (!selectedModel.isEmpty()) {
+			for (Object o : models) {
+				ModelEntry model = (ModelEntry) o;
+				if (model.getId().equals(selectedModel)) {
+					switcher.setSelection(new StructuredSelection(model));
+					return;
+				}
+			}
+			logger.warn("Could not find last selected model of id: " + selectedModel);
 		}
 	}
 }
