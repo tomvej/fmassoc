@@ -11,8 +11,7 @@ import org.eclipse.core.databinding.property.Properties;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -20,10 +19,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.tomvej.fmassoc.core.tables.TableLayoutSupport;
 import org.tomvej.fmassoc.core.widgets.tablechooser.TableChooser;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
-import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
+import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
 import org.tomvej.fmassoc.model.db.Table;
 
 /**
@@ -40,7 +38,7 @@ public class DestinationChooser extends Group {
 
 	private final TableChooser tables;
 	private final IObservableList destinations;
-	private final TableViewer dstTable;
+	private final ListViewer dstList;
 	private final Button switcher;
 	// note: visibility will be difficult
 	private final Composite destinationComposite;
@@ -71,20 +69,17 @@ public class DestinationChooser extends Group {
 		switcher.addSelectionListener(new SelectionWrapper(e -> multiSwitched()));
 
 		destinationComposite.setLayout(new GridLayout(2, false));
-		dstTable = TableLayoutSupport.createTableViewer(destinationComposite, SWT.BORDER | SWT.MULTI
-				| SWT.FULL_SELECTION | SWT.V_SCROLL, layout.grab(true, true).span(1, 4).create());
 
-		TableViewerColumn column = new TableViewerColumn(dstTable, SWT.LEFT);
-		column.getColumn().setText("Name");
-		column.setLabelProvider(new TextColumnLabelProvider<Table>(
+		dstList = new ListViewer(destinationComposite, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+		dstList.getList().setLayoutData(layout.grab(true, true).span(1, 4).create());
+
+		dstList.setLabelProvider(new TextLabelProvider<Table>(
 				table -> table.getName() + " (" + table.getImplName() + ")"));
-		TableLayoutSupport.create(dstTable, 1, true, column);
-
-		dstTable.setContentProvider(new ObservableListContentProvider());
+		dstList.setContentProvider(new ObservableListContentProvider());
 		destinations = Properties.selfList(Table.class).observe(new ArrayList<>());
-		dstTable.setInput(destinations);
+		dstList.setInput(destinations);
 
-		dstTable.addSelectionChangedListener(e -> refreshButtons());
+		dstList.addSelectionChangedListener(e -> refreshButtons());
 		destinations.addChangeListener(e -> refreshButtons());
 
 		addBtn = createDestinationCompositeButton("Add", e -> addSelected());
@@ -155,20 +150,20 @@ public class DestinationChooser extends Group {
 	}
 
 	private void refreshButtons() {
-		delBtn.setEnabled(!dstTable.getSelection().isEmpty());
-		boolean single = dstTable.getTable().getSelectionCount() == 1;
-		int index = dstTable.getTable().getSelectionIndex();
+		delBtn.setEnabled(!dstList.getSelection().isEmpty());
+		boolean single = dstList.getList().getSelectionCount() == 1;
+		int index = dstList.getList().getSelectionIndex();
 		upBtn.setEnabled(single && index != 0);
 		downBtn.setEnabled(single && index != destinations.size() - 1);
 	}
 
 	private void moveSelected(boolean up) {
-		int index = dstTable.getTable().getSelectionIndex();
+		int index = dstList.getList().getSelectionIndex();
 		int newIndex = index + (up ? -1 : +1);
 		destinations.set(index, destinations.set(newIndex, destinations.get(index)));
 		fireChanges();
 
-		dstTable.getTable().setSelection(newIndex);
+		dstList.getList().setSelection(newIndex);
 		refreshButtons();
 		// without another refresh looks weird for two tables and down table
 	}
@@ -182,7 +177,7 @@ public class DestinationChooser extends Group {
 	}
 
 	private void removeSelected() {
-		destinations.removeAll(((IStructuredSelection) dstTable.getSelection()).toList());
+		destinations.removeAll(((IStructuredSelection) dstList.getSelection()).toList());
 		fireChanges();
 
 		refreshFilter();
