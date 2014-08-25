@@ -113,13 +113,16 @@ public class DestinationChooser extends Group {
 		/* data concerns */
 		if (!isMulti()) {
 			tables.setFilter(null);
-			if (destinations.size() > 1) {
+
+			Table selected = tables.getSelection();
+			if (selected != null) {
+				// table in destinations cannot be selected in table chooser
 				destinations.clear();
-			} else if (destinations.size() <= 1 && tables.getSelection() != null) {
+				destinations.add(selected);
+			} else if (!destinations.isEmpty()) {
 				destinations.clear();
-				destinations.add(tables.getSelection());
 			} else {
-				return;
+				return; // do not fire change
 			}
 			fireChanges();
 		} else {
