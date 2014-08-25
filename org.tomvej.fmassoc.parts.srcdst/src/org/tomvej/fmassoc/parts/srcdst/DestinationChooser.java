@@ -115,7 +115,8 @@ public class DestinationChooser extends Group {
 			tables.setFilter(null);
 			if (destinations.size() > 1) {
 				destinations.clear();
-			} else if (destinations.isEmpty() && tables.getSelection() != null) {
+			} else if (destinations.size() <= 1 && tables.getSelection() != null) {
+				destinations.clear();
 				destinations.add(tables.getSelection());
 			} else {
 				return;
