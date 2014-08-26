@@ -17,7 +17,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.tomvej.fmassoc.core.communicate.DataModelTopic;
-import org.tomvej.fmassoc.core.communicate.SearchInput;
+import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.core.widgets.tablechooser.TableChooser;
 import org.tomvej.fmassoc.model.db.DataModel;
 import org.tomvej.fmassoc.model.db.Table;

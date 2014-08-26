@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.core.communicate;
+package org.tomvej.fmassoc.core.search;
 
 import java.util.HashSet;
 import java.util.List;
