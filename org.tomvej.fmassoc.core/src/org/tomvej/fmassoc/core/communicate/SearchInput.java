@@ -1,6 +1,8 @@
 package org.tomvej.fmassoc.core.communicate;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 import org.tomvej.fmassoc.model.db.Table;
@@ -19,7 +21,11 @@ public class SearchInput {
 	 */
 	public SearchInput(Table source, List<Table> destinations) {
 		this.source = Validate.notNull(source);
-		this.destinations = Validate.notEmpty(destinations);
+		this.destinations = Validate.notEmpty(destinations, "There has to be at least one destination.");
+		Set<Table> inter = new HashSet<>(destinations);
+		Validate.isTrue(!inter.contains(null), "Destination tables contain null elements.");
+		Validate.isTrue(destinations.size() == inter.size(), "Destination tables contain duplicates.");
+		Validate.isTrue(!inter.contains(source), "Destination tables contain source table.");
 	}
 
 	/**
