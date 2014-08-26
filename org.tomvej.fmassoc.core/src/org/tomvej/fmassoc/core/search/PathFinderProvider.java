@@ -12,5 +12,5 @@ public interface PathFinderProvider {
 	 * Create job which finds paths between specified source and destinations
 	 * tables.
 	 */
-	PathFinderJob createPathFinder(SearchInput input);
+	PathFinder createPathFinder(SearchInput input);
 }

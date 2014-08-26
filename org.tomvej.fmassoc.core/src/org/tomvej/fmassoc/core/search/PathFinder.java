@@ -15,7 +15,7 @@ import org.tomvej.fmassoc.model.path.Path;
  *
  */
 @FunctionalInterface
-public interface PathFinderJob {
+public interface PathFinder {
 
 	/**
 	 * Search for paths. Implementations should check {@code monitor} for
