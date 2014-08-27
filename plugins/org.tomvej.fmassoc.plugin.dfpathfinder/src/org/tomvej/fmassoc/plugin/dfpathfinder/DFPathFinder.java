@@ -73,10 +73,11 @@ public class DFPathFinder implements PathFinder {
 					if (path.push(association)) {
 						process(association.getDestination());
 						path.pop();
-						if (reached) {
-							iter.previous();
-						}
+
 					}
+				}
+				if (reached) {
+					iter.previous();
 				}
 			}
 		}
