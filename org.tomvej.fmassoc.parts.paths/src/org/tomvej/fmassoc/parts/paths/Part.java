@@ -1,13 +1,19 @@
 package org.tomvej.fmassoc.parts.paths;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
+import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
+import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
+import org.tomvej.fmassoc.model.path.Path;
 
 /**
  * Part with found paths table.
@@ -30,8 +36,20 @@ public class Part {
 		TableViewerColumn pathColumn = new TableViewerColumn(pathTable, SWT.LEFT);
 		pathColumn.getColumn().setText("Path");
 
+		// FIXME create different action provider
+		pathColumn.setLabelProvider(new TextColumnLabelProvider<Path>(path -> path.toString()));
+
 		pathTable.addSelectionChangedListener(e -> selectionService.setSelection(
 				((IStructuredSelection) pathTable.getSelection()).getFirstElement()));
+	}
+
+	/**
+	 * Add path to the table.
+	 */
+	@Inject
+	@Optional
+	public void receivePath(@UIEventTopic(PathSearchTopic.PUBLISH) Path target) {
+		pathTable.add(target);
 	}
 
 }
