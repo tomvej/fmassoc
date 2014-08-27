@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="ASCII"?>
-<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmi:id="_TnMFwBPKEeSoD5WQk9Aqhg" elementId="org.tomvej.fmassoc.core.application">
+<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_TnMFwBPKEeSoD5WQk9Aqhg" elementId="org.tomvej.fmassoc.core.application">
   <children xsi:type="basic:TrimmedWindow" xmi:id="_08pOkBPKEeSoD5WQk9Aqhg" elementId="org.tomvej.fmassoc.core.window.main" label="Field Manager Association Search" x="100" y="100" width="800" height="600">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_oK5eUB4mEeS4_pQWRSwXHA" elementId="org.tomvej.fmassoc.core.perspectivestack">
       <children xsi:type="advanced:Perspective" xmi:id="_php14B4mEeS4_pQWRSwXHA" elementId="org.tomvej.fmassoc.core.perspective.search">
         <children xsi:type="basic:PartStack" xmi:id="_szSlwB4mEeS4_pQWRSwXHA" elementId="org.tomvej.fmassoc.core.partstack.search"/>
       </children>
     </children>
-    <trimBars xmi:id="_c85GoCN9EeSIYYTJAOONGw" elementId="org.tomvej.fmassoc.core.trimbar.top"/>
+    <trimBars xmi:id="_c85GoCN9EeSIYYTJAOONGw" elementId="org.tomvej.fmassoc.core.trimbar.top">
+      <children xsi:type="menu:ToolBar" xmi:id="_cK1-MC27EeS3MvsXw3Morw" elementId="org.tomvej.fmassoc.core.toolbar.run">
+        <children xsi:type="menu:HandledToolItem" xmi:id="_dLdGoC27EeS3MvsXw3Morw" elementId="org.tomvej.fmassoc.core.handledtoolitem.searchpaths" label="Search" command="_7uPIYC1LEeSrT_p8RPGkbg"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_QhAX0C28EeS3MvsXw3Morw" elementId="org.tomvej.fmassoc.core.handledtoolitem.stopsearch" label="Stop" command="_rBsq4C1REeSrT_p8RPGkbg"/>
+      </children>
+    </trimBars>
   </children>
   <handlers xmi:id="_WzQ0YCMZEeSLr8eP527IEg" elementId="org.tomvej.fmassoc.core.handler.preferences" contributionURI="bundleclass://org.tomvej.fmassoc.core/org.tomvej.fmassoc.core.preference.PreferenceHandler" command="_MtRb0CMZEeSLr8eP527IEg"/>
-  <handlers xmi:id="_-xkWgC1LEeSrT_p8RPGkbg" elementId="org.tomvej.fmassoc.core.handler.searchpaths" contributionURI="bundleclass://org.tomvej.fmassoc.core/org.tomvej.fmassoc.core.search.SearchPaths" command="_7uPIYC1LEeSrT_p8RPGkbg"/>
+  <handlers xmi:id="_-xkWgC1LEeSrT_p8RPGkbg" elementId="org.tomvej.fmassoc.core.handler.searchpaths" contributionURI="bundleclass://org.tomvej.fmassoc.core/org.tomvej.fmassoc.core.search.internal.SearchPaths" command="_7uPIYC1LEeSrT_p8RPGkbg"/>
+  <handlers xmi:id="_bhoUAC25EeS3MvsXw3Morw" elementId="org.tomvej.fmassoc.core.handler.stopsearch" contributionURI="bundleclass://org.tomvej.fmassoc.core/org.tomvej.fmassoc.core.search.internal.StopSearch" command="_rBsq4C1REeSrT_p8RPGkbg"/>
   <commands xmi:id="_MtRb0CMZEeSLr8eP527IEg" elementId="org.eclipse.ui.window.preferences" commandName="Preferences">
     <parameters xmi:id="_UOkzACN6EeSIYYTJAOONGw" elementId="org.eclipse.ui.window.preferences.pageid" name="Page ID"/>
   </commands>
