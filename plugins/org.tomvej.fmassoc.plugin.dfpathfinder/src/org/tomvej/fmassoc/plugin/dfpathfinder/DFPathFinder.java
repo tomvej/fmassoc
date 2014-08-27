@@ -18,15 +18,20 @@ import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.model.path.PathBuilder;
 
+/**
+ * Simple depth-first path finder. Includes multiple destinations and forbidden
+ * tables.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class DFPathFinder implements PathFinder {
-	private Consumer<Path> publisher;
 	private final Table source;
 	private final List<Table> destinations;
 	private final Set<Table> forbidden, inner;
-	private PathBuilder path;
-	private ListIterator<Table> iter;
-	private IProgressMonitor monitor;
 
+	/**
+	 * Specify search parameters.
+	 */
 	public DFPathFinder(Table source, List<Table> destinations, Set<Table> forbidden) {
 		this.source = source;
 		this.destinations = new ArrayList<>(destinations);
@@ -34,42 +39,53 @@ public class DFPathFinder implements PathFinder {
 		inner = new HashSet<>(destinations);
 	}
 
-	private void process(Table current) {
-		if (monitor.isCanceled()) {
-			throw new OperationCanceledException();
+	private class Computation {
+		private final IProgressMonitor monitor;
+		private final PathBuilder path;
+		private final ListIterator<Table> iter;
+		private final Consumer<Path> publisher;
+
+		public Computation(IProgressMonitor monitor, Consumer<Path> publisher) {
+			this.monitor = monitor;
+			this.publisher = publisher;
+			path = new PathBuilder(Collections.emptyList());
+			iter = destinations.listIterator();
 		}
 
-		if (!iter.hasNext()) {
-			publisher.accept(path.createPath());
-		} else {
-			boolean reached = iter.next().equals(current);
-			if (!reached) {
-				iter.previous();
-				if (forbidden.contains(current) || inner.contains(current)) {
-					return;
-				}
+
+		public void process(Table current) {
+			if (monitor.isCanceled()) {
+				throw new OperationCanceledException();
 			}
 
-			for (AssociationProperty association : current.getAssociations()) {
-				if (path.push(association)) {
-					process(association.getDestination());
-					path.pop();
-					if (reached) {
-						iter.previous();
+			if (!iter.hasNext()) {
+				publisher.accept(path.createPath());
+			} else {
+				boolean reached = iter.next().equals(current);
+				if (!reached) {
+					iter.previous();
+					if (forbidden.contains(current) || inner.contains(current)) {
+						return;
+					}
+				}
+
+				for (AssociationProperty association : current.getAssociations()) {
+					if (path.push(association)) {
+						process(association.getDestination());
+						path.pop();
+						if (reached) {
+							iter.previous();
+						}
 					}
 				}
 			}
 		}
 	}
 
+
 	@Override
 	public IStatus run(Consumer<Path> publisher, IProgressMonitor monitor) {
-		this.monitor = monitor;
-		this.publisher = publisher;
-
-		path = new PathBuilder(Collections.emptyList());
-		iter = destinations.listIterator();
-		process(source);
+		new Computation(monitor, publisher).process(source);
 
 		return Status.OK_STATUS;
 	};

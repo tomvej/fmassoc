@@ -6,6 +6,12 @@ import org.tomvej.fmassoc.core.search.PathFinder;
 import org.tomvej.fmassoc.core.search.PathFinderProvider;
 import org.tomvej.fmassoc.core.search.SearchInput;
 
+/**
+ * Provides instances of {@link DFPathFinder}.
+ * 
+ * @author Tomáš Vejpustek
+ *
+ */
 public class DFPathFinderProvider implements PathFinderProvider {
 
 	@Override
