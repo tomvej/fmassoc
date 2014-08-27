@@ -84,7 +84,7 @@ public class Part {
 	private void selectionChanged() {
 		Table source = this.source.getSelection();
 		List<Table> destinations = destination.getSelection();
-		if (source == null || destinations == null || destinations.isEmpty()) {
+		if (source == null || destinations == null || destinations.isEmpty() || destinations.contains(source)) {
 			if (context.get(SearchInput.class) != null) {
 				context.set(SearchInput.class, null);
 				logger.info("Search input cleared.");
