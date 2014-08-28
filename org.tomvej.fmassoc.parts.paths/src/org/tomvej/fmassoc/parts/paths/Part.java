@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
 import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
+import org.tomvej.fmassoc.model.db.AssociationProperty;
 import org.tomvej.fmassoc.model.path.Path;
 
 /**
@@ -45,8 +46,7 @@ public class Part {
 		pathColumn.getColumn().setText("Path");
 		pathColumn.getColumn().setWidth(100);
 
-		// FIXME create different action provider
-		pathColumn.setLabelProvider(new TextColumnLabelProvider<Path>(path -> path.getAssociations().toString()));
+		pathColumn.setLabelProvider(new TextColumnLabelProvider<Path>(Part::getDefaultLabel));
 
 		pathTable.setContentProvider(ArrayContentProvider.getInstance());
 		pathTable.setInput(foundPaths);
@@ -61,6 +61,14 @@ public class Part {
 	@Optional
 	public void receivePath(@UIEventTopic(PathSearchTopic.PUBLISH) Path target) {
 		pathTable.refresh();
+	}
+
+	private static String getDefaultLabel(Path target) {
+		StringBuilder result = new StringBuilder(target.getSource().getName());
+		for (AssociationProperty assoc : target.getAssociations()) {
+			result.append(" ").append(assoc.getName()).append(" ").append(target.getDestination().getName());
+		}
+		return result.toString();
 	}
 
 }
