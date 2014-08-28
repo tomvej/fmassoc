@@ -66,7 +66,7 @@ public class Part {
 	private static String getDefaultLabel(Path target) {
 		StringBuilder result = new StringBuilder(target.getSource().getName());
 		for (AssociationProperty assoc : target.getAssociations()) {
-			result.append(" ").append(assoc.getName()).append(" ").append(target.getDestination().getName());
+			result.append(" ").append(assoc.getName()).append(" ").append(assoc.getDestination().getName());
 		}
 		return result.toString();
 	}
