@@ -58,28 +58,29 @@ public class DFPathFinder implements PathFinder {
 				throw new OperationCanceledException();
 			}
 
-			if (!iter.hasNext()) {
+			boolean reached = iter.next().equals(current);
+			if (!reached) {
+				iter.previous();
+				if (forbidden.contains(current) || inner.contains(current)) {
+					return;
+				}
+			} else if (!iter.hasNext()) {
 				publisher.accept(path.createPath());
-			} else {
-				boolean reached = iter.next().equals(current);
-				if (!reached) {
-					iter.previous();
-					if (forbidden.contains(current) || inner.contains(current)) {
-						return;
-					}
-				}
+				iter.previous();
+				return;
+			}
 
-				for (AssociationProperty association : current.getAssociations()) {
-					if (path.push(association)) {
-						process(association.getDestination());
-						path.pop();
+			for (AssociationProperty association : current.getAssociations()) {
+				if (path.push(association)) {
+					process(association.getDestination());
+					path.pop();
 
-					}
-				}
-				if (reached) {
-					iter.previous();
 				}
 			}
+			if (reached) {
+				iter.previous();
+			}
+
 		}
 	}
 
