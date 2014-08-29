@@ -28,10 +28,12 @@ public class PathPropertyEntry<T> extends ExtensionEntry {
 	public PathPropertyEntry(IConfigurationElement config) throws CoreException {
 		super(config);
 		property = (PathProperty<T>) config.createExecutableExtension("class");
-		// FIXME not sure what it does when comparator is null
-		comparator = (Comparator<T>) config.createExecutableExtension("comparator");
+		if (config.getAttribute("comparator") != null) {
+			comparator = (Comparator<T>) config.createExecutableExtension("comparator");
+		} else {
+			comparator = null;
+		}
 	}
-
 
 	/**
 	 * Returns this path property.
