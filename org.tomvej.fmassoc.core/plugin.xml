@@ -2,6 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="preferencePage" name="Preference Page" schema="schema/preferencePage.exsd"/>
+   <extension-point id="pathProperty" name="Path Property" schema="schema/pathProperty.exsd"/>
 
    <extension
          id="product"

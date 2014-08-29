@@ -28,4 +28,5 @@
   <addons xmi:id="_TnMFxRPKEeSoD5WQk9Aqhg" elementId="org.eclipse.e4.ui.workbench.contexts.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.ContextProcessingAddon"/>
   <addons xmi:id="_TnMFxhPKEeSoD5WQk9Aqhg" elementId="org.eclipse.e4.ui.workbench.bindings.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.swt/org.eclipse.e4.ui.workbench.swt.util.BindingProcessingAddon"/>
   <addons xmi:id="_TnMFxxPKEeSoD5WQk9Aqhg" elementId="org.eclipse.e4.ui.workbench.handler.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.HandlerProcessingAddon"/>
+  <addons xmi:id="_Yt6cYC_AEeSqXcTrmDaUqA" elementId="org.tomvej.fmassoc.core.addon.properties" contributionURI="bundleclass://org.tomvej.fmassoc.core/org.tomvej.fmassoc.core.properties.PathPropertyAddon"/>
 </application:Application>

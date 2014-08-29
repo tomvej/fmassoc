@@ -2,6 +2,7 @@ package org.tomvej.fmassoc.core.communicate;
 
 import java.util.List;
 
+import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
 import org.tomvej.fmassoc.model.path.Path;
 
 /**
@@ -18,4 +19,9 @@ public interface ContextObjects {
 	 * {@code List<Path>}).
 	 */
 	public static final String FOUND_PATHS = PLUGIN + ".foundPaths";
+	/**
+	 * List of path properties. Unmodifiable {@link List} of
+	 * {@link PathPropertyEntry} ({@code List<PathPropertyEntry>}).
+	 */
+	public static final String PATH_PROPERTIES = PLUGIN + ".pathProperties";
 }
