@@ -1,6 +1,5 @@
 package org.tomvej.fmassoc.plugin.prioritydfpathfinder;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -28,18 +27,18 @@ class PriorityDFPathFinder implements PathFinder {
 	private final Pruning prune;
 	private final Table source;
 	private final Set<Table> forbid;
+	private final Set<Table> inner;
 	private final List<Table> destinations;
 
 	/**
 	 * Specify non-{@code null} pruning.
 	 */
 	public PriorityDFPathFinder(Pruning pruning, Table source, List<Table> destinations, Set<Table> forbidden) {
-		prune = Validate.notNull(pruning);
+		this.prune = pruning;
 		this.source = source;
-		this.destinations = Collections.unmodifiableList(new ArrayList<>(destinations));
-		Set<Table> forbid = new HashSet<>(forbidden);
-		forbid.addAll(destinations);
-		this.forbid = Collections.unmodifiableSet(forbid);
+		this.destinations = destinations;
+		this.forbid = forbidden;
+		this.inner = Collections.unmodifiableSet(new HashSet<>(destinations));
 	}
 
 	private class Computation {
@@ -73,7 +72,7 @@ class PriorityDFPathFinder implements PathFinder {
 					} else {
 						new SubComputation(destinations).processNext(current);
 					}
-				} else if (!forbid.contains(current)) {
+				} else if (!forbid.contains(current) && !inner.contains(current)) {
 					processNext(current);
 				}
 			}

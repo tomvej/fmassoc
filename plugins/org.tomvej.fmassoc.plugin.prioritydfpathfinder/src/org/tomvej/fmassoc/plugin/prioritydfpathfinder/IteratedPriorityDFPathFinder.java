@@ -54,7 +54,7 @@ class IteratedPriorityDFPathFinder implements PathFinder {
 	 */
 	public IteratedPriorityDFPathFinder(Iterable<Pruning> pruning, Table source, List<Table> destinations,
 			Set<Table> forbidden) {
-		prune = Validate.noNullElements(pruning);
+		prune = pruning;
 		this.source = source;
 		this.destinations = destinations;
 		this.forbidden = forbidden;
