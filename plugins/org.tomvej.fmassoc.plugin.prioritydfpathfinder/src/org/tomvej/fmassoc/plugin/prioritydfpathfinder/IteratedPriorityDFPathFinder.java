@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.finder.priority;
+package org.tomvej.fmassoc.plugin.prioritydfpathfinder;
 
 import java.util.HashSet;
 import java.util.List;
