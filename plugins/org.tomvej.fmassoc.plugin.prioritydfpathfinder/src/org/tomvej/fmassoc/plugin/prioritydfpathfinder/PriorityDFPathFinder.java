@@ -8,41 +8,50 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import org.apache.commons.lang3.Validate;
-import org.tomvej.fmassoc.model.compute.PathFinder;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Status;
+import org.tomvej.fmassoc.core.search.PathFinder;
 import org.tomvej.fmassoc.model.db.AssociationProperty;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.model.path.PathBuilder;
 
 /**
- * Extension of simple DF Path finder. Supports two things: Pruning and sort of
- * associations in each {@link Table} (this one is greedy).
+ * Extension of simple DF Path finder. Supports pruning.
  * 
  * @author Tomáš Vejpustek
  * 
  */
-public class PriorityDFPathFinder implements PathFinder {
+class PriorityDFPathFinder implements PathFinder {
 	private final Pruning prune;
+	private final Table source;
+	private final Set<Table> forbid;
+	private final List<Table> destinations;
 
 	/**
 	 * Specify non-{@code null} pruning.
 	 */
-	public PriorityDFPathFinder(Pruning pruning) {
+	public PriorityDFPathFinder(Pruning pruning, Table source, List<Table> destinations, Set<Table> forbidden) {
 		prune = Validate.notNull(pruning);
+		this.source = source;
+		this.destinations = Collections.unmodifiableList(new ArrayList<>(destinations));
+		Set<Table> forbid = new HashSet<>(forbidden);
+		forbid.addAll(destinations);
+		this.forbid = Collections.unmodifiableSet(forbid);
 	}
-
 
 	private class Computation {
 		private final Consumer<Path> publisher;
-		private final Set<Table> forbid;
+		private final IProgressMonitor monitor;
 		private final PathBuilder path = new PathBuilder(prune.getUsedProperties());
 
-		public Computation(Consumer<Path> publisher, Table source, List<Table> destinations, Set<Table> forbidden)
-				throws InterruptedException {
-			this.publisher = publisher;
-			forbid = Collections.unmodifiableSet(forbidden);
+		public Computation(Consumer<Path> publisher, IProgressMonitor monitor) {
+			this.publisher = Validate.notNull(publisher);
+			this.monitor = Validate.notNull(monitor);
 
-			new SubComputation(Collections.unmodifiableList(destinations)).processNext(source);
+			new SubComputation(destinations).processNext(source);
 		}
 
 		private class SubComputation {
@@ -54,9 +63,9 @@ public class PriorityDFPathFinder implements PathFinder {
 				this.destinations = destinations.subList(1, destinations.size());
 			}
 
-			private void process(Table current) throws InterruptedException {
-				if (Thread.interrupted()) {
-					throw new InterruptedException();
+			private void process(Table current) {
+				if (monitor.isCanceled()) {
+					throw new OperationCanceledException();
 				}
 				if (current.equals(dst)) {
 					if (destinations.isEmpty()) {
@@ -64,12 +73,12 @@ public class PriorityDFPathFinder implements PathFinder {
 					} else {
 						new SubComputation(destinations).processNext(current);
 					}
-				} else if (!current.isSink() && !forbid.contains(current)) {
+				} else if (!forbid.contains(current)) {
 					processNext(current);
 				}
 			}
 
-			public void processNext(Table current) throws InterruptedException {
+			public void processNext(Table current) {
 				for (AssociationProperty association : current.getAssociations()) {
 					if (path.push(association)) {
 						if (prune.prune(path)) {
@@ -84,11 +93,9 @@ public class PriorityDFPathFinder implements PathFinder {
 	}
 
 	@Override
-	public void findPaths(Consumer<Path> publisher, Table source, List<Table> destinations, Set<Table> forbidden)
-			throws InterruptedException {
-		PathFinder.validateParameters(publisher, source, destinations, forbidden);
-		Set<Table> forbid = new HashSet<Table>(forbidden);
-		forbid.addAll(destinations);
-		new Computation(publisher, source, new ArrayList<>(destinations), forbid);
+	public IStatus run(Consumer<Path> publisher, IProgressMonitor monitor) {
+		new Computation(publisher, monitor);
+		return Status.OK_STATUS;
 	}
+
 }
