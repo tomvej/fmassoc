@@ -89,9 +89,15 @@ public class Part {
 		return result.toString();
 	}
 
+	/**
+	 * Add path property column.
+	 */
 	@Inject
 	@Optional
 	public void addColumn(@UIEventTopic(PathTablePreferenceTopic.COLLUMN_ADDED) PathPropertyEntry<?> columnEntry) {
+		if (propertyColumns.containsKey(columnEntry)) {
+			return;
+		}
 		TableViewerColumn viewerColumn = new TableViewerColumn(pathTable, SWT.LEFT,
 				pathTable.getTable().getColumnCount() - 1);
 		TableColumn column = viewerColumn.getColumn();
@@ -102,6 +108,9 @@ public class Part {
 				p -> columnEntry.getProperty().getValue(p).toString()));
 	}
 
+	/**
+	 * Remove path property column.
+	 */
 	@Inject
 	@Optional
 	public void removeColumn(@UIEventTopic(PathTablePreferenceTopic.COLLUMN_REMOVED) PathPropertyEntry<?> columnEntry) {

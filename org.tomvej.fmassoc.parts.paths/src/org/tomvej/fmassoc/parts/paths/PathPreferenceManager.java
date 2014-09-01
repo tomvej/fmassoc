@@ -106,6 +106,13 @@ public class PathPreferenceManager {
 		return null;
 	}
 
+	/**
+	 * Returns whether path table preferences have been changed and not stored
+	 * yet.
+	 * 
+	 * @return {@code true} if there are unstored preference changes,
+	 *         {@code false} otherwise.
+	 */
 	public boolean isDirty() {
 		return dirty;
 	}
@@ -114,6 +121,12 @@ public class PathPreferenceManager {
 		dirty = true;
 	}
 
+	/**
+	 * Tries storing preference changes.
+	 * 
+	 * @return {@code true} if the operation was successful, {@code false}
+	 *         otherwise.
+	 */
 	public boolean store() {
 		if (isDirty()) {
 			try {
@@ -135,11 +148,17 @@ public class PathPreferenceManager {
 		return getColumnsPreferences().getBoolean(property.getId(), true);
 	}
 
+	/**
+	 * Return all visible path property columns.
+	 */
 	public Collection<PathPropertyEntry<?>> getColumns() {
 		return pathProperties.stream().filter(this::isColumnVisible).collect(Collectors.toList());
 
 	}
 
+	/**
+	 * Add path property column.
+	 */
 	public void addCollumn(PathPropertyEntry<?> column) {
 		boolean set = getColumnsPreferences().get(column.getId(), null) != null;
 		if (!isColumnVisible(column) || !set) {
@@ -151,6 +170,9 @@ public class PathPreferenceManager {
 		}
 	}
 
+	/**
+	 * Remove path property column.
+	 */
 	public void removeColumn(PathPropertyEntry<?> column) {
 		if (isColumnVisible(column)) {
 			getColumnsPreferences().putBoolean(column.getId(), false);
