@@ -1,6 +1,7 @@
 package org.tomvej.fmassoc.parts.paths;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
 
 /**
  * Event constants for preference change notification.
@@ -12,4 +13,8 @@ public interface PathTablePreferenceTopic {
 	public static final String TOPIC = "TOPIC_PATH_TABLE_PREFERENCE";
 	/** Path label provider changed. Sends a {@link ColumnLabelProvider}. */
 	public static final String PROVIDER_CHANGE = TOPIC + "/PROVIDER_CHANGE";
+	/** Column has been added. Sends a {@link PathPropertyEntry}. */
+	public static final String COLLUMN_ADDED = TOPIC + "/COLUMN_ADDED";
+	/** Column has been removed. Sends a {@link PathPropertyEntry} */
+	public static final String COLLUMN_REMOVED = TOPIC + "/COLUMN_REMOVED";
 }
