@@ -1,6 +1,7 @@
 package org.tomvej.fmassoc.parts.paths;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -17,8 +18,10 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.TableColumn;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
 import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
+import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.model.db.AssociationProperty;
 import org.tomvej.fmassoc.model.path.Path;
@@ -32,6 +35,7 @@ import org.tomvej.fmassoc.model.path.Path;
 public class Part {
 	private TableViewer pathTable;
 	private TableViewerColumn pathColumn;
+	private Map<PathPropertyEntry<?>, TableColumn> propertyColumns;
 
 	/**
 	 * Create components comprising the found table part.
@@ -47,6 +51,8 @@ public class Part {
 		pathColumn = new TableViewerColumn(pathTable, SWT.LEFT);
 		pathColumn.getColumn().setText("Path");
 		pathColumn.getColumn().setWidth(100);
+
+		preference.getColumns().forEach(this::addColumn);
 
 		pathColumn.setLabelProvider(preference.getLabelProvider());
 
@@ -81,6 +87,29 @@ public class Part {
 			result.append(" ").append(assoc.getName()).append(" ").append(assoc.getDestination().getName());
 		}
 		return result.toString();
+	}
+
+	@Inject
+	@Optional
+	public void addColumn(@UIEventTopic(PathTablePreferenceTopic.COLLUMN_ADDED) PathPropertyEntry<?> columnEntry) {
+		TableViewerColumn viewerColumn = new TableViewerColumn(pathTable, SWT.LEFT,
+				pathTable.getTable().getColumnCount() - 1);
+		TableColumn column = viewerColumn.getColumn();
+		column.setText(columnEntry.getName());
+		column.setToolTipText(columnEntry.getDescription());
+		column.setWidth(100);
+		viewerColumn.setLabelProvider(new TextColumnLabelProvider<Path>(
+				p -> columnEntry.getProperty().getValue(p).toString()));
+	}
+
+	@Inject
+	@Optional
+	public void removeColumn(@UIEventTopic(PathTablePreferenceTopic.COLLUMN_REMOVED) PathPropertyEntry<?> columnEntry) {
+		TableColumn column = propertyColumns.remove(columnEntry);
+		if (column != null) {
+			column.dispose();
+		}
+
 	}
 
 }
