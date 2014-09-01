@@ -1,5 +1,6 @@
 package org.tomvej.fmassoc.core.tables;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,14 +48,11 @@ public class ColumnSortSupport {
 
 	/**
 	 * Add column sort support to table.
-	 * 
-	 * @param viewer
-	 *            Target table, no columns should be aded when this is invoked.
 	 */
 	public ColumnSortSupport(TableViewer viewer) {
 		table = Validate.notNull(viewer);
 		table.setComparator(comparator);
-		build();
+		Arrays.asList(table.getTable().getColumns()).forEach(this::addColumn);
 		setDescending(false);
 	}
 
@@ -75,6 +73,15 @@ public class ColumnSortSupport {
 	 */
 	public void setComparator(TableViewerColumn column, Comparator comparator) {
 		setComparator(column.getColumn(), comparator);
+	}
+
+	/**
+	 * Add a supported column. This needs to be called only if the column has
+	 * been added after the table was created.
+	 */
+	public void addColumn(TableColumn column) {
+		column.addSelectionListener(new SelectionWrapper(
+				e -> sortByColumn(column, column.equals(sortedBy) ? !descending : false)));
 	}
 
 	/**
@@ -99,13 +106,6 @@ public class ColumnSortSupport {
 	 */
 	public void sortByColumn(TableViewerColumn column, boolean descending) {
 		sortByColumn(column.getColumn(), descending);
-	}
-
-	private void build() {
-		for (TableColumn column : table.getTable().getColumns()) {
-			column.addSelectionListener(new SelectionWrapper(
-					event -> sortByColumn(column, column.equals(sortedBy) ? !descending : false)));
-		}
 	}
 
 	private void setDescending(boolean descending) {
