@@ -1,5 +1,6 @@
 package org.tomvej.fmassoc.parts.paths;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
 import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
+import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.model.db.AssociationProperty;
 import org.tomvej.fmassoc.model.path.Path;
@@ -35,7 +37,8 @@ import org.tomvej.fmassoc.model.path.Path;
 public class Part {
 	private TableViewer pathTable;
 	private TableViewerColumn pathColumn;
-	private Map<PathPropertyEntry<?>, TableColumn> propertyColumns;
+	private final Map<PathPropertyEntry<?>, TableColumn> propertyColumns = new HashMap<>();
+	private ColumnSortSupport sortSupport;
 
 	/**
 	 * Create components comprising the found table part.
@@ -47,6 +50,7 @@ public class Part {
 		pathTable.getTable().setHeaderVisible(true);
 		pathTable.getTable().setLinesVisible(true);
 		pathTable.getTable().setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
+		sortSupport = new ColumnSortSupport(pathTable);
 
 		pathColumn = new TableViewerColumn(pathTable, SWT.LEFT);
 		pathColumn.getColumn().setText("Path");
@@ -104,8 +108,16 @@ public class Part {
 		column.setText(columnEntry.getName());
 		column.setToolTipText(columnEntry.getDescription());
 		column.setWidth(100);
+
 		viewerColumn.setLabelProvider(new TextColumnLabelProvider<Path>(
 				p -> columnEntry.getProperty().getValue(p).toString()));
+
+		sortSupport.addColumn(column);
+		if (columnEntry.getComparator() != null) {
+			sortSupport.setComparator(column, columnEntry.getComparator());
+		}
+
+		propertyColumns.put(columnEntry, column);
 	}
 
 	/**
