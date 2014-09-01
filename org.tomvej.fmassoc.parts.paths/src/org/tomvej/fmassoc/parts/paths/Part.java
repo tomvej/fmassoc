@@ -96,6 +96,7 @@ public class Part {
 	/**
 	 * Add path property column.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Inject
 	@Optional
 	public void addColumn(@UIEventTopic(PathTablePreferenceTopic.COLLUMN_ADDED) PathPropertyEntry<?> columnEntry) {
@@ -113,9 +114,8 @@ public class Part {
 				p -> columnEntry.getProperty().getValue(p).toString()));
 
 		sortSupport.addColumn(column);
-		if (columnEntry.getComparator() != null) {
-			sortSupport.setComparator(column, columnEntry.getComparator());
-		}
+		sortSupport.setComparator(column,
+				new PathPropertyComparator(columnEntry.getProperty(), columnEntry.getComparator()));
 
 		propertyColumns.put(columnEntry, column);
 	}
@@ -129,8 +129,8 @@ public class Part {
 		TableColumn column = propertyColumns.remove(columnEntry);
 		if (column != null) {
 			column.dispose();
+			sortSupport.setComparator(column, null);
 		}
-
 	}
 
 }
