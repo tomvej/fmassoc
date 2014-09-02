@@ -26,9 +26,6 @@ public class PathFinderJob extends Job {
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		found.clear();
-		// TODO send event about clearing
-
 		// TODO this is perhaps too simple -- we'll see
 		return finder.run(this::publish, monitor);
 	}

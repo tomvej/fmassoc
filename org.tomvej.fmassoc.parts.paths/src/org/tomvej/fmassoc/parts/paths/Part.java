@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
 import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
+import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.model.db.AssociationProperty;
@@ -75,6 +76,15 @@ public class Part {
 		pathTable.refresh();
 		propertyColumns.values().forEach(c -> c.pack());
 		pathColumn.getColumn().pack();
+	}
+
+	/**
+	 * Clear table on search start.
+	 */
+	@Inject
+	@Optional
+	public void searchStarted(@UIEventTopic(PathSearchTopic.START) SearchInput target) {
+		pathTable.refresh();
 	}
 
 	/**

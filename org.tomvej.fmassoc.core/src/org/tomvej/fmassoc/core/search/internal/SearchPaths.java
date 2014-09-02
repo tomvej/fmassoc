@@ -12,6 +12,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
+import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
 import org.tomvej.fmassoc.core.search.PathFinderProvider;
 import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.model.path.Path;
@@ -29,6 +30,10 @@ public class SearchPaths {
 	public void execute(SearchInput input, PathFinderProvider provider, IEclipseContext context, IEventBroker broker) {
 		PathFinderJob job = new PathFinderJob(provider.createPathFinder(input), broker, foundPaths);
 		context.set(PathFinderJob.class, job);
+		foundPaths.clear();
+		broker.post(PathSearchTopic.START, input);
+		// TODO probably will need to put current search
+		// input into context (named)
 		job.schedule();
 	}
 
