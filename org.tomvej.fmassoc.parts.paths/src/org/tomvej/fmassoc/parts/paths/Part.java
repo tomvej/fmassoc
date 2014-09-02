@@ -97,7 +97,7 @@ public class Part {
 	/**
 	 * Add path property column.
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Inject
 	@Optional
 	public void addColumn(@UIEventTopic(PathTablePreferenceTopic.COLLUMN_ADDED) PathPropertyEntry<?> columnEntry) {

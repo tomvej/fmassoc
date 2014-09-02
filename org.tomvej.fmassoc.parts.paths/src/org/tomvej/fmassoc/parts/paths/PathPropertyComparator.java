@@ -34,6 +34,7 @@ public class PathPropertyComparator<T> implements Comparator<Path> {
 	}
 
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public int compare(Path o1, Path o2) {
 		T v1 = property.getValue(o1);

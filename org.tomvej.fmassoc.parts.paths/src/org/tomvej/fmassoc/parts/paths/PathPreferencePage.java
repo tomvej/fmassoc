@@ -24,6 +24,12 @@ import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
 
+/**
+ * Preference page for found paths table. Sets label provider and visible
+ * columns.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class PathPreferencePage extends PreferencePage implements ContextPreferencePage {
 	private PathPreferenceManager manager;
 	private List<PathPropertyEntry<?>> properties;
@@ -31,10 +37,14 @@ public class PathPreferencePage extends PreferencePage implements ContextPrefere
 	private Text providerDescription;
 	private CheckboxTableViewer columns;
 
+	/**
+	 * Create this preference page.
+	 */
 	public PathPreferencePage() {
 		super("Found paths table");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void init(IEclipseContext context) {
 		manager = context.get(PathPreferenceManager.class);
