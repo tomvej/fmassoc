@@ -48,6 +48,7 @@ public class PathPreferencePage extends PreferencePage implements ContextPrefere
 		LabelProviderEntry selected = manager.getLabelProviderEntry();
 		if (selected != null) {
 			provider.setSelection(new StructuredSelection(selected));
+			setProviderDescription(selected);
 		}
 
 		providerDescription = new Text(container, SWT.READ_ONLY | SWT.MULTI | SWT.WRAP | SWT.BORDER);
