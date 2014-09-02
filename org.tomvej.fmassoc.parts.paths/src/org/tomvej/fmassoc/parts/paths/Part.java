@@ -73,6 +73,8 @@ public class Part {
 	@Optional
 	public void receivePath(@UIEventTopic(PathSearchTopic.PUBLISH) Path target) {
 		pathTable.refresh();
+		propertyColumns.values().forEach(c -> c.pack());
+		pathColumn.getColumn().pack();
 	}
 
 	/**
