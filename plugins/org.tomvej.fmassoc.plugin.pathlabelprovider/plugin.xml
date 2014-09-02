@@ -4,7 +4,9 @@
    <extension
          point="org.tomvej.fmassoc.parts.paths.pathlabelprovider">
       <client
-            class="org.tomvej.fmassoc.plugin.pathlabelprovider.PathLabelProvider">
+            class="org.tomvej.fmassoc.plugin.pathlabelprovider.PathLabelProvider"
+            description="Displays path as list of comprising tables separated by =, &lt;, &gt; according to association multiplicity."
+            name="Basic">
       </client>
    </extension>
 
