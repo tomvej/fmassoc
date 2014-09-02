@@ -61,7 +61,11 @@ public class ColumnSortSupport {
 	 * Note: comparator must compare table elements, not column values.
 	 */
 	public void setComparator(TableColumn column, Comparator comparator) {
-		comparators.put(column, comparator);
+		if (comparator != null) {
+			comparators.put(column, comparator);
+		} else {
+			comparators.remove(column);
+		}
 		if (column != null && column.equals(sortedBy)) {
 			table.refresh();
 		}
