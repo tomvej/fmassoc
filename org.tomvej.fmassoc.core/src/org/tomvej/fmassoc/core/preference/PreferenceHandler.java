@@ -9,10 +9,10 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.log.Logger;
-import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
@@ -25,20 +25,22 @@ import org.eclipse.swt.widgets.Shell;
  * @author Tomáš Vejpustek
  *
  */
-public class PreferenceHandler {
+class PreferenceHandler {
 
 	/**
 	 * Load and display available preference pages.
 	 */
 	@Execute
-	public void execute(Shell shell, IExtensionRegistry registry, Logger logger,
+	public void execute(Shell shell, IExtensionRegistry registry, Logger logger, IEclipseContext context,
 			@Optional @Named("org.eclipse.ui.window.preferences.pageid") String pageId) {
 		IConfigurationElement[] config = registry.getConfigurationElementsFor("org.tomvej.fmassoc.core.preferencePage");
 		Map<String, Pair<PreferenceNode, String>> nodes = new HashMap<>();
 		for (IConfigurationElement elem : config) {
 			String id = elem.getAttribute("id");
 			try {
-				PreferenceNode node = new PreferenceNode(id, (IPreferencePage) elem.createExecutableExtension("class"));
+				ContextPreferencePage preference = (ContextPreferencePage) elem.createExecutableExtension("class");
+				preference.init(context);
+				PreferenceNode node = new PreferenceNode(id, preference);
 				nodes.put(id, Pair.of(node, elem.getAttribute("parent")));
 			} catch (CoreException ce) {
 				logger.error(ce, "Cannot create preference page " + id + ".");
