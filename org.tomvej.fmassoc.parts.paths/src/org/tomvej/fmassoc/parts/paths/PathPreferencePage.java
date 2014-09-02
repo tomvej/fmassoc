@@ -7,17 +7,16 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
 import org.tomvej.fmassoc.core.preference.ContextPreferencePage;
@@ -30,7 +29,7 @@ public class PathPreferencePage extends PreferencePage implements ContextPrefere
 	private List<PathPropertyEntry<?>> properties;
 	private ComboViewer provider;
 	private Text providerDescription;
-	private TableViewer columns;
+	private CheckboxTableViewer columns;
 
 	public PathPreferencePage() {
 		super("Found paths table");
@@ -74,7 +73,7 @@ public class PathPreferencePage extends PreferencePage implements ContextPrefere
 		lbl.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).create());
 
 		// Properties columns
-		columns = new TableViewer(container, SWT.CHECK | SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
+		columns = CheckboxTableViewer.newCheckList(container, SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
 		columns.getTable().setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, false).create());
 		columns.getTable().setLinesVisible(true);
 		columns.getTable().setHeaderVisible(true);
@@ -89,9 +88,7 @@ public class PathPreferencePage extends PreferencePage implements ContextPrefere
 
 		columns.setContentProvider(ArrayContentProvider.getInstance());
 		columns.setInput(properties);
-		for (TableItem item : columns.getTable().getItems()) {
-			item.setChecked(manager.getColumns().contains(item.getData()));
-		}
+		columns.setCheckedElements(manager.getColumns().toArray());
 		nameColumn.getColumn().pack();
 		descriptionColumn.getColumn().pack();
 
@@ -113,12 +110,11 @@ public class PathPreferencePage extends PreferencePage implements ContextPrefere
 	@Override
 	public boolean performOk() {
 		manager.setLabelProvider(getSelectedEntry());
-		for (TableItem item : columns.getTable().getItems()) {
-			PathPropertyEntry<?> data = (PathPropertyEntry<?>) item.getData();
-			if (item.getChecked()) {
-				manager.addCollumn(data);
+		for (PathPropertyEntry<?> entry : properties) {
+			if (columns.getChecked(entry)) {
+				manager.addCollumn(entry);
 			} else {
-				manager.removeColumn(data);
+				manager.removeColumn(entry);
 			}
 		}
 		if (!manager.store()) {
