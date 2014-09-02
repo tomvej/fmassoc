@@ -2,8 +2,10 @@ package org.tomvej.fmassoc.parts.paths;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -65,10 +67,10 @@ public class PathPreferenceManager {
 	 * Saves the used path column label provider.
 	 */
 	public void setLabelProvider(LabelProviderEntry entry) {
-		if (!getLabelProviderEntry().equals(entry)) {
+		if (!Objects.equals(getLabelProviderEntry(), entry)) {
 			preference.put(LABEL_PROVIDER, entry != null ? entry.getId() : "");
 			makeDirty();
-			broker.post(PathTablePreferenceTopic.PROVIDER_CHANGE, entry);
+			broker.post(PathTablePreferenceTopic.PROVIDER_CHANGE, getLabelProvider(entry));
 		}
 	}
 
@@ -89,13 +91,7 @@ public class PathPreferenceManager {
 		return result;
 	}
 
-	/**
-	 * Creates currently used path column label provider.
-	 * 
-	 * @return Label provider or null when it cannot be created.
-	 */
-	public ColumnLabelProvider getLabelProvider() {
-		LabelProviderEntry entry = getLabelProviderEntry();
+	private ColumnLabelProvider getLabelProvider(LabelProviderEntry entry) {
 		if (entry != null) {
 			try {
 				return entry.create();
@@ -104,6 +100,22 @@ public class PathPreferenceManager {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Creates currently used path column label provider.
+	 * 
+	 * @return Label provider or null when it cannot be created.
+	 */
+	public ColumnLabelProvider getLabelProvider() {
+		return getLabelProvider(getLabelProviderEntry());
+	}
+
+	/**
+	 * Returns unmodifiable list of available label providers.
+	 */
+	public Collection<LabelProviderEntry> getLabelProviders() {
+		return Collections.unmodifiableCollection(labelProviders.values());
 	}
 
 	/**

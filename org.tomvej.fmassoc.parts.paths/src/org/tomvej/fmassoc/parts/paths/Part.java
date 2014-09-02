@@ -83,6 +83,7 @@ public class Part {
 	public void labelProviderChanged(@UIEventTopic(PathTablePreferenceTopic.PROVIDER_CHANGE) ColumnLabelProvider provider) {
 		pathColumn.setLabelProvider(provider != null ? provider :
 				new TextColumnLabelProvider<Path>(Part::getDefaultLabel));
+		pathTable.refresh();
 	}
 
 	private static String getDefaultLabel(Path target) {
