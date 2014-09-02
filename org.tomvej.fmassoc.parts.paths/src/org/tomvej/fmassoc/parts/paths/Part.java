@@ -58,7 +58,7 @@ public class Part {
 
 		preference.getColumns().forEach(this::addColumn);
 
-		pathColumn.setLabelProvider(preference.getLabelProvider());
+		labelProviderChanged(preference.getLabelProvider());
 
 		pathTable.setContentProvider(ArrayContentProvider.getInstance());
 		pathTable.setInput(foundPaths);

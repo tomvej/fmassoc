@@ -9,5 +9,12 @@
             uri="fragment.e4xmi">
       </fragment>
    </extension>
+   <extension
+         point="org.tomvej.fmassoc.core.preferencePage">
+      <client
+            class="org.tomvej.fmassoc.parts.paths.PathPreferencePage"
+            id="org.tomvej.fmassoc.parts.paths.preference">
+      </client>
+   </extension>
 
 </plugin>
