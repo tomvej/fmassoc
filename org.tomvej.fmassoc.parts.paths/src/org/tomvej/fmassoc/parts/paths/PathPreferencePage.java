@@ -83,10 +83,13 @@ public class PathPreferencePage extends PreferencePage implements ContextPrefere
 		lbl.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).create());
 
 		// Properties columns
-		columns = CheckboxTableViewer.newCheckList(container, SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
+		columns = CheckboxTableViewer.newCheckList(container, SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
 		columns.getTable().setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, false).create());
 		columns.getTable().setLinesVisible(true);
 		columns.getTable().setHeaderVisible(true);
+
+		TableViewerColumn checkColumn = new TableViewerColumn(columns, SWT.CENTER);
+		checkColumn.setLabelProvider(new TextColumnLabelProvider<PathPropertyEntry<?>>(p -> ""));
 
 		TableViewerColumn nameColumn = new TableViewerColumn(columns, SWT.LEFT);
 		nameColumn.getColumn().setText("Name");
@@ -101,6 +104,8 @@ public class PathPreferencePage extends PreferencePage implements ContextPrefere
 		columns.setCheckedElements(manager.getColumns().toArray());
 		nameColumn.getColumn().pack();
 		descriptionColumn.getColumn().pack();
+		checkColumn.getColumn().setWidth(30);
+		checkColumn.getColumn().setResizable(false);
 
 		return container;
 	}
