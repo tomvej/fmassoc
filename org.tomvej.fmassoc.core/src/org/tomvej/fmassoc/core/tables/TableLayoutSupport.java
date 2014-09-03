@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.Validate;
 import org.eclipse.jface.layout.TableColumnLayout;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -132,4 +133,24 @@ public class TableLayoutSupport {
 		TableViewer result = new TableViewer(tableComposite, style);
 		return result;
 	}
+
+	/***
+	 * Create checkbox table viewer so that it is wrapped in a separate
+	 * component.
+	 * 
+	 * 
+	 * @param parent
+	 *            Parent component.
+	 * @param style
+	 *            Table viewer style.
+	 * @param layoutData
+	 *            Layout data wrt parent component.
+	 * @return New table viewer.
+	 */
+	public static CheckboxTableViewer createCheckboxTableViewer(Composite parent, int style, Object layoutData) {
+		Composite tableComposite = new Composite(parent, SWT.NONE);
+		tableComposite.setLayoutData(layoutData);
+		return CheckboxTableViewer.newCheckList(tableComposite, style);
+	}
+
 }
