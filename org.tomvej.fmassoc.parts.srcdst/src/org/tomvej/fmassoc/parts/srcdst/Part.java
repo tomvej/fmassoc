@@ -33,6 +33,7 @@ public class Part {
 	private Logger logger;
 	private TableChooser source;
 	private DestinationChooser destination;
+	private ForbiddenChooser forbidden;
 
 	private IEclipseContext context;
 
@@ -43,7 +44,7 @@ public class Part {
 	public void createComponents(Composite parent, @Optional DataModel model, MPerspective perspective) {
 		context = perspective.getContext();
 
-		parent.setLayout(new GridLayout(2, true));
+		parent.setLayout(new GridLayout(3, true));
 		GridDataFactory layout = GridDataFactory.fillDefaults().grab(true, true);
 
 		Group grp = new Group(parent, SWT.SHADOW_ETCHED_OUT);
@@ -58,6 +59,9 @@ public class Part {
 
 		source.setTableListener(t -> selectionChanged());
 		destination.setTableListener(t -> selectionChanged());
+
+		forbidden = new ForbiddenChooser(parent);
+		forbidden.setLayoutData(layout.create());
 
 		if (model != null) {
 			setTables(model);
@@ -79,6 +83,7 @@ public class Part {
 		Collection<Table> tables = model != null ? model.getTables() : null;
 		source.setTables(tables);
 		destination.setTables(tables);
+		forbidden.setTables(tables);
 	}
 
 	private void selectionChanged() {
