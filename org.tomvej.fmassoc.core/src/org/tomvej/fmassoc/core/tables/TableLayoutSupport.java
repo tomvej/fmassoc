@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.apache.commons.lang3.Validate;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -76,6 +77,43 @@ public class TableLayoutSupport {
 	public TableLayoutSupport setupColumn(TableViewerColumn column, int weight, boolean resizable) {
 		setupColumn(column.getColumn(), weight, resizable);
 		return this;
+	}
+
+	/**
+	 * Add column with specified width to the layout.
+	 * 
+	 * @param column
+	 *            Target column.
+	 * @param width
+	 *            Column width.
+	 * @param resizable
+	 *            Whether the column can be resized.
+	 * @param addTrim
+	 *            Whether to allocate extra width to the column to account for
+	 *            trim taken by the column itself.
+	 * @return Reference to this object.
+	 */
+	public TableLayoutSupport setupWidthColumn(TableColumn column, int width, boolean resizable, boolean addTrim) {
+		layout.setColumnData(column, new ColumnPixelData(width, resizable, addTrim));
+		return this;
+	}
+
+	/**
+	 * Add column with specified width to the layout.
+	 * 
+	 * @param column
+	 *            Target column.
+	 * @param width
+	 *            Column width.
+	 * @param resizable
+	 *            Whether the column can be resized.
+	 * @param addTrim
+	 *            Whether to allocate extra width to the column to account for
+	 *            trim taken by the column itself.
+	 * @return Reference to this object.
+	 */
+	public TableLayoutSupport setupWidthColumn(TableViewerColumn column, int width, boolean resizable, boolean addTrim) {
+		return setupWidthColumn(column.getColumn(), width, resizable, addTrim);
 	}
 
 	/**
