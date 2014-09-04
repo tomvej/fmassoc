@@ -1,5 +1,7 @@
 package org.tomvej.fmassoc.core.widgets.tablechooser;
 
+import java.util.Collection;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -17,6 +19,8 @@ import org.tomvej.fmassoc.model.db.Table;
 public class TableChooserDialog extends Dialog {
 	private TableChooser chooser;
 	private Table selected;
+	private Collection<Table> tables;
+	private Collection<Object> filter;
 
 	/**
 	 * Create the dialog.
@@ -26,6 +30,26 @@ public class TableChooserDialog extends Dialog {
 	 */
 	public TableChooserDialog(Shell parent) {
 		super(parent);
+	}
+
+	/**
+	 * Set tables to choose from.
+	 */
+	public void setTables(Collection<Table> tables) {
+		this.tables = tables;
+		if (chooser != null) {
+			chooser.setTables(tables);
+		}
+	}
+
+	/**
+	 * Set table filter.
+	 */
+	public void setFilter(Collection<Object> tables) {
+		this.filter = tables;
+		if (chooser != null) {
+			chooser.setFilter(tables);
+		}
 	}
 
 	@Override
@@ -38,6 +62,11 @@ public class TableChooserDialog extends Dialog {
 	protected Control createDialogArea(Composite parent) {
 		chooser = new TableChooser(parent);
 		chooser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		if (tables != null) {
+			chooser.setTables(tables);
+		}
+		chooser.setFilter(filter);
 
 		chooser.setTableListener(table -> getButton(IDialogConstants.OK_ID).setEnabled(table != null));
 		return chooser;
