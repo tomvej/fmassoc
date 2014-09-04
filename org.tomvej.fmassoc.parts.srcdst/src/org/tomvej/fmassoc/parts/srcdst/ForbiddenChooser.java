@@ -28,6 +28,11 @@ import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.model.db.Table;
 
+/**
+ * Component used to select forbidden tables.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class ForbiddenChooser extends Group {
 	@Override
 	protected void checkSubclass() {} // allow subclassing
@@ -39,6 +44,9 @@ public class ForbiddenChooser extends Group {
 
 	private Consumer<Set<Table>> listener;
 
+	/**
+	 * Specify parent composite.
+	 */
 	public ForbiddenChooser(Composite parent) {
 		super(parent, SWT.SHADOW_ETCHED_OUT);
 		setText("Forbidden tables");
@@ -118,6 +126,9 @@ public class ForbiddenChooser extends Group {
 		}
 	}
 
+	/**
+	 * Specify tables to choose from.
+	 */
 	public void setTables(Collection<Table> tables) {
 		this.tables.setTables(tables);
 		forbidden.clear();
@@ -129,10 +140,17 @@ public class ForbiddenChooser extends Group {
 		}
 	}
 
+	/**
+	 * Specify a listener which is notified when selected forbidden tables
+	 * change.
+	 */
 	public void setTableListener(Consumer<Set<Table>> listener) {
 		this.listener = listener;
 	}
 
+	/**
+	 * Retrieve current selected forbidden tables.
+	 */
 	@SuppressWarnings("unchecked")
 	public Set<Table> getForbiddenTables() {
 		return Collections.unmodifiableSet((Set<Table>)
