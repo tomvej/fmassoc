@@ -1,7 +1,5 @@
 package org.tomvej.fmassoc.plugin.prioritydfpathfinder;
 
-import java.util.Collections;
-
 import org.apache.commons.lang3.Validate;
 import org.tomvej.fmassoc.core.search.PathFinder;
 import org.tomvej.fmassoc.core.search.PathFinderProvider;
@@ -25,6 +23,6 @@ public class PriorityDFFinderProvider implements PathFinderProvider {
 
 	@Override
 	public PathFinder createPathFinder(SearchInput input) {
-		return new PriorityDFPathFinder(prune, input.getSource(), input.getDestinations(), Collections.emptySet());
+		return new PriorityDFPathFinder(prune, input.getSource(), input.getDestinations(), input.getForbidden());
 	}
 }
