@@ -2,6 +2,7 @@ package org.tomvej.fmassoc.parts.srcdst;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -57,11 +58,12 @@ public class Part {
 		destination = new DestinationChooser(parent);
 		destination.setLayoutData(layout.create());
 
-		source.setTableListener(t -> selectionChanged());
-		destination.setTableListener(t -> selectionChanged());
-
 		forbidden = new ForbiddenChooser(parent);
 		forbidden.setLayoutData(layout.create());
+
+		source.setTableListener(t -> selectionChanged());
+		destination.setTableListener(t -> selectionChanged());
+		forbidden.setTableListener(t -> selectionChanged());
 
 		if (model != null) {
 			setTables(model);
@@ -89,13 +91,14 @@ public class Part {
 	private void selectionChanged() {
 		Table source = this.source.getSelection();
 		List<Table> destinations = destination.getSelection();
+		Set<Table> forbidden = this.forbidden.getForbiddenTables();
 		if (source == null || destinations == null || destinations.isEmpty() || destinations.contains(source)) {
 			if (context.get(SearchInput.class) != null) {
 				context.set(SearchInput.class, null);
 				logger.info("Search input cleared.");
 			}
 		} else {
-			SearchInput input = new SearchInput(source, destinations);
+			SearchInput input = new SearchInput(source, destinations, forbidden);
 			context.set(SearchInput.class, input);
 			logger.info("Search input changed to: " + input);
 		}
