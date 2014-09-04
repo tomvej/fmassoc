@@ -17,38 +17,9 @@ public interface DataModel {
 	Collection<Table> getTables();
 
 	/**
-	 * Table of given name.
+	 * Get tables which are forbidden by default.
 	 * 
-	 * @return Table of given name, {@code null} when there is none.
+	 * @return Unmodifiable collection of tables.
 	 */
-	Table getTableByName(String name);
-
-	/**
-	 * Table of given implementation name.
-	 * 
-	 * @return Table of given implementation name, {@code null} when there is
-	 *         none.
-	 */
-	Table getTableByImplName(String name);
-
-	/**
-	 * Table of given number.
-	 * 
-	 * @return Table of given number, {@code null} when there is none.
-	 */
-	Table getTableByNumber(int number);
-
-	/**
-	 * Names of all tables.
-	 * 
-	 * @return Unmodifiable collection of names.
-	 */
-	Collection<String> getTableNames();
-
-	/**
-	 * Implementation names of all tables.
-	 * 
-	 * @return Unmodifiable collection of names.
-	 */
-	Collection<String> getTableImplNames();
+	Collection<Table> getForbiddenTables();
 }
