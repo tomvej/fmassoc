@@ -39,6 +39,7 @@ public class ForbiddenChooser extends Group {
 
 	private final CheckboxTableViewer forbiddenTable;
 	private final IObservableList forbidden = Properties.selfList(Table.class).observe(new ArrayList<>());
+	private Collection<Table> defaultForbidden = Collections.emptySet();
 	private TableChooser tables;
 	private Button addBtn, rmBtn;
 
@@ -115,9 +116,9 @@ public class ForbiddenChooser extends Group {
 		fireChanges();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void rmTable() {
-		List selected = ((IStructuredSelection) forbiddenTable.getSelection()).toList();
+		List<Object> selected = ((List<Object>) ((IStructuredSelection) forbiddenTable.getSelection()).toList()).
+				stream().filter(t -> !defaultForbidden.contains(t)).collect(Collectors.toList());
 		boolean changed = selected.stream().anyMatch(o -> forbiddenTable.getChecked(o));
 		forbidden.removeAll(selected);
 		refreshFilter();
@@ -128,11 +129,21 @@ public class ForbiddenChooser extends Group {
 
 	/**
 	 * Specify tables to choose from.
+	 * 
+	 * @param tables
+	 *            Tables to choose from.
+	 * @param forbidden
+	 *            Default forbidden tables.
 	 */
-	public void setTables(Collection<Table> tables) {
+	public void setTables(Collection<Table> tables, Collection<Table> forbidden) {
 		this.tables.setTables(tables);
-		forbidden.clear();
+		this.forbidden.clear();
+
+		defaultForbidden = forbidden != null ? forbidden : Collections.emptySet();
+		this.forbidden.addAll(defaultForbidden);
+		refreshFilter();
 	}
+
 
 	private void fireChanges() {
 		if (listener != null) {

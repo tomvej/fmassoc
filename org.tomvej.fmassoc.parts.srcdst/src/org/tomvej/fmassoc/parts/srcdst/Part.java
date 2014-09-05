@@ -85,7 +85,7 @@ public class Part {
 		Collection<Table> tables = model != null ? model.getTables() : null;
 		source.setTables(tables);
 		destination.setTables(tables);
-		forbidden.setTables(tables);
+		forbidden.setTables(tables, model != null ? model.getForbiddenTables() : null);
 	}
 
 	private void selectionChanged() {
