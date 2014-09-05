@@ -16,7 +16,8 @@ import org.tomvej.fmassoc.model.db.DataModel;
  *
  */
 public class DataModelBuilder {
-	private Set<TableImpl> tables = new HashSet<>();
+	private final Set<TableImpl> tables = new HashSet<>();
+	private final Set<TableImpl> forbidden = new HashSet<>();
 	private Collection<TableCache<?>> caches;
 
 	/**
@@ -84,10 +85,31 @@ public class DataModelBuilder {
 	}
 
 	/**
+	 * Designate some tables as forbidden.
+	 * 
+	 * @param tables
+	 *            Forbidden tables. Must have been previously added.
+	 */
+	public void addForbidden(TableImpl... tables) {
+		addForbidden(Arrays.asList(tables));
+	}
+
+	/**
+	 * Designate some tables as forbidden.
+	 * 
+	 * @param tables
+	 *            Forbidden tables. Must have been previously added.
+	 */
+	public void addForbidden(Collection<TableImpl> tables) {
+		Validate.isTrue(this.tables.containsAll(tables));
+		forbidden.addAll(tables);
+	}
+
+	/**
 	 * Create a new data model from specified information. This data model is
 	 * effectively immutable but potentially unsafe.
 	 */
 	public DataModel create() {
-		return new DataModelImpl(tables);
+		return new DataModelImpl(tables, forbidden);
 	}
 }

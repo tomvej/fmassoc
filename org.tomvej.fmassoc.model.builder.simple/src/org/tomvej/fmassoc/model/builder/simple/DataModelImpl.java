@@ -9,9 +9,11 @@ import org.tomvej.fmassoc.model.db.Table;
 
 class DataModelImpl implements DataModel {
 	private final Collection<Table> tables;
+	private final Collection<Table> forbidden;
 
-	DataModelImpl(Collection<? extends Table> tables) {
+	DataModelImpl(Collection<? extends Table> tables, Collection<? extends Table> forbidden) {
 		this.tables = Collections.unmodifiableCollection(new ArrayList<>(tables));
+		this.forbidden = Collections.unmodifiableCollection(new ArrayList<>(forbidden));
 	}
 
 	@Override
@@ -21,6 +23,6 @@ class DataModelImpl implements DataModel {
 
 	@Override
 	public Collection<Table> getForbiddenTables() {
-		return Collections.emptySet();
+		return forbidden;
 	}
 }
