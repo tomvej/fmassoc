@@ -74,6 +74,8 @@ public class ConstantModelLoader implements ModelLoader {
 		addAssociation(model, tbinfo163, rcr182, false, false, "was_made_by", "previous", "ID_O_RESOURCECREW_P");
 		addAssociation(model, rcr182, taskinfo136, true, true, "is_performing_a", "is_performed_by", "ID_O_TASKINFO");
 		addAssociation(model, rcr182, mwork166, true, true, "is_working_on", "is_performed_by", "ID_O_MOBILEWORK");
+
+		model.addForbidden(rcr182);
 		return model.create();
 	}
 
