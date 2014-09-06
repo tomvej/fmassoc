@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
@@ -17,9 +18,11 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
 import org.tomvej.fmassoc.core.tables.TableLayoutSupport;
@@ -36,6 +39,22 @@ import org.tomvej.fmassoc.model.db.Table;
 public class ForbiddenChooser extends Group {
 	@Override
 	protected void checkSubclass() {} // allow subclassing
+
+	private class LabelProvider extends TextColumnLabelProvider<Table> {
+
+		public LabelProvider(Function<Table, String> labelProvider) {
+			super(labelProvider);
+		}
+
+		@Override
+		public Color getForeground(Object element) {
+			if (defaultForbidden.contains(element)) {
+				return Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_FOREGROUND);
+			}
+			return super.getForeground(element);
+		}
+
+	}
 
 	private final CheckboxTableViewer forbiddenTable;
 	private final IObservableList forbidden = Properties.selfList(Table.class).observe(new ArrayList<>());
@@ -68,11 +87,11 @@ public class ForbiddenChooser extends Group {
 
 		TableViewerColumn nameColumn = new TableViewerColumn(forbiddenTable, SWT.LEFT);
 		nameColumn.getColumn().setText("Name");
-		nameColumn.setLabelProvider(new TextColumnLabelProvider<Table>(t -> t.getName()));
+		nameColumn.setLabelProvider(new LabelProvider(t -> t.getName()));
 
 		TableViewerColumn implNameColumn = new TableViewerColumn(forbiddenTable, SWT.LEFT);
 		implNameColumn.getColumn().setText("Implementation name");
-		implNameColumn.setLabelProvider(new TextColumnLabelProvider<Table>(t -> t.getImplName()));
+		implNameColumn.setLabelProvider(new LabelProvider(t -> t.getImplName()));
 
 		new ColumnSortSupport(forbiddenTable);
 
@@ -90,7 +109,7 @@ public class ForbiddenChooser extends Group {
 		tables.setLayoutData(layout.create());
 
 		tables.setTableListener(t -> addBtn.setEnabled(t != null));
-		forbiddenTable.addSelectionChangedListener(e -> rmBtn.setEnabled(!forbiddenTable.getSelection().isEmpty()));
+		forbiddenTable.addSelectionChangedListener(e -> rmBtn.setEnabled(!getSelectedRemovable().isEmpty()));
 		forbiddenTable.addCheckStateListener(e -> fireChanges());
 	}
 
@@ -116,9 +135,14 @@ public class ForbiddenChooser extends Group {
 		fireChanges();
 	}
 
+	@SuppressWarnings("unchecked")
+	private List<Object> getSelectedRemovable() {
+		return ((List<Object>) ((IStructuredSelection) forbiddenTable.getSelection()).toList()).stream()
+				.filter(t -> !defaultForbidden.contains(t)).collect(Collectors.toList());
+	}
+
 	private void rmTable() {
-		List<Object> selected = ((List<Object>) ((IStructuredSelection) forbiddenTable.getSelection()).toList()).
-				stream().filter(t -> !defaultForbidden.contains(t)).collect(Collectors.toList());
+		List<Object> selected = getSelectedRemovable();
 		boolean changed = selected.stream().anyMatch(o -> forbiddenTable.getChecked(o));
 		forbidden.removeAll(selected);
 		refreshFilter();
