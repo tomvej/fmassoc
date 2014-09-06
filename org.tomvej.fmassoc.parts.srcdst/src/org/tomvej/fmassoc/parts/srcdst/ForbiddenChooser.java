@@ -15,6 +15,8 @@ import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -109,7 +111,8 @@ public class ForbiddenChooser extends Group {
 		tables.setLayoutData(layout.create());
 
 		tables.setTableListener(t -> addBtn.setEnabled(t != null));
-		forbiddenTable.addSelectionChangedListener(e -> rmBtn.setEnabled(!getSelectedRemovable().isEmpty()));
+		forbiddenTable.addSelectionChangedListener(e -> rmBtn.setEnabled(!forbiddenTable.getSelection().isEmpty()));
+		forbiddenTable.addSelectionChangedListener(this::bypassSelection);
 		forbiddenTable.addCheckStateListener(e -> fireChanges());
 	}
 
@@ -120,6 +123,16 @@ public class ForbiddenChooser extends Group {
 		result.setLayoutData(GridDataFactory.fillDefaults().create());
 		result.setEnabled(false);
 		return result;
+	}
+
+	private void bypassSelection(SelectionChangedEvent e) {
+		List<Object> selection = getSelection();
+		if (selection.stream().anyMatch(t -> defaultForbidden.contains(t))) {
+			forbiddenTable.removeSelectionChangedListener(this::bypassSelection);
+			forbiddenTable.setSelection(new StructuredSelection(
+					selection.stream().filter(t -> !defaultForbidden.contains(t)).collect(Collectors.toList())));
+			forbiddenTable.addSelectionChangedListener(this::bypassSelection);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -136,13 +149,12 @@ public class ForbiddenChooser extends Group {
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<Object> getSelectedRemovable() {
-		return ((List<Object>) ((IStructuredSelection) forbiddenTable.getSelection()).toList()).stream()
-				.filter(t -> !defaultForbidden.contains(t)).collect(Collectors.toList());
+	private List<Object> getSelection() {
+		return (List<Object>) ((IStructuredSelection) forbiddenTable.getSelection()).toList();
 	}
 
 	private void rmTable() {
-		List<Object> selected = getSelectedRemovable();
+		List<Object> selected = getSelection();
 		boolean changed = selected.stream().anyMatch(o -> forbiddenTable.getChecked(o));
 		forbidden.removeAll(selected);
 		refreshFilter();
