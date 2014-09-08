@@ -127,7 +127,7 @@ public class PathPreferencePage extends PreferencePage implements ContextPrefere
 		manager.setLabelProvider(getSelectedEntry());
 		for (PathPropertyEntry<?> entry : properties) {
 			if (columns.getChecked(entry)) {
-				manager.addCollumn(entry);
+				manager.addColumn(entry);
 			} else {
 				manager.removeColumn(entry);
 			}

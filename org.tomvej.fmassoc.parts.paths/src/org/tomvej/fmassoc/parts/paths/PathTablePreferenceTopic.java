@@ -14,7 +14,7 @@ public interface PathTablePreferenceTopic {
 	/** Path label provider changed. Sends a {@link ColumnLabelProvider}. */
 	public static final String PROVIDER_CHANGE = TOPIC + "/PROVIDER_CHANGE";
 	/** Column has been added. Sends a {@link PathPropertyEntry}. */
-	public static final String COLLUMN_ADDED = TOPIC + "/COLUMN_ADDED";
+	public static final String COLUMN_ADDED = TOPIC + "/COLUMN_ADDED";
 	/** Column has been removed. Sends a {@link PathPropertyEntry} */
-	public static final String COLLUMN_REMOVED = TOPIC + "/COLUMN_REMOVED";
+	public static final String COLUMN_REMOVED = TOPIC + "/COLUMN_REMOVED";
 }

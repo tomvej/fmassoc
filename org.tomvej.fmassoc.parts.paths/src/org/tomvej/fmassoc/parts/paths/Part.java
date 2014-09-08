@@ -112,7 +112,7 @@ public class Part {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Inject
 	@Optional
-	public void addColumn(@UIEventTopic(PathTablePreferenceTopic.COLLUMN_ADDED) PathPropertyEntry<?> columnEntry) {
+	public void addColumn(@UIEventTopic(PathTablePreferenceTopic.COLUMN_ADDED) PathPropertyEntry<?> columnEntry) {
 		if (propertyColumns.containsKey(columnEntry)) {
 			return;
 		}
@@ -138,7 +138,7 @@ public class Part {
 	 */
 	@Inject
 	@Optional
-	public void removeColumn(@UIEventTopic(PathTablePreferenceTopic.COLLUMN_REMOVED) PathPropertyEntry<?> columnEntry) {
+	public void removeColumn(@UIEventTopic(PathTablePreferenceTopic.COLUMN_REMOVED) PathPropertyEntry<?> columnEntry) {
 		TableColumn column = propertyColumns.remove(columnEntry);
 		if (column != null) {
 			column.dispose();

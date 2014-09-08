@@ -171,13 +171,13 @@ public class PathPreferenceManager {
 	/**
 	 * Add path property column.
 	 */
-	public void addCollumn(PathPropertyEntry<?> column) {
+	public void addColumn(PathPropertyEntry<?> column) {
 		boolean set = getColumnsPreferences().get(column.getId(), null) != null;
 		if (!isColumnVisible(column) || !set) {
 			getColumnsPreferences().putBoolean(column.getId(), true);
 			makeDirty();
 			if (set) {
-				broker.send(PathTablePreferenceTopic.COLLUMN_ADDED, column);
+				broker.send(PathTablePreferenceTopic.COLUMN_ADDED, column);
 			}
 		}
 	}
@@ -189,7 +189,7 @@ public class PathPreferenceManager {
 		if (isColumnVisible(column)) {
 			getColumnsPreferences().putBoolean(column.getId(), false);
 			makeDirty();
-			broker.send(PathTablePreferenceTopic.COLLUMN_REMOVED, column);
+			broker.send(PathTablePreferenceTopic.COLUMN_REMOVED, column);
 		}
 	}
 
