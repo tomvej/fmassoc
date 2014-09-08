@@ -26,12 +26,9 @@ public class SelectExpressionAppender {
 	 * Specify handle factory and string builder where SELECT expression should
 	 * be appended.
 	 */
-	public SelectExpressionAppender(StringBuilder targetBuilder,
-			HandleFactory handleFactory) {
-		Validate.notNull(targetBuilder);
-		Validate.notNull(handleFactory);
-		builder = targetBuilder;
-		factory = handleFactory;
+	public SelectExpressionAppender(StringBuilder targetBuilder, HandleFactory handleFactory) {
+		builder = Validate.notNull(targetBuilder);
+		factory = Validate.notNull(handleFactory);
 	}
 
 	/**
@@ -41,8 +38,7 @@ public class SelectExpressionAppender {
 		TableHandle tableHandle = factory.getTableHandle(table);
 		switch (tableHandle.isDisplayed()) {
 			case ALL:
-				append(new StringBuilder(tableHandle.getReference()).append(
-						".*").toString());
+				append(new StringBuilder(tableHandle.getReference()).append(".*").toString());
 				break;
 			case SELECTED:
 				appendAllColumns(table);

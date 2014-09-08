@@ -24,9 +24,8 @@ public class JoinFormatter {
 	 *            suppressed and all columns are displayed (SELECT * FROM)
 	 */
 	public JoinFormatter(HandleFactory handleFactory, boolean displayAllColumns) {
-		Validate.notNull(handleFactory);
+		factory = Validate.notNull(handleFactory);
 		allColumns = displayAllColumns;
-		factory = handleFactory;
 	}
 
 	/**
@@ -38,24 +37,19 @@ public class JoinFormatter {
 		if (allColumns) {
 			result.append("*");
 		} else {
-			SelectExpressionAppender app = new SelectExpressionAppender(result,
-					factory);
+			SelectExpressionAppender app = new SelectExpressionAppender(result, factory);
 			app.append(target.getSource());
-			for (AssociationProperty assoc : target.getAssociations()) {
-				app.append(assoc.getDestination());
-			}
+			target.getAssociations().forEach(a -> app.append(a.getDestination()));
 			if (app.isEmpty()) {
 				result.append("*");
 			}
 		}
 
 		result.append(" FROM ");
-		result.append(factory.getTableHandle(target.getSource())
-				.getDeclaration());
+		result.append(factory.getTableHandle(target.getSource()).getDeclaration());
 		for (AssociationProperty assoc : target.getAssociations()) {
 			result.append(" JOIN ");
-			result.append(factory.getTableHandle(assoc.getDestination())
-					.getDeclaration());
+			result.append(factory.getTableHandle(assoc.getDestination()).getDeclaration());
 			result.append(" ON ");
 			result.append(factory.getPropertyHandle(assoc).getReference());
 			result.append("=");
