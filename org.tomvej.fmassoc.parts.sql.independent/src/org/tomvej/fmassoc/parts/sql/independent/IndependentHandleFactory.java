@@ -58,13 +58,19 @@ public class IndependentHandleFactory implements HandleFactory {
 
 			@Override
 			public boolean isDisplayed() {
-				if (!isSet(Options.PRINT_ASSOC) && property instanceof AssociationProperty) {
-					return false;
-				}
-				if (!isSet(Options.PRINT_VERSIONS) && VERSIONS.contains(property.getImplName())) {
-					return false;
-				}
-				return true;
+				return isSet(Options.PRINT_VERSIONS) || !VERSIONS.contains(property.getImplName());
+			}
+		};
+	}
+
+	@Override
+	public ColumnHandle getPropertyHandle(AssociationProperty property) {
+		return new PropertyHandle(property.getImplName(), property.getParent()) {
+
+			@Override
+			public boolean isDisplayed() {
+				return isSet(Options.PRINT_ASSOC);
+
 			}
 		};
 	}

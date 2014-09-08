@@ -1,5 +1,6 @@
 package org.tomvej.fmassoc.transform.sql.handles;
 
+import org.tomvej.fmassoc.model.db.AssociationProperty;
 import org.tomvej.fmassoc.model.db.Property;
 import org.tomvej.fmassoc.model.db.Table;
 
@@ -17,9 +18,14 @@ public interface HandleFactory {
 	TableHandle getTableHandle(Table table);
 
 	/**
-	 * Return a handle for given property (association or otherwise).
+	 * Return a handle for given property.
 	 */
 	ColumnHandle getPropertyHandle(Property property);
+
+	/**
+	 * Return a handle for given association.
+	 */
+	ColumnHandle getPropertyHandle(AssociationProperty property);
 
 	/**
 	 * Return a handle for an ID property of given table.
