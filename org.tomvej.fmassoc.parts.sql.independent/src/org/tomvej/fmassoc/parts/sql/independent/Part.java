@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.service.prefs.BackingStoreException;
+import org.tomvej.fmassoc.core.wrappers.FocusGainedWrapper;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.transform.sql.formatters.JoinFormatter;
@@ -55,6 +56,7 @@ public class Part {
 		output = new Text(parent, SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.WRAP);
 		output.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		output.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).hint(0, 3 * output.getLineHeight()).create());
+		output.addFocusListener(new FocusGainedWrapper(e -> output.selectAll()));
 
 		Composite optionPanel = new Composite(parent, SWT.NONE);
 		optionPanel.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
