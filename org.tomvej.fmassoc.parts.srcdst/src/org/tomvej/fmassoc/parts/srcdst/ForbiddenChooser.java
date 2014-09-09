@@ -177,6 +177,7 @@ public class ForbiddenChooser extends Group {
 
 		defaultForbidden = forbidden != null ? forbidden : Collections.emptySet();
 		this.forbidden.addAll(defaultForbidden);
+		defaultForbidden.forEach(t -> forbiddenTable.setChecked(t, true));
 		refreshFilter();
 	}
 
