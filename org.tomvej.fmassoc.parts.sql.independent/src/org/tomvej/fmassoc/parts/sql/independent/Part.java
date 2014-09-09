@@ -28,6 +28,11 @@ import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.transform.sql.formatters.JoinFormatter;
 
+/**
+ * Part for path-independent sql transformer.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class Part {
 	@Inject
 	private Logger logger;
@@ -39,6 +44,9 @@ public class Part {
 	private Path selected;
 	private Text output;
 
+	/**
+	 * Create components comprising this part.
+	 */
 	@PostConstruct
 	public void createComponents(Composite parent,
 			@Optional @Named(IServiceConstants.ACTIVE_SELECTION) Path path) {
@@ -67,6 +75,9 @@ public class Part {
 		return result;
 	}
 
+	/**
+	 * Persist options.
+	 */
 	@PersistState
 	public void save() {
 		try {
@@ -76,6 +87,9 @@ public class Part {
 		}
 	}
 
+	/**
+	 * Listen to selected path.
+	 */
 	@Inject
 	public void pathSelected(@Optional @Named(IServiceConstants.ACTIVE_SELECTION) Path path) {
 		selected = path;

@@ -14,6 +14,11 @@ import org.tomvej.fmassoc.transform.sql.handles.HandleFactory;
 import org.tomvej.fmassoc.transform.sql.handles.TableHandle;
 import org.tomvej.fmassoc.transform.sql.handles.TableHandle.DisplayState;
 
+/**
+ * Handle factory for path-independent sql transformer.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class IndependentHandleFactory implements HandleFactory {
 	private final Set<String> VERSIONS = Collections.unmodifiableSet(Arrays
 			.asList("ID_VERSION", "ID_BRANCH", "ID_PREV_VERSION1", "ID_PREV_VERSION2", "FG_OBJ_DELETED", "ID_USER",
@@ -22,6 +27,9 @@ public class IndependentHandleFactory implements HandleFactory {
 	private final Set<Options> options;
 	private final Table src, dst;
 
+	/**
+	 * Specify selected options and source and destination table.
+	 */
 	public IndependentHandleFactory(Set<Options> options, Table src, Table dst) {
 		this.options = Validate.notNull(options);
 		this.src = Validate.notNull(src);
@@ -32,6 +40,9 @@ public class IndependentHandleFactory implements HandleFactory {
 		return options.contains(option);
 	}
 
+	/**
+	 * Returns whether all columns should be displayed.
+	 */
 	public boolean displayAllColumns() {
 		return displayWholeTables() && !isSet(Options.SRC_DST_ONLY);
 	}
