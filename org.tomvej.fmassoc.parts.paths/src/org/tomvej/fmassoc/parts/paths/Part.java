@@ -131,6 +131,7 @@ public class Part {
 				new PathPropertyComparator(columnEntry.getProperty(), columnEntry.getComparator()));
 
 		propertyColumns.put(columnEntry, column);
+		pathTable.refresh();
 	}
 
 	/**
