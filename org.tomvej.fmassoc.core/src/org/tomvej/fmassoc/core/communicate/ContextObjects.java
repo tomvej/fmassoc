@@ -24,4 +24,9 @@ public interface ContextObjects {
 	 * {@link PathPropertyEntry} ({@code List<PathPropertyEntry>}).
 	 */
 	public static final String PATH_PROPERTIES = PLUGIN + ".pathProperties";
+	/**
+	 * Currently selected path transformed via the pinned transformer.
+	 * {@link String}.
+	 */
+	public static final String TRANSFORMED_PATH = PLUGIN + ".transformedPath";
 }

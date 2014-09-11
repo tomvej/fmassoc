@@ -10,10 +10,14 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.e4.ui.di.PersistState;
+import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
@@ -24,6 +28,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.service.prefs.BackingStoreException;
+import org.tomvej.fmassoc.core.communicate.ContextObjects;
+import org.tomvej.fmassoc.core.communicate.PathTransformerTopic;
 import org.tomvej.fmassoc.core.wrappers.FocusGainedWrapper;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.model.path.Path;
@@ -40,18 +46,21 @@ public class Part {
 	@Inject
 	@Preference("org.tomvej.fmassoc.parts.sql.independent")
 	private IEclipsePreferences preference;
+	private IEclipseContext context;
 
 	private Map<Options, Button> options;
 	private Path selected;
 	private Text output;
+	boolean pinned;
 
 	/**
 	 * Create components comprising this part.
 	 */
 	@PostConstruct
-	public void createComponents(Composite parent,
+	public void createComponents(Composite parent, MApplication app,
 			@Optional @Named(IServiceConstants.ACTIVE_SELECTION) Path path) {
 		parent.setLayout(new GridLayout(1, false));
+		context = app.getContext();
 
 		output = new Text(parent, SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.WRAP);
 		output.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
@@ -108,9 +117,26 @@ public class Part {
 					options.keySet().stream().filter(o -> options.get(o).getSelection()).collect(Collectors.toSet()),
 					selected.getSource(), selected.getDestination());
 			String result = new JoinFormatter(factory, factory.displayAllColumns()).formatPath(selected);
-			output.setText(result);
+			setText(result);
 		} else {
-			output.setText("");
+			setText(null);
+		}
+	}
+
+	private void setText(String text) {
+		if (output != null && !output.isDisposed()) {
+			output.setText(text != null ? text : "");
+		}
+		if (pinned) {
+			context.set(ContextObjects.TRANSFORMED_PATH, output);
+		}
+	}
+
+	@Inject
+	public void partPinned(@Optional @UIEventTopic(PathTransformerTopic.SELECT) MPart other, MPart thisPart) {
+		pinned = thisPart.equals(other);
+		if (pinned) {
+			transformPath();
 		}
 	}
 }
