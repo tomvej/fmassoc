@@ -65,6 +65,7 @@ public class Part {
 		options = Arrays.asList(Options.values()).stream()
 				.collect(Collectors.toMap(Function.identity(), o -> createOptionButton(optionPanel, o)));
 		selected = path;
+		transformPath();
 	}
 
 	private Button createOptionButton(Composite parent, Options option) {
