@@ -128,7 +128,7 @@ public class Part {
 			output.setText(text != null ? text : "");
 		}
 		if (pinned) {
-			context.set(ContextObjects.TRANSFORMED_PATH, output);
+			context.set(ContextObjects.TRANSFORMED_PATH, output.getText());
 		}
 	}
 
