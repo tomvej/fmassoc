@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
@@ -18,6 +19,11 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSourceAdapter;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
@@ -36,6 +42,9 @@ import org.tomvej.fmassoc.model.path.Path;
  *
  */
 public class Part {
+	@Inject
+	private IEclipseContext context;
+
 	private TableViewer pathTable;
 	private TableViewerColumn pathColumn;
 	private final Map<PathPropertyEntry<?>, TableColumn> propertyColumns = new HashMap<>();
@@ -65,6 +74,24 @@ public class Part {
 		pathTable.setInput(foundPaths);
 		pathTable.addSelectionChangedListener(e -> selectionService.setSelection(
 				((IStructuredSelection) pathTable.getSelection()).getFirstElement()));
+		pathTable.addDragSupport(DND.DROP_COPY, new Transfer[] { TextTransfer.getInstance() }, new DragSourceAdapter() {
+
+			public void dragStart(DragSourceEvent event) {
+				if (getTransformedPath() == null) {
+					event.doit = false;
+				}
+			};
+
+			public void dragSetData(DragSourceEvent event) {
+				if (TextTransfer.getInstance().isSupportedType(event.dataType)) {
+					event.data = getTransformedPath();
+				}
+			};
+		});
+	}
+
+	private String getTransformedPath() {
+		return (String) context.get(ContextObjects.TRANSFORMED_PATH);
 	}
 
 	/**
