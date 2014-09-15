@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -19,18 +20,21 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TableColumn;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
 import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
 import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
+import org.tomvej.fmassoc.core.wrappers.KeyReleasedWrapper;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.model.db.AssociationProperty;
 import org.tomvej.fmassoc.model.path.Path;
@@ -49,13 +53,16 @@ public class Part {
 	private TableViewerColumn pathColumn;
 	private final Map<PathPropertyEntry<?>, TableColumn> propertyColumns = new HashMap<>();
 	private ColumnSortSupport sortSupport;
+	private Clipboard clipboard;
 
 	/**
 	 * Create components comprising the found table part.
 	 */
 	@PostConstruct
-	public void createComponents(Composite parent, ESelectionService selectionService,
+	public void createComponents(Composite parent, ESelectionService selectionService, Display display,
 			@Named(ContextObjects.FOUND_PATHS) List<Path> foundPaths, PathPreferenceManager preference) {
+		clipboard = new Clipboard(display);
+
 		pathTable = new TableViewer(parent, SWT.SINGLE | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL);
 		pathTable.getTable().setHeaderVisible(true);
 		pathTable.getTable().setLinesVisible(true);
@@ -88,10 +95,18 @@ public class Part {
 				}
 			};
 		});
+		pathTable.getTable().addKeyListener(new KeyReleasedWrapper('c', SWT.CTRL, e -> copyTransformedPath()));
 	}
 
 	private String getTransformedPath() {
 		return (String) context.get(ContextObjects.TRANSFORMED_PATH);
+	}
+
+	private void copyTransformedPath() {
+		String trans = getTransformedPath();
+		if (trans != null) {
+			clipboard.setContents(new Object[] { trans }, new Transfer[] { TextTransfer.getInstance() });
+		}
 	}
 
 	/**
@@ -174,4 +189,11 @@ public class Part {
 		}
 	}
 
+	/**
+	 * Free system resources.
+	 */
+	@PreDestroy
+	public void dispose() {
+		clipboard.dispose();
+	}
 }
