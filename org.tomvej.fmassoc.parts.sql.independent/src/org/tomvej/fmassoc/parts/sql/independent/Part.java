@@ -71,7 +71,7 @@ public class Part {
 		optionPanel.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
 		optionPanel.setLayout(new RowLayout(SWT.VERTICAL));
 
-		options = Arrays.asList(Options.values()).stream()
+		options = Arrays.stream(Options.values())
 				.collect(Collectors.toMap(Function.identity(), o -> createOptionButton(optionPanel, o)));
 		selected = path;
 		transformPath();
