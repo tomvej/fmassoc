@@ -3,14 +3,19 @@
   <imports xsi:type="commands:Command" xmi:id="_T1k8MDJ4EeSrIp1cpcOcAQ" elementId="org.eclipse.ui.window.preferences"/>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_E03icCEnEeSLQMaNm8aPHA" featurename="children" parentElementId="org.tomvej.fmassoc.core.partstack.search">
     <elements xsi:type="basic:Part" xmi:id="_IuopUCEnEeSLQMaNm8aPHA" elementId="org.tomvej.fmassoc.parts.paths.part" contributionURI="bundleclass://org.tomvej.fmassoc.parts.paths/org.tomvej.fmassoc.parts.paths.Part" label="Found Paths">
+      <handlers xmi:id="_5LQo8DwrEeSKNJd9uleB0A" elementId="org.tomvej.fmassoc.parts.paths.handler.multisort" contributionURI="bundleclass://org.tomvej.fmassoc.parts.paths/org.tomvej.fmassoc.parts.paths.MultisortHandler" command="_2JGfgDwrEeSKNJd9uleB0A"/>
       <toolbar xmi:id="_tlxgoDJ0EeSrIp1cpcOcAQ" elementId="org.tomvej.fmassoc.parts.paths.toolbar">
         <children xsi:type="menu:HandledToolItem" xmi:id="_9HXmQDJ0EeSrIp1cpcOcAQ" elementId="org.tomvej.fmassoc.parts.paths.handledtoolitem.preference" label="Preferences" command="_T1k8MDJ4EeSrIp1cpcOcAQ">
           <parameters xmi:id="_mYBcUDJ7EeSrIp1cpcOcAQ" elementId="org.tomvej.fmassoc.parts.paths.handledtoolitem.preference.pageid" name="org.eclipse.ui.window.preferences.pageid" value="org.tomvej.fmassoc.parts.paths.preference"/>
         </children>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_77FFMDwrEeSKNJd9uleB0A" elementId="org.tomvej.fmassoc.parts.paths.handledtoolitem.multisort" label="Multisort" command="_2JGfgDwrEeSKNJd9uleB0A"/>
       </toolbar>
     </elements>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_w7mLAC9VEeS5VNRimk2jgA" featurename="addons" parentElementId="org.tomvej.fmassoc.core.application">
     <elements xsi:type="application:Addon" xmi:id="_0GEi8C9VEeS5VNRimk2jgA" elementId="org.tomvej.fmassoc.parts.paths.addon.preferencemanager" contributionURI="bundleclass://org.tomvej.fmassoc.parts.paths/org.tomvej.fmassoc.parts.paths.PathPreferenceManager"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_vqDYcDwrEeSKNJd9uleB0A" featurename="commands" parentElementId="org.tomvej.fmassoc.core.application">
+    <elements xsi:type="commands:Command" xmi:id="_2JGfgDwrEeSKNJd9uleB0A" elementId="org.tomvej.fmassoc.parts.paths.command.multisort" commandName="Multisort"/>
   </fragments>
 </fragment:ModelFragments>
