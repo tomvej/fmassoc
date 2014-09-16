@@ -12,7 +12,6 @@ import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ListViewer;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -45,23 +44,23 @@ public class MultiSorter extends Composite {
 
 		availableList = new ListViewer(this, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		availableList.getControl().setLayoutData(listLayout.create());
-		addAllBtn = createButton(">>", btnLayout.align(SWT.FILL, SWT.BOTTOM).create(), e -> addAll());
+		addAllBtn = createButton(">>", btnLayout.align(SWT.FILL, SWT.BOTTOM).create(), e -> add(available()));
 		selectedList = new TableViewer(this, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		selectedList.getControl().setLayoutData(listLayout.create());
 		new Label(this, SWT.NONE);
-		addBtn = createButton(">", e -> {});
+		addBtn = createButton(">", e -> add(availableSelection()));
 		upBtn = createButton("Up", e -> {});
-		rmBtn = createButton("<", e -> {});
+		rmBtn = createButton("<", e -> remove(selectedSelection()));
 		downBtn = createButton("Down", e -> {});
-		rmAllBtn = createButton("<<", btnLayout.align(SWT.FILL, SWT.TOP).create(), e -> rmAll());
+		rmAllBtn = createButton("<<", btnLayout.align(SWT.FILL, SWT.TOP).create(), e -> remove(selected()));
 
 		availableList.setLabelProvider(new TextLabelProvider<TableColumn>(c -> c.getText()));
 		TableViewerColumn nameClmn = new TableViewerColumn(selectedList, SWT.LEFT);
 		nameClmn.setLabelProvider(new TextColumnLabelProvider<SortEntry>(e -> e.getColumn().getText()));
 		TableViewerColumn ascClmn = new TableViewerColumn(selectedList, SWT.LEFT);
 		ascClmn.setLabelProvider(new TextColumnLabelProvider<SortEntry>(e -> e.isAscending() ? "Ascending" : "Descending"));
-		nameClmn.getColumn().setWidth(50);
-		ascClmn.getColumn().setWidth(25);
+		nameClmn.getColumn().setWidth(100); // FIXME
+		ascClmn.getColumn().setWidth(50); // FIXME
 
 		available = Properties.selfList(TableColumn.class).observe(new ArrayList<>());
 		availableList.setContentProvider(new ObservableListContentProvider());
@@ -84,13 +83,6 @@ public class MultiSorter extends Composite {
 		result.setText(title);
 		result.addSelectionListener(new SelectionWrapper(listener));
 		return result;
-	}
-
-	private void selectedSelectionChanged(SelectionChangedEvent event) {
-		rmBtn.setEnabled(event.getSelection().isEmpty());
-		boolean single = ((IStructuredSelection) event.getSelection()).size() == 1;
-		upBtn.setEnabled(single);
-		downBtn.setEnabled(single);
 	}
 
 	private void refreshButtons() {
@@ -126,15 +118,15 @@ public class MultiSorter extends Composite {
 		return ((IStructuredSelection) selectedList.getSelection()).toList();
 	}
 
-	private void addAll() {
-		available().stream().map(c -> new SimpleSortEntry(c)).forEach(e -> selected.add(e));
-		available.clear();
+	private void add(List<TableColumn> columns) {
+		columns.stream().map(c -> new SimpleSortEntry(c)).forEach(selected::add);
+		available.removeAll(columns);
 		refreshButtons();
 	}
 
-	private void rmAll() {
-		selected().stream().map(e -> e.getColumn()).forEach(e -> available.add(e));
-		selected.clear();
+	private void remove(List<SortEntry> entries) {
+		entries.stream().map(e -> e.getColumn()).forEach(available::add);
+		selected.removeAll(entries);
 		refreshButtons();
 	}
 
