@@ -1,5 +1,6 @@
 package org.tomvej.fmassoc.core.widgets.multisort;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -15,10 +16,19 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableColumn;
 import org.tomvej.fmassoc.core.tables.SortEntry;
 
+/**
+ * Dialog handling multisort.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class MultisortDialog extends Dialog {
 	private MultiSorter sorter;
 	private Collection<TableColumn> columns;
+	private List<SortEntry> result = Collections.emptyList();
 
+	/**
+	 * Initialize dialog.
+	 */
 	public MultisortDialog(Shell parentShell) {
 		super(parentShell);
 	}
@@ -39,6 +49,9 @@ public class MultisortDialog extends Dialog {
 		return sorter;
 	}
 
+	/**
+	 * Specify columns which can be sorted.
+	 */
 	public void setColumns(Collection<TableColumn> columns) {
 		this.columns = Validate.noNullElements(columns);
 		if (sorter != null) {
@@ -46,16 +59,22 @@ public class MultisortDialog extends Dialog {
 		}
 	}
 
+	@Override
+	protected void okPressed() {
+		result = Collections.unmodifiableList(new ArrayList<>(sorter.getSort()));
+		super.okPressed();
+	}
+
+	/**
+	 * Get the sorting order specified by this dialog.
+	 */
 	public List<SortEntry> getSort() {
-		if (sorter == null) {
-			return Collections.emptyList();
-		}
-		// FIXME
-		return Collections.emptyList();
+		return result;
 	}
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
 		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
+		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
 	}
 }

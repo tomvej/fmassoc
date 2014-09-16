@@ -56,7 +56,6 @@ public class MultiSorter extends Composite {
 
 		availableList.addSelectionChangedListener(e -> addBtn.setEnabled(!e.getSelection().isEmpty()));
 		selectedList.addSelectionChangedListener(this::selectedSelectionChanged);
-
 	}
 
 	private Button createButton(String title) {
@@ -78,6 +77,8 @@ public class MultiSorter extends Composite {
 	}
 
 	public void setColumns(Collection<TableColumn> column) {
+		availableList.getList().removeAll();
+		availableList.add(column.toArray());
 		// FIXME
 	}
 

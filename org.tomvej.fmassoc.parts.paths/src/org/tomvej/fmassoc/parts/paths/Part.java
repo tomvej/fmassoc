@@ -11,6 +11,7 @@ import javax.inject.Named;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -34,6 +35,7 @@ import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
 import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
+import org.tomvej.fmassoc.core.tables.SortEntry;
 import org.tomvej.fmassoc.core.wrappers.KeyReleasedWrapper;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.model.db.AssociationProperty;
@@ -48,6 +50,8 @@ import org.tomvej.fmassoc.model.path.Path;
 public class Part {
 	@Inject
 	private IEclipseContext context;
+	@Inject
+	private IEventBroker broker;
 
 	private TableViewer pathTable;
 	private TableViewerColumn pathColumn;
@@ -173,6 +177,7 @@ public class Part {
 				new PathPropertyComparator(columnEntry.getProperty(), columnEntry.getComparator()));
 
 		propertyColumns.put(columnEntry, column);
+		broker.post(MultisortTopic.COLUMNS, propertyColumns.values());
 		pathTable.refresh();
 	}
 
@@ -186,6 +191,17 @@ public class Part {
 		if (column != null) {
 			column.dispose();
 			sortSupport.setComparator(column, null);
+		}
+	}
+
+	/**
+	 * Apply multisort.
+	 */
+	@Inject
+	@Optional
+	public void multisort(@UIEventTopic(MultisortTopic.SORT) List<SortEntry> sort) {
+		if (sort != null) {
+			sortSupport.multisort(sort);
 		}
 	}
 
