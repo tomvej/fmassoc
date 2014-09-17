@@ -2,7 +2,6 @@ package org.tomvej.fmassoc.core.widgets.multisort;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -45,7 +44,7 @@ public class MultiSorter extends Composite {
 		availableList = new ListViewer(this, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		availableList.getControl().setLayoutData(listLayout.create());
 		addAllBtn = createButton(">>", btnLayout.align(SWT.FILL, SWT.BOTTOM).create(), e -> add(available()));
-		selectedList = new TableViewer(this, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+		selectedList = new TableViewer(this, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		selectedList.getControl().setLayoutData(listLayout.create());
 		new Label(this, SWT.NONE);
 		addBtn = createButton(">", e -> add(availableSelection()));
@@ -59,13 +58,14 @@ public class MultiSorter extends Composite {
 		nameClmn.setLabelProvider(new TextColumnLabelProvider<SortEntry>(e -> e.getColumn().getText()));
 		TableViewerColumn ascClmn = new TableViewerColumn(selectedList, SWT.LEFT);
 		ascClmn.setLabelProvider(new TextColumnLabelProvider<SortEntry>(e -> e.isAscending() ? "Ascending" : "Descending"));
+		ascClmn.setEditingSupport(new AscendingEditingSupport(selectedList));
 		nameClmn.getColumn().setWidth(100); // FIXME
 		ascClmn.getColumn().setWidth(50); // FIXME
 
 		available = Properties.selfList(TableColumn.class).observe(new ArrayList<>());
 		availableList.setContentProvider(new ObservableListContentProvider());
 		availableList.setInput(available);
-		selected = Properties.selfList(SortEntry.class).observe(new ArrayList<>());
+		selected = Properties.selfList(SimpleSortEntry.class).observe(new ArrayList<>());
 		selectedList.setContentProvider(new ObservableListContentProvider());
 		selectedList.setInput(selected);
 
@@ -139,8 +139,7 @@ public class MultiSorter extends Composite {
 	}
 
 	public List<SortEntry> getSort() {
-		// FIXME
-		return Collections.emptyList();
+		return selected();
 	}
 
 	public void setSortListener(Consumer<List<SortEntry>> listener) {

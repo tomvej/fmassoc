@@ -25,4 +25,9 @@ class SimpleSortEntry implements SortEntry {
 	public void setAscending(boolean ascending) {
 		this.ascending = ascending;
 	}
+
+	@Override
+	public String toString() {
+		return "[" + getColumn().getText() + ", " + (isAscending() ? "ascending" : "descending") + "]";
+	}
 }
