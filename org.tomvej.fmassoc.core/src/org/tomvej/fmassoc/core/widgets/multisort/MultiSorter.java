@@ -26,6 +26,11 @@ import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
 
+/**
+ * Component used to set set multisort for a table.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class MultiSorter extends Composite {
 	private final ListViewer availableList;
 	private final TableViewer selectedList;
@@ -34,6 +39,9 @@ public class MultiSorter extends Composite {
 
 	private Consumer<List<SortEntry>> listener;
 
+	/**
+	 * Create the component.
+	 */
 	public MultiSorter(Composite parent) {
 		super(parent, SWT.NONE);
 		setLayout(new GridLayout(4, false));
@@ -139,6 +147,9 @@ public class MultiSorter extends Composite {
 		refreshButtons();
 	}
 
+	/**
+	 * Specify columns used in multisort definition.
+	 */
 	public void setColumns(Collection<TableColumn> columns) {
 		available.clear();
 		available.addAll(columns);
@@ -147,6 +158,9 @@ public class MultiSorter extends Composite {
 		refreshButtons();
 	}
 
+	/**
+	 * Return currently chosen multisort.
+	 */
 	public List<SortEntry> getSort() {
 		return selected();
 	}
@@ -161,6 +175,9 @@ public class MultiSorter extends Composite {
 		}
 	}
 
+	/**
+	 * Attach a listener which is notified on changes in sort.
+	 */
 	public void setSortListener(Consumer<List<SortEntry>> listener) {
 		this.listener = listener;
 	}
