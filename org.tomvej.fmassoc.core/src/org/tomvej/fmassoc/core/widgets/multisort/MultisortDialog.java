@@ -46,6 +46,7 @@ public class MultisortDialog extends Dialog {
 		if (columns != null) {
 			sorter.setColumns(columns);
 		}
+		sorter.setSort(result);
 		return sorter;
 	}
 
@@ -54,6 +55,7 @@ public class MultisortDialog extends Dialog {
 	 */
 	public void setColumns(Collection<TableColumn> columns) {
 		this.columns = Validate.noNullElements(columns);
+		result = Collections.emptyList();
 		if (sorter != null) {
 			sorter.setColumns(columns);
 		}

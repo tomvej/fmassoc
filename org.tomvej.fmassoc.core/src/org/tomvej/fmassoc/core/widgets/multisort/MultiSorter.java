@@ -142,6 +142,16 @@ public class MultiSorter extends Composite {
 		return selected();
 	}
 
+	void setSort(List<SortEntry> sort) {
+		remove(selected());
+		for (SortEntry entry : sort) {
+			available.remove(entry.getColumn());
+			SimpleSortEntry result = new SimpleSortEntry(entry.getColumn());
+			result.setAscending(entry.isAscending());
+			selected.add(result);
+		}
+	}
+
 	public void setSortListener(Consumer<List<SortEntry>> listener) {
 		this.listener = listener;
 	}
