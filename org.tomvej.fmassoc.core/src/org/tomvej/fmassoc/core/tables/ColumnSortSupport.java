@@ -166,6 +166,7 @@ public class ColumnSortSupport {
 	public void multisort(List<SortEntry> columns) {
 		sort = Validate.noNullElements(columns);
 		table.getTable().setSortColumn(null);
+		table.refresh();
 	}
 
 }
