@@ -129,12 +129,14 @@ public class MultiSorter extends Composite {
 	private void add(List<TableColumn> columns) {
 		columns.stream().map(c -> new SimpleSortEntry(c)).forEach(selected::add);
 		available.removeAll(columns);
+		fireChanges();
 		refreshButtons();
 	}
 
 	private void remove(List<SortEntry> entries) {
 		entries.stream().map(e -> e.getColumn()).forEach(available::add);
 		selected.removeAll(entries);
+		fireChanges();
 		refreshButtons();
 	}
 
@@ -144,6 +146,7 @@ public class MultiSorter extends Composite {
 		fireChanges();
 
 		selectedList.getTable().setSelection(index + delta);
+		fireChanges();
 		refreshButtons();
 	}
 
@@ -173,6 +176,7 @@ public class MultiSorter extends Composite {
 			result.setAscending(entry.isAscending());
 			selected.add(result);
 		}
+		fireChanges();
 	}
 
 	/**
