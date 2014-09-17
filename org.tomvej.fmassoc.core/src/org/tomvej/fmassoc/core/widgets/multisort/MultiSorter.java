@@ -48,9 +48,9 @@ public class MultiSorter extends Composite {
 		selectedList.getControl().setLayoutData(listLayout.create());
 		new Label(this, SWT.NONE);
 		addBtn = createButton(">", e -> add(availableSelection()));
-		upBtn = createButton("Up", e -> {});
+		upBtn = createButton("Up", e -> swap(-1));
 		rmBtn = createButton("<", e -> remove(selectedSelection()));
-		downBtn = createButton("Down", e -> {});
+		downBtn = createButton("Down", e -> swap(1));
 		rmAllBtn = createButton("<<", btnLayout.align(SWT.FILL, SWT.TOP).create(), e -> remove(selected()));
 
 		availableList.setLabelProvider(new TextLabelProvider<TableColumn>(c -> c.getText()));
@@ -127,6 +127,15 @@ public class MultiSorter extends Composite {
 	private void remove(List<SortEntry> entries) {
 		entries.stream().map(e -> e.getColumn()).forEach(available::add);
 		selected.removeAll(entries);
+		refreshButtons();
+	}
+
+	private void swap(int delta) {
+		int index = selectedList.getTable().getSelectionIndex();
+		selected.set(index, selected.set(index + delta, selected.get(index)));
+		fireChanges();
+
+		selectedList.getTable().setSelection(index + delta);
 		refreshButtons();
 	}
 
