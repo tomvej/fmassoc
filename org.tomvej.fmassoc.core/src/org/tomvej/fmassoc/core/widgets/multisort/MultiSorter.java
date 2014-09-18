@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableColumn;
 import org.tomvej.fmassoc.core.tables.SortEntry;
+import org.tomvej.fmassoc.core.wrappers.ListChangeListenerWrapper;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
@@ -78,8 +79,21 @@ public class MultiSorter extends Composite {
 		selectedList.setContentProvider(new ObservableListContentProvider());
 		selectedList.setInput(selected);
 
-		availableList.addSelectionChangedListener(e -> this.refreshButtons());
-		selectedList.addSelectionChangedListener(e -> this.refreshButtons());
+		availableList.addSelectionChangedListener(e -> refreshButtons());
+		selectedList.addSelectionChangedListener(e -> refreshButtons());
+		available.addListChangeListener(new ListChangeListenerWrapper(e -> {
+			if (e.isAddition()) {
+				((SimpleSortEntry) e.getElement()).setAscending(true);
+			}
+		}));
+
+		DnDSupport<SimpleSortEntry> dndSupport = new DnDSupport<>();
+		dndSupport.pluginViewer(availableList, available(), () -> getSingle(availableSelection()));
+		dndSupport.pluginViewer(selectedList, selected(), () -> getSingle(selectedSelection()));
+		dndSupport.setChangeListener((s, p) -> {
+			refreshButtons();
+			fireChanges();
+		});
 	}
 
 	private Button createButton(String title, Consumer<SelectionEvent> listener) {
@@ -105,6 +119,13 @@ public class MultiSorter extends Composite {
 		int index = selectedList.getTable().getSelectionIndex();
 		upBtn.setEnabled(single && index != 0);
 		downBtn.setEnabled(single && index != selected.size() - 1);
+	}
+
+	private static <T> T getSingle(List<T> list) {
+		if (list.isEmpty()) {
+			return null;
+		}
+		return list.get(0);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -135,7 +156,6 @@ public class MultiSorter extends Composite {
 	}
 
 	private void remove(List<SimpleSortEntry> entries) {
-		entries.forEach(e -> e.setAscending(true));
 		available.addAll(entries);
 		selected.removeAll(entries);
 		fireChanges();
