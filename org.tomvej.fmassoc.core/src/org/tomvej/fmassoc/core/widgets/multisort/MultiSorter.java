@@ -11,7 +11,6 @@ import org.eclipse.core.databinding.property.Properties;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -26,7 +25,6 @@ import org.tomvej.fmassoc.core.tables.SortEntry;
 import org.tomvej.fmassoc.core.wrappers.ListChangeListenerWrapper;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
-import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
 
 /**
  * Component used to set set multisort for a table.
@@ -34,8 +32,7 @@ import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
  * @author Tomáš Vejpustek
  */
 public class MultiSorter extends Composite {
-	private final ListViewer availableList;
-	private final TableViewer selectedList;
+	private final TableViewer selectedList, availableList;
 	private final IObservableList available, selected;
 	private final Button addBtn, rmBtn, addAllBtn, rmAllBtn, upBtn, downBtn;
 
@@ -51,7 +48,7 @@ public class MultiSorter extends Composite {
 		GridDataFactory listLayout = GridDataFactory.fillDefaults().span(1, 4).grab(true, true);
 		GridDataFactory btnLayout = GridDataFactory.swtDefaults().grab(false, true);
 
-		availableList = new ListViewer(this, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+		availableList = new TableViewer(this, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		availableList.getControl().setLayoutData(listLayout.create());
 		addAllBtn = createButton(">>", btnLayout.align(SWT.FILL, SWT.BOTTOM).create(), e -> add(available()));
 		selectedList = new TableViewer(this, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.FULL_SELECTION);
@@ -63,12 +60,14 @@ public class MultiSorter extends Composite {
 		downBtn = createButton("Down", e -> swap(1));
 		rmAllBtn = createButton("<<", btnLayout.align(SWT.FILL, SWT.TOP).create(), e -> remove(selected()));
 
-		availableList.setLabelProvider(new TextLabelProvider<SortEntry>(e -> e.getColumn().getText()));
+		TableViewerColumn availClmn = new TableViewerColumn(availableList, SWT.LEFT);
+		availClmn.setLabelProvider(new TextColumnLabelProvider<SortEntry>(e -> e.getColumn().getText()));
 		TableViewerColumn nameClmn = new TableViewerColumn(selectedList, SWT.LEFT);
 		nameClmn.setLabelProvider(new TextColumnLabelProvider<SortEntry>(e -> e.getColumn().getText()));
 		TableViewerColumn ascClmn = new TableViewerColumn(selectedList, SWT.LEFT);
 		ascClmn.setLabelProvider(new TextColumnLabelProvider<SortEntry>(e -> e.isAscending() ? "Ascending" : "Descending"));
 		ascClmn.setEditingSupport(new AscendingEditingSupport(selectedList));
+		availClmn.getColumn().setWidth(100); // FIXME
 		nameClmn.getColumn().setWidth(100); // FIXME
 		ascClmn.getColumn().setWidth(50); // FIXME
 
