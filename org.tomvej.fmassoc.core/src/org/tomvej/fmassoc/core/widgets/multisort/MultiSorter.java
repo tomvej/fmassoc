@@ -2,6 +2,7 @@ package org.tomvej.fmassoc.core.widgets.multisort;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -61,7 +62,7 @@ public class MultiSorter extends Composite {
 		downBtn = createButton("Down", e -> swap(1));
 		rmAllBtn = createButton("<<", btnLayout.align(SWT.FILL, SWT.TOP).create(), e -> remove(selected()));
 
-		availableList.setLabelProvider(new TextLabelProvider<TableColumn>(c -> c.getText()));
+		availableList.setLabelProvider(new TextLabelProvider<SortEntry>(e -> e.getColumn().getText()));
 		TableViewerColumn nameClmn = new TableViewerColumn(selectedList, SWT.LEFT);
 		nameClmn.setLabelProvider(new TextColumnLabelProvider<SortEntry>(e -> e.getColumn().getText()));
 		TableViewerColumn ascClmn = new TableViewerColumn(selectedList, SWT.LEFT);
@@ -70,7 +71,7 @@ public class MultiSorter extends Composite {
 		nameClmn.getColumn().setWidth(100); // FIXME
 		ascClmn.getColumn().setWidth(50); // FIXME
 
-		available = Properties.selfList(TableColumn.class).observe(new ArrayList<>());
+		available = Properties.selfList(SimpleSortEntry.class).observe(new ArrayList<>());
 		availableList.setContentProvider(new ObservableListContentProvider());
 		availableList.setInput(available);
 		selected = Properties.selfList(SimpleSortEntry.class).observe(new ArrayList<>());
@@ -107,34 +108,35 @@ public class MultiSorter extends Composite {
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<TableColumn> available() {
+	private List<SimpleSortEntry> available() {
 		return available;
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<SortEntry> selected() {
+	private List<SimpleSortEntry> selected() {
 		return selected;
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<TableColumn> availableSelection() {
+	private List<SimpleSortEntry> availableSelection() {
 		return ((IStructuredSelection) availableList.getSelection()).toList();
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<SortEntry> selectedSelection() {
+	private List<SimpleSortEntry> selectedSelection() {
 		return ((IStructuredSelection) selectedList.getSelection()).toList();
 	}
 
-	private void add(List<TableColumn> columns) {
-		columns.stream().map(c -> new SimpleSortEntry(c)).forEach(selected::add);
+	private void add(List<SimpleSortEntry> columns) {
+		selected.addAll(columns);
 		available.removeAll(columns);
 		fireChanges();
 		refreshButtons();
 	}
 
-	private void remove(List<SortEntry> entries) {
-		entries.stream().map(e -> e.getColumn()).forEach(available::add);
+	private void remove(List<SimpleSortEntry> entries) {
+		entries.forEach(e -> e.setAscending(true));
+		available.addAll(entries);
 		selected.removeAll(entries);
 		fireChanges();
 		refreshButtons();
@@ -155,7 +157,7 @@ public class MultiSorter extends Composite {
 	 */
 	public void setColumns(Collection<TableColumn> columns) {
 		available.clear();
-		available.addAll(columns);
+		columns.stream().map(c -> new SimpleSortEntry(c)).forEach(available::add);
 		selected.clear();
 		fireChanges();
 		refreshButtons();
@@ -165,7 +167,7 @@ public class MultiSorter extends Composite {
 	 * Return currently chosen multisort.
 	 */
 	public List<SortEntry> getSort() {
-		return selected();
+		return Collections.unmodifiableList(selected());
 	}
 
 	void setSort(List<SortEntry> sort) {
