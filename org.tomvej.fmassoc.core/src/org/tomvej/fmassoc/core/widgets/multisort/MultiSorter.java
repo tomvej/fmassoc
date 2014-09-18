@@ -35,6 +35,7 @@ public class MultiSorter extends Composite {
 	private final TableViewer selectedList, availableList;
 	private final IObservableList available, selected;
 	private final Button addBtn, rmBtn, addAllBtn, rmAllBtn, upBtn, downBtn;
+	private List<TableViewerColumn> tableColumns = new ArrayList<>();
 
 	private Consumer<List<SortEntry>> listener;
 
@@ -67,9 +68,7 @@ public class MultiSorter extends Composite {
 		TableViewerColumn ascClmn = new TableViewerColumn(selectedList, SWT.LEFT);
 		ascClmn.setLabelProvider(new TextColumnLabelProvider<SortEntry>(e -> e.isAscending() ? "Ascending" : "Descending"));
 		ascClmn.setEditingSupport(new AscendingEditingSupport(selectedList));
-		availClmn.getColumn().setWidth(100); // FIXME
-		nameClmn.getColumn().setWidth(100); // FIXME
-		ascClmn.getColumn().setWidth(50); // FIXME
+		Collections.addAll(tableColumns, availClmn, nameClmn, ascClmn);
 
 		available = Properties.selfList(SimpleSortEntry.class).observe(new ArrayList<>());
 		availableList.setContentProvider(new ObservableListContentProvider());
@@ -178,6 +177,13 @@ public class MultiSorter extends Composite {
 		available.clear();
 		columns.stream().map(c -> new SimpleSortEntry(c)).forEach(available::add);
 		selected.clear();
+
+		// column packing
+		selected.addAll(available);
+		selected().forEach(e -> e.setAscending(false));
+		tableColumns.forEach(c -> c.getColumn().pack());
+		selected.clear();
+
 		fireChanges();
 		refreshButtons();
 	}
