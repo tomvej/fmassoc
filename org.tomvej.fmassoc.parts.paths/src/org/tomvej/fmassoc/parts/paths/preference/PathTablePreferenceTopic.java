@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.parts.paths;
+package org.tomvej.fmassoc.parts.paths.preference;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;

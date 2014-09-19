@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.parts.paths;
+package org.tomvej.fmassoc.parts.paths.multisort;
 
 import java.util.Collection;
 

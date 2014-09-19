@@ -41,6 +41,9 @@ import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.model.db.AssociationProperty;
 import org.tomvej.fmassoc.model.path.Path;
+import org.tomvej.fmassoc.parts.paths.multisort.MultisortTopic;
+import org.tomvej.fmassoc.parts.paths.preference.PathPreferenceManager;
+import org.tomvej.fmassoc.parts.paths.preference.PathTablePreferenceTopic;
 
 /**
  * Part with found paths table.
