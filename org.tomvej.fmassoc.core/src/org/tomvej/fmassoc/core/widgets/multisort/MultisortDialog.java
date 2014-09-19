@@ -56,7 +56,7 @@ public class MultisortDialog extends Dialog {
 	public void setColumns(Collection<TableColumn> columns) {
 		this.columns = Validate.noNullElements(columns);
 		result = Collections.emptyList();
-		if (sorter != null) {
+		if (isSorterReady()) {
 			sorter.setColumns(columns);
 		}
 	}
@@ -72,6 +72,20 @@ public class MultisortDialog extends Dialog {
 	 */
 	public List<SortEntry> getSort() {
 		return result;
+	}
+
+	/**
+	 * Clears the current sort.
+	 */
+	public void clearSort() {
+		result = Collections.emptyList();
+		if (isSorterReady()) {
+			sorter.setSort(result);
+		}
+	}
+
+	private boolean isSorterReady() {
+		return sorter != null && !sorter.isDisposed();
 	}
 
 	@Override

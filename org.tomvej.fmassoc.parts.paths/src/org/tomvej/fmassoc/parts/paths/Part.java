@@ -37,6 +37,7 @@ import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
 import org.tomvej.fmassoc.core.tables.SortEntry;
 import org.tomvej.fmassoc.core.wrappers.KeyReleasedWrapper;
+import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.model.db.AssociationProperty;
 import org.tomvej.fmassoc.model.path.Path;
@@ -168,6 +169,7 @@ public class Part {
 		column.setText(columnEntry.getName());
 		column.setToolTipText(columnEntry.getDescription());
 		column.setWidth(100);
+		column.addSelectionListener(new SelectionWrapper(e -> broker.post(MultisortTopic.SINGLESORT, column)));
 
 		viewerColumn.setLabelProvider(new TextColumnLabelProvider<Path>(
 				p -> columnEntry.getProperty().getValue(p).toString()));
@@ -199,7 +201,7 @@ public class Part {
 	 */
 	@Inject
 	@Optional
-	public void multisort(@UIEventTopic(MultisortTopic.SORT) List<SortEntry> sort) {
+	public void multisort(@UIEventTopic(MultisortTopic.MULTISORT) List<SortEntry> sort) {
 		if (sort != null) {
 			sortSupport.multisort(sort);
 		}

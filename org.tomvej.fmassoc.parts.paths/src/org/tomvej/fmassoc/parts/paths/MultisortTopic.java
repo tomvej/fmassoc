@@ -24,6 +24,11 @@ public interface MultisortTopic {
 	 * The user has chosen a multisort. Sends a {@link List} of
 	 * {@link SortEntry}.
 	 */
-	public static final String SORT = TOPIC + "/SORT_SELECTED";
+	public static final String MULTISORT = TOPIC + "/SORT_SELECTED";
 
+	/**
+	 * The user has chosen a single sort by selecting a column header.
+	 * Sends a {@link TableColumn} -- to keep it simple.
+	 */
+	public static final String SINGLESORT = TOPIC + "/SORT_REMOVED";
 }

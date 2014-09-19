@@ -8,7 +8,7 @@
         <children xsi:type="menu:HandledToolItem" xmi:id="_9HXmQDJ0EeSrIp1cpcOcAQ" elementId="org.tomvej.fmassoc.parts.paths.handledtoolitem.preference" label="Preferences" command="_T1k8MDJ4EeSrIp1cpcOcAQ">
           <parameters xmi:id="_mYBcUDJ7EeSrIp1cpcOcAQ" elementId="org.tomvej.fmassoc.parts.paths.handledtoolitem.preference.pageid" name="org.eclipse.ui.window.preferences.pageid" value="org.tomvej.fmassoc.parts.paths.preference"/>
         </children>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_77FFMDwrEeSKNJd9uleB0A" elementId="org.tomvej.fmassoc.parts.paths.handledtoolitem.multisort" label="Multisort" command="_2JGfgDwrEeSKNJd9uleB0A"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_77FFMDwrEeSKNJd9uleB0A" elementId="org.tomvej.fmassoc.parts.paths.handledtoolitem.multisort" label="Multisort" type="Check" command="_2JGfgDwrEeSKNJd9uleB0A"/>
       </toolbar>
     </elements>
   </fragments>
