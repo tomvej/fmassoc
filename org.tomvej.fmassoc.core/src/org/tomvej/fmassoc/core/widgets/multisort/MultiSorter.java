@@ -3,8 +3,11 @@ package org.tomvej.fmassoc.core.widgets.multisort;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.property.Properties;
@@ -197,13 +200,18 @@ public class MultiSorter extends Composite {
 
 	void setSort(List<SortEntry> sort) {
 		remove(selected());
-		for (SortEntry entry : sort) {
-			available.remove(entry.getColumn());
-			SimpleSortEntry result = new SimpleSortEntry(entry.getColumn());
-			result.setAscending(entry.isAscending());
-			selected.add(result);
+		Map<TableColumn, Boolean> sortMap = sort.stream()
+				.collect(Collectors.toMap(e -> e.getColumn(), e -> e.isAscending()));
+
+		for (Iterator<SimpleSortEntry> avail = available().iterator(); avail.hasNext();) {
+			SimpleSortEntry entry = avail.next();
+			Boolean ascending = sortMap.get(entry.getColumn());
+			if (ascending != null) { // found
+				avail.remove();
+				selected.add(entry);
+				entry.setAscending(ascending);
+			}
 		}
-		fireChanges();
 	}
 
 	/**
