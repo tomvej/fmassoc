@@ -186,6 +186,7 @@ public class MultiSorter extends Composite {
 		selected().forEach(e -> e.setAscending(false));
 		tableColumns.forEach(c -> c.getColumn().pack());
 		selected.clear();
+		available().forEach(e -> e.setAscending(true));
 
 		fireChanges();
 		refreshButtons();
