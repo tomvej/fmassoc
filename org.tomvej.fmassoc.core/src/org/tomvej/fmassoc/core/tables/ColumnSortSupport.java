@@ -164,9 +164,14 @@ public class ColumnSortSupport {
 	 * Sort wrt a list of columns.
 	 */
 	public void multisort(List<SortEntry> columns) {
-		sort = Validate.noNullElements(columns);
-		table.getTable().setSortColumn(null);
-		table.refresh();
+		Validate.noNullElements(columns);
+		if (columns.size() == 1) {
+			sortByColumn(columns.get(0));
+		} else {
+			sort = columns;
+			table.getTable().setSortColumn(null);
+			table.refresh();
+		}
 	}
 
 }
