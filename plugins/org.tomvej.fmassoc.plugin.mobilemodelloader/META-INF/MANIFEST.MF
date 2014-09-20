@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Mobile Model Loader
-Bundle-SymbolicName: org.tomvej.fmassoc.plugin.mobilemodelloader
+Bundle-SymbolicName: org.tomvej.fmassoc.plugin.mobilemodelloader;singleton:=true
 Bundle-Version: 2.0.0.SNAPSHOT
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.tomvej.fmassoc.model;bundle-version="2.0.0",
