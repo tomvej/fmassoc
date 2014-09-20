@@ -15,6 +15,11 @@ import org.tomvej.fmassoc.model.builder.simple.TableCache;
 import org.tomvej.fmassoc.model.builder.simple.TableImpl;
 import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 
+/**
+ * XML node corresponding to the data model.
+ * 
+ * @author Tomáš Vejpustek
+ */
 @XmlRootElement(name = "data_model")
 public class DataModelNode {
 	static final String IMPL_NAME_XML_PATH = "imp_details/@oracle_sql_name";
@@ -22,7 +27,13 @@ public class DataModelNode {
 	@XmlElement(name = "type")
 	private List<TypeNode> types;
 
-
+	/**
+	 * Transform this data model into a {@link DataModelBuilder}.
+	 * 
+	 * @return Newly created builder corresponding to this model.
+	 * @throws ModelLoadingException
+	 *             When transformation fails.
+	 */
 	public DataModelBuilder transform() throws ModelLoadingException {
 		TableCache<String> byName = new TableCache<>(t -> t.getName());
 		Map<TypeNode, TableImpl> tables = new HashMap<>();

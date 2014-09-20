@@ -7,6 +7,11 @@ import javax.xml.bind.annotation.XmlType;
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 import org.tomvej.fmassoc.model.db.Multiplicity;
 
+/**
+ * XML node corresponding to association.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class AssociationNode {
 
 	@XmlType
@@ -52,26 +57,44 @@ public class AssociationNode {
 	@XmlPath("reverse/@mult")
 	private Mult multiplicity;
 
+	/**
+	 * Return human-readable name.
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Return human-readable name of the reverse association.
+	 */
 	public String getReverseName() {
 		return reverseName;
 	}
 
+	/**
+	 * Return implementation name.
+	 */
 	public String getImplName() {
 		return implName;
 	}
 
+	/**
+	 * Return name of the target table.
+	 */
 	public String getTargetName() {
 		return target;
 	}
 
+	/**
+	 * Return whether this association is mandatory.
+	 */
 	public boolean isMandatory() {
 		return optional.mandatory;
 	}
 
+	/**
+	 * Return this association multiplicity.
+	 */
 	public Multiplicity getMultiplicity() {
 		return multiplicity.multiplicity;
 	}

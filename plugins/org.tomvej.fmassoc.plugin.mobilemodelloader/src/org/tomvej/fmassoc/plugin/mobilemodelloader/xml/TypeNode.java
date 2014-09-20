@@ -8,6 +8,11 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
+/**
+ * XML node corresponding to the type/table.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class TypeNode {
 	private static final String OID_COLUMN = "@serversql_oid_column";
 	@XmlAttribute
@@ -24,26 +29,44 @@ public class TypeNode {
 	private String oid;
 
 
+	/**
+	 * Return human-readable name.
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Return table number.
+	 */
 	public int getNumber() {
 		return number;
 	}
 
+	/**
+	 * Return implementation name.
+	 */
 	public String getImplName() {
 		return implName;
 	}
 
+	/**
+	 * Return list of properties.
+	 */
 	public List<PropertyNode> getProperties() {
 		return Collections.unmodifiableList(properties);
 	}
 
+	/**
+	 * Return list of outgoing associations.
+	 */
 	public List<AssociationNode> getAssociations() {
 		return Collections.unmodifiableList(associations);
 	}
 
+	/**
+	 * Return name of the primary key column.
+	 */
 	public String getOIDColumn() {
 		return oid;
 	}
