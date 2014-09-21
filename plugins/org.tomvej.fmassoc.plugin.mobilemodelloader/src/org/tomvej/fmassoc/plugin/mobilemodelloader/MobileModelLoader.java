@@ -8,6 +8,7 @@ import org.eclipse.jface.wizard.IWizard;
 import org.tomvej.fmassoc.model.db.DataModel;
 import org.tomvej.fmassoc.parts.model.ModelLoader;
 import org.tomvej.fmassoc.parts.model.ModelLoadingException;
+import org.tomvej.fmassoc.plugin.mobilemodelloader.wizards.MobileModelWizard;
 import org.tomvej.fmassoc.plugin.mobilemodelloader.xml.DataModelNode;
 
 public class MobileModelLoader implements ModelLoader {
@@ -24,14 +25,12 @@ public class MobileModelLoader implements ModelLoader {
 
 	@Override
 	public IWizard createEditWizard(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return new MobileModelWizard();
 	}
 
 	@Override
 	public IWizard createNewWizard(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return new MobileModelWizard();
 	}
 
 }
