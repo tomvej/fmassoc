@@ -153,6 +153,12 @@ class LoaderSelectionPage extends WizardSelectionPage implements IWizardNode {
 		}
 
 		@Override
+		protected void handleShellCloseEvent() {
+			removeCurrentModel();
+			super.handleShellCloseEvent();
+		}
+
+		@Override
 		protected void cancelPressed() {
 			removeCurrentModel();
 			super.cancelPressed();
