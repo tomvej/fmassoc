@@ -1,6 +1,7 @@
 package org.tomvej.fmassoc.plugin.constantmodelloader;
 
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -19,7 +20,7 @@ public class EditWizardPage extends WizardPage {
 
 	@Override
 	public void createControl(Composite parent) {
-		setControl(parent);
+		setControl(new Composite(parent, SWT.NONE));
 	}
 
 }
