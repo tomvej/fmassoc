@@ -3,6 +3,7 @@ package org.tomvej.fmassoc.plugin.mobilemodelloader.xml;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
+import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 
 /**
  * XML node corresponding to property.
@@ -27,6 +28,21 @@ public class PropertyNode {
 	 */
 	public String getImplName() {
 		return implName;
+	}
+
+	/**
+	 * Validates whether this object is well-defined.
+	 * 
+	 * @throws ModelLoadingException
+	 *             when some properties are missing.
+	 */
+	public void validate() throws ModelLoadingException {
+		if (name == null) {
+			throw new ModelLoadingException("Unable to read property name.");
+		}
+		if (implName == null) {
+			throw new ModelLoadingException("Unable to read implementation name of property `" + name + "'.");
+		}
 	}
 
 }

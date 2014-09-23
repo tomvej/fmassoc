@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 import org.tomvej.fmassoc.model.db.Multiplicity;
+import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 
 /**
  * XML node corresponding to association.
@@ -99,4 +100,34 @@ public class AssociationNode {
 		return multiplicity.multiplicity;
 	}
 
+	/**
+	 * Validates whether this object is well-defined.
+	 * 
+	 * @throws ModelLoadingException
+	 *             when some properties are missing.
+	 */
+	public void validate() throws ModelLoadingException {
+		if (name == null) {
+			throw new ModelLoadingException("Unable to read name of association.");
+		}
+		if (reverseName == null) {
+			error("reverse name");
+		}
+		if (implName == null) {
+			error("implementation name");
+		}
+		if (target == null) {
+			error("target type");
+		}
+		if (optional == null) {
+			throw new ModelLoadingException("Unable to finde whether association `" + name + "' is mandatory.");
+		}
+		if (multiplicity == null) {
+			error("multiplicity");
+		}
+	}
+
+	private void error(String message) throws ModelLoadingException {
+		throw new ModelLoadingException("Unable to read " + " of association `" + name + "'.");
+	}
 }

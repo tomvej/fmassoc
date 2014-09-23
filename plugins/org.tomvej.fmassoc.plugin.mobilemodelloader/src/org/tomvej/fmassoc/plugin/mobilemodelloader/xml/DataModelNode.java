@@ -1,5 +1,6 @@
 package org.tomvej.fmassoc.plugin.mobilemodelloader.xml;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class DataModelNode {
 	static final String IMPL_NAME_XML_PATH = "imp_details/@oracle_sql_name";
 
 	@XmlElement(name = "type")
-	private List<TypeNode> types;
+	private List<TypeNode> types = Collections.emptyList();
 
 	/**
 	 * Transform this data model into a {@link DataModelBuilder}.
@@ -40,6 +41,11 @@ public class DataModelNode {
 
 		DataModelBuilder result = new DataModelBuilder(byName);
 		for (TypeNode type : types) {
+			type.validate();
+			for (PropertyNode p : type.getProperties()) {
+				p.validate();
+			}
+
 			TableImpl table = result.addTable(new TableBuilder().setName(type.getName()).setImplName(type.getImplName())
 					.setNumber(type.getNumber()).setIdImplName(type.getOIDColumn()));
 			if (table == null) {
@@ -51,6 +57,7 @@ public class DataModelNode {
 
 		for (TypeNode type : types) {
 			for (AssociationNode assoc : type.getAssociations()) {
+				assoc.validate();
 				AssociationBuilder builder = new AssociationBuilder().setName(assoc.getName())
 						.setImplName(assoc.getImplName()).setReverseName(assoc.getReverseName())
 						.setMandatory(assoc.isMandatory()).setMultiplicity(assoc.getMultiplicity());

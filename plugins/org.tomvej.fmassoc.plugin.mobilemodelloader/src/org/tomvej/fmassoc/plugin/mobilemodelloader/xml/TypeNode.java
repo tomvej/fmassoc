@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
+import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 
 /**
  * XML node corresponding to the type/table.
@@ -22,11 +23,15 @@ public class TypeNode {
 	@XmlPath(DataModelNode.IMPL_NAME_XML_PATH)
 	private String implName;
 	@XmlElement(name = "property")
-	private List<PropertyNode> properties;
+	private List<PropertyNode> properties = Collections.emptyList();
 	@XmlElement(name = "association")
-	private List<AssociationNode> associations;
-	@XmlPath("root_without_subtypes/" + OID_COLUMN + "|root_with_subtypes/" + OID_COLUMN + "|final_subtype/" + OID_COLUMN)
-	private String oid;
+	private List<AssociationNode> associations = Collections.emptyList();
+	@XmlPath("root_without_subtypes/" + OID_COLUMN)
+	private String oid1;
+	@XmlPath("root_with_subtypes/" + OID_COLUMN)
+	private String oid2;
+	@XmlPath("final_subtype/" + OID_COLUMN)
+	private String oid3;
 
 
 	/**
@@ -68,7 +73,41 @@ public class TypeNode {
 	 * Return name of the primary key column.
 	 */
 	public String getOIDColumn() {
-		return oid;
+		if (oid1 != null) {
+			return oid1;
+		}
+		if (oid2 != null) {
+			return oid2;
+		}
+		if (oid3 != null) {
+			return oid3;
+		}
+		return null;
+	}
+
+	/**
+	 * Validates whether this object is well-defined.
+	 * 
+	 * @throws ModelLoadingException
+	 *             when some properties are missing.
+	 */
+	public void validate() throws ModelLoadingException {
+		if (name == null) {
+			error("Unable to read name of table.");
+		}
+		if (implName == null) {
+			error("Unable to read implementation name of table `" + name + "'.");
+		}
+		if (number == null) {
+			error("Unable to read number of table `" + name + "'.");
+		}
+		if (oid1 == null && oid2 == null && oid3 == null) {
+			error("Unable to read object id column of table `" + name + "'.");
+		}
+	}
+
+	private void error(String message) throws ModelLoadingException {
+		throw new ModelLoadingException(message);
 	}
 
 }
