@@ -71,7 +71,6 @@ public class FilePage extends WizardPage {
 		}
 	}
 
-
 	public String getFile() {
 		return input.getText();
 	}

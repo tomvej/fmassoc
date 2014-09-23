@@ -1,8 +1,11 @@
 package org.tomvej.fmassoc.plugin.mobilemodelloader.wizards;
 
+import java.util.Collection;
+
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.tomvej.fmassoc.model.db.Table;
 
 public class ForbiddenPage extends WizardPage {
 
@@ -19,5 +22,9 @@ public class ForbiddenPage extends WizardPage {
 		// FIXME
 
 		setControl(container);
+	}
+
+	public void setTables(Collection<Table> tables) {
+
 	}
 }
