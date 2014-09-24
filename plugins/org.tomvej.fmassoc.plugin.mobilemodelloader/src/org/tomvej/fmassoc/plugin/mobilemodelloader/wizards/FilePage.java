@@ -101,7 +101,13 @@ public class FilePage extends WizardPage {
 		if (invisible) {
 			message.setText("");
 		} else {
-			message.setText(e.getLocalizedMessage());
+			String msg = e.getLocalizedMessage();
+			Throwable ex = e;
+			while (msg == null && ex.getCause() != null) {
+				ex = ex.getCause();
+				msg = ex.getLocalizedMessage();
+			}
+			message.setText(msg != null ? msg : "");
 		}
 		messageData.exclude = invisible;
 		message.setVisible(!invisible);
