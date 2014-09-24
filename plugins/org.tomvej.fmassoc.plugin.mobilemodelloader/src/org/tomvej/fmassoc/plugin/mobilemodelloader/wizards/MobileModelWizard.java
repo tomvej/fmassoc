@@ -1,6 +1,9 @@
 package org.tomvej.fmassoc.plugin.mobilemodelloader.wizards;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -12,6 +15,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Composite;
+import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 import org.tomvej.fmassoc.plugin.mobilemodelloader.xml.DataModelNode;
 
@@ -44,19 +48,30 @@ public class MobileModelWizard extends Wizard {
 
 	private void pageChanging(PageChangingEvent event) {
 		if (event.getCurrentPage().equals(file) && event.getTargetPage().equals(forbidden)) {
-			BusyIndicator.showWhile(getShell().getDisplay(), () -> {
-				try {
-					Unmarshaller unmarshaller = JAXBContext.newInstance(DataModelNode.class).createUnmarshaller();
-					DataModelNode model = (DataModelNode) unmarshaller.unmarshal(new File(file.getFile()));
-					forbidden.setTables(model.transform().create().getTables());
-				} catch (JAXBException | ModelLoadingException e) {
-					event.doit = false;
-					file.setErrorMessage("Model could not be loaded.");
-					file.setPageComplete(false);
-					file.setException(e);
-				}
-			});
+			BusyIndicator.showWhile(
+					getShell().getDisplay(),
+					() -> {
+						try {
+							Unmarshaller unmarshaller = JAXBContext.newInstance(DataModelNode.class).createUnmarshaller();
+							DataModelNode model = (DataModelNode) unmarshaller.unmarshal(new File(file.getFile()));
+							Collection<Table> tables = model.transform().create().getTables();
+							forbidden.setTables(tables);
+							Collection<Table> defForbid = tables.stream()
+									.filter(t -> getDefaultForbiddenNames().contains(t.getName()))
+									.collect(Collectors.toList());
+							forbidden.setForbidden(defForbid);
+						} catch (JAXBException | ModelLoadingException e) {
+							event.doit = false;
+							file.setErrorMessage("Model could not be loaded.");
+							file.setPageComplete(false);
+							file.setException(e);
+						}
+					});
 		}
+	}
+
+	private Collection<String> getDefaultForbiddenNames() {
+		return Arrays.asList("CREW", "BLOB", "ASSIGNMENT");
 	}
 
 	@Override
@@ -66,8 +81,7 @@ public class MobileModelWizard extends Wizard {
 
 	@Override
 	public boolean performFinish() {
-		System.out.println("Perform finish.");
-		// TODO Auto-generated method stub
+		// FIXME configuration
 		return false;
 	}
 
