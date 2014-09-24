@@ -76,18 +76,21 @@ public class ForbiddenPage extends WizardPage {
 		forbiddenList.setInput(forbidden);
 
 		forbidden.addListChangeListener(e -> refresh());
+		forbiddenList.addSelectionChangedListener(e -> refresh());
 		chooser.setTableListener(t -> refresh());
 
 		addBtn.addSelectionListener(new SelectionWrapper(e -> forbidden.add(chooser.getSelection())));
-		rmBtn.addSelectionListener(new SelectionWrapper(e -> forbidden.remove(getSelected())));
+		rmBtn.addSelectionListener(new SelectionWrapper(e ->
+				forbidden.removeAll(((IStructuredSelection) forbiddenList.getSelection()).toList())));
 
 		refresh();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void refresh() {
 		addBtn.setEnabled(chooser.getSelection() != null);
 		rmBtn.setEnabled(!forbiddenList.getSelection().isEmpty());
-		chooser.setFilter(getSelected());
+		chooser.setFilter(forbidden);
 	}
 
 	/**
@@ -101,11 +104,6 @@ public class ForbiddenPage extends WizardPage {
 	@Override
 	public IWizardPage getNextPage() {
 		return null;
-	}
-
-	@SuppressWarnings("unchecked")
-	private Collection<Object> getSelected() {
-		return ((IStructuredSelection) forbiddenList.getSelection()).toList();
 	}
 
 	/**
