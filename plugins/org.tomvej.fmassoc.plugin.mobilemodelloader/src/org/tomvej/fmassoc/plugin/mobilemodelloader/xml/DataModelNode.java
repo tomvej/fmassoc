@@ -1,6 +1,5 @@
 package org.tomvej.fmassoc.plugin.mobilemodelloader.xml;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +25,7 @@ public class DataModelNode {
 	static final String IMPL_NAME_XML_PATH = "imp_details/@oracle_sql_name";
 
 	@XmlElement(name = "type")
-	private List<TypeNode> types = Collections.emptyList();
+	private List<TypeNode> types;
 
 	/**
 	 * Transform this data model into a {@link DataModelBuilder}.

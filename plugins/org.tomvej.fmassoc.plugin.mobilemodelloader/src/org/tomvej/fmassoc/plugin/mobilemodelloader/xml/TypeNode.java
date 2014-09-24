@@ -23,9 +23,9 @@ public class TypeNode {
 	@XmlPath(DataModelNode.IMPL_NAME_XML_PATH)
 	private String implName;
 	@XmlElement(name = "property")
-	private List<PropertyNode> properties = Collections.emptyList();
+	private List<PropertyNode> properties;
 	@XmlElement(name = "association")
-	private List<AssociationNode> associations = Collections.emptyList();
+	private List<AssociationNode> associations;
 	@XmlPath("root_without_subtypes/" + OID_COLUMN)
 	private String oid1;
 	@XmlPath("root_with_subtypes/" + OID_COLUMN)
@@ -59,6 +59,9 @@ public class TypeNode {
 	 * Return list of properties.
 	 */
 	public List<PropertyNode> getProperties() {
+		if (properties == null) {
+			return Collections.emptyList();
+		}
 		return Collections.unmodifiableList(properties);
 	}
 
@@ -66,6 +69,9 @@ public class TypeNode {
 	 * Return list of outgoing associations.
 	 */
 	public List<AssociationNode> getAssociations() {
+		if (associations == null) {
+			return Collections.emptyList();
+		}
 		return Collections.unmodifiableList(associations);
 	}
 
