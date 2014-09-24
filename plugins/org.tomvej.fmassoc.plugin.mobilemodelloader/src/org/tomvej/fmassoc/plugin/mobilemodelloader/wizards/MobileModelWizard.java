@@ -10,6 +10,7 @@ import org.eclipse.jface.dialogs.PageChangingEvent;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Composite;
 import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 import org.tomvej.fmassoc.plugin.mobilemodelloader.xml.DataModelNode;
@@ -43,16 +44,18 @@ public class MobileModelWizard extends Wizard {
 
 	private void pageChanging(PageChangingEvent event) {
 		if (event.getCurrentPage().equals(file) && event.getTargetPage().equals(forbidden)) {
-			try {
-				Unmarshaller unmarshaller = JAXBContext.newInstance(DataModelNode.class).createUnmarshaller();
-				DataModelNode model = (DataModelNode) unmarshaller.unmarshal(new File(file.getFile()));
-				forbidden.setTables(model.transform().create().getTables());
-			} catch (JAXBException | ModelLoadingException e) {
-				event.doit = false;
-				file.setErrorMessage("Model could not be loaded.");
-				file.setPageComplete(false);
-				file.setException(e);
-			}
+			BusyIndicator.showWhile(getShell().getDisplay(), () -> {
+				try {
+					Unmarshaller unmarshaller = JAXBContext.newInstance(DataModelNode.class).createUnmarshaller();
+					DataModelNode model = (DataModelNode) unmarshaller.unmarshal(new File(file.getFile()));
+					forbidden.setTables(model.transform().create().getTables());
+				} catch (JAXBException | ModelLoadingException e) {
+					event.doit = false;
+					file.setErrorMessage("Model could not be loaded.");
+					file.setPageComplete(false);
+					file.setException(e);
+				}
+			});
 		}
 	}
 
