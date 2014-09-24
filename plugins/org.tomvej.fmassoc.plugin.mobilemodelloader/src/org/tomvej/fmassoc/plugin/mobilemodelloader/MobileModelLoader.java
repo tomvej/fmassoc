@@ -1,5 +1,7 @@
 package org.tomvej.fmassoc.plugin.mobilemodelloader;
 
+import java.io.File;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -33,4 +35,16 @@ public class MobileModelLoader implements ModelLoader {
 		return new MobileModelWizard();
 	}
 
+	/**
+	 * Attempts to load data model from target file.
+	 */
+	public static DataModel loadModel(File target) throws ModelLoadingException, JAXBException {
+		Unmarshaller unmarshaller = JAXBContext.newInstance(DataModelNode.class).createUnmarshaller();
+		DataModelNode model = (DataModelNode) unmarshaller.unmarshal(target);
+		DataModel result = model.transform().create();
+		if (result.getTables().isEmpty()) {
+			throw new ModelLoadingException("Data model contains no tables.");
+		}
+		return result;
+	}
 }

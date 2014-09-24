@@ -5,9 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
 import org.eclipse.jface.dialogs.PageChangingEvent;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -17,7 +15,7 @@ import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Composite;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.parts.model.ModelLoadingException;
-import org.tomvej.fmassoc.plugin.mobilemodelloader.xml.DataModelNode;
+import org.tomvej.fmassoc.plugin.mobilemodelloader.MobileModelLoader;
 
 public class MobileModelWizard extends Wizard {
 	private FilePage file;
@@ -48,28 +46,21 @@ public class MobileModelWizard extends Wizard {
 
 	private void pageChanging(PageChangingEvent event) {
 		if (event.getCurrentPage().equals(file) && event.getTargetPage().equals(forbidden)) {
-			BusyIndicator.showWhile(
-					getShell().getDisplay(),
-					() -> {
-						try {
-							Unmarshaller unmarshaller = JAXBContext.newInstance(DataModelNode.class).createUnmarshaller();
-							DataModelNode model = (DataModelNode) unmarshaller.unmarshal(new File(file.getFile()));
-							Collection<Table> tables = model.transform().create().getTables();
-							if (tables.isEmpty()) {
-								throw new ModelLoadingException("Data model contains no tables.");
-							}
-							forbidden.setTables(tables);
-							Collection<Table> defForbid = tables.stream()
-									.filter(t -> getDefaultForbiddenNames().contains(t.getName()))
-									.collect(Collectors.toList());
-							forbidden.setForbidden(defForbid);
-						} catch (JAXBException | ModelLoadingException e) {
-							event.doit = false;
-							file.setErrorMessage("Model could not be loaded.");
-							file.setPageComplete(false);
-							file.setException(e);
-						}
-					});
+			BusyIndicator.showWhile(getShell().getDisplay(), () -> {
+				try {
+					Collection<Table> tables = MobileModelLoader.loadModel(new File(file.getFile())).getTables();
+					forbidden.setTables(tables);
+					Collection<Table> defForbid = tables.stream()
+							.filter(t -> getDefaultForbiddenNames().contains(t.getName()))
+							.collect(Collectors.toList());
+					forbidden.setForbidden(defForbid);
+				} catch (JAXBException | ModelLoadingException e) {
+					event.doit = false;
+					file.setErrorMessage("Model could not be loaded.");
+					file.setPageComplete(false);
+					file.setException(e);
+				}
+			});
 		}
 	}
 
