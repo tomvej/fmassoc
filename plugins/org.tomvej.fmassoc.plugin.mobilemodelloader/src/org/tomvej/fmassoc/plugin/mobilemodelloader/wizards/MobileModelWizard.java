@@ -55,6 +55,9 @@ public class MobileModelWizard extends Wizard {
 							Unmarshaller unmarshaller = JAXBContext.newInstance(DataModelNode.class).createUnmarshaller();
 							DataModelNode model = (DataModelNode) unmarshaller.unmarshal(new File(file.getFile()));
 							Collection<Table> tables = model.transform().create().getTables();
+							if (tables.isEmpty()) {
+								throw new ModelLoadingException("Data model contains no tables.");
+							}
 							forbidden.setTables(tables);
 							Collection<Table> defForbid = tables.stream()
 									.filter(t -> getDefaultForbiddenNames().contains(t.getName()))
