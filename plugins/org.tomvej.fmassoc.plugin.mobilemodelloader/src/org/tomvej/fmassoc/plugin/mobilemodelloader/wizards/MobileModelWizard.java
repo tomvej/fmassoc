@@ -51,7 +51,7 @@ public class MobileModelWizard extends Wizard {
 				event.doit = false;
 				file.setErrorMessage("Model could not be loaded.");
 				file.setPageComplete(false);
-				// needs separate field for error message (top too short)
+				file.setException(e);
 			}
 		}
 	}
