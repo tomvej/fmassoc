@@ -66,7 +66,7 @@ public class ModelStorage {
 	 * Return forbidden tables names.
 	 */
 	public Collection<String> getForbidden() throws BackingStoreException {
-		return Arrays.asList(forbidden().childrenNames());
+		return Arrays.asList(forbidden().keys());
 	}
 
 	/**

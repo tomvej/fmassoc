@@ -94,6 +94,13 @@ public class FilePage extends WizardPage {
 	}
 
 	/**
+	 * Specify selected file.
+	 */
+	public void setFile(String file) {
+		input.setText(file);
+	}
+
+	/**
 	 * Specify model exception found while loading.
 	 */
 	public void setException(Exception e) {

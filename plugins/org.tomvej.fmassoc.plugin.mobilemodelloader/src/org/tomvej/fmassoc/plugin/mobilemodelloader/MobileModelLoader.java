@@ -18,6 +18,11 @@ import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 import org.tomvej.fmassoc.plugin.mobilemodelloader.wizards.MobileModelWizard;
 import org.tomvej.fmassoc.plugin.mobilemodelloader.xml.DataModelNode;
 
+/**
+ * Model loader for the field manager data model.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class MobileModelLoader implements ModelLoader {
 
 	@Override
@@ -45,19 +50,12 @@ public class MobileModelLoader implements ModelLoader {
 
 	@Override
 	public IWizard createEditWizard(String id) {
-		return new MobileModelWizard(id);
+		return new MobileModelWizard(id, true);
 	}
 
 	@Override
 	public IWizard createNewWizard(String id) {
-		return new MobileModelWizard(id);
-	}
-
-	/**
-	 * Attempts to load data model from target file.
-	 */
-	public static DataModel loadModel(File target) throws ModelLoadingException, JAXBException {
-		return loadModelBuilder(target).getLeft().create();
+		return new MobileModelWizard(id, false);
 	}
 
 	private static Pair<DataModelBuilder, TableCache<String>> loadModelBuilder(File target) throws ModelLoadingException,
@@ -65,5 +63,12 @@ public class MobileModelLoader implements ModelLoader {
 		Unmarshaller unmarshaller = JAXBContext.newInstance(DataModelNode.class).createUnmarshaller();
 		DataModelNode model = (DataModelNode) unmarshaller.unmarshal(target);
 		return model.transform();
+	}
+
+	/**
+	 * Attempts to load data model from target file.
+	 */
+	public static DataModel loadModel(File target) throws ModelLoadingException, JAXBException {
+		return loadModelBuilder(target).getLeft().create();
 	}
 }
