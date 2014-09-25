@@ -25,6 +25,13 @@ public class PropertyBuilder {
 	}
 
 	/**
+	 * Initializes both names with one value.
+	 */
+	public PropertyBuilder(String singleName) {
+		this(singleName, singleName);
+	}
+
+	/**
 	 * Set logical name.
 	 * 
 	 * @return This builder.
