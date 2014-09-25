@@ -65,7 +65,7 @@ public class MobileModelWizard extends Wizard {
 	}
 
 	private Collection<String> getDefaultForbiddenNames() {
-		return Arrays.asList("CREW", "BLOB", "ASSIGNMENT");
+		return Arrays.asList("CREW", "BLOB", "ASSIGNMENT").stream().collect(Collectors.toSet());
 	}
 
 	@Override
