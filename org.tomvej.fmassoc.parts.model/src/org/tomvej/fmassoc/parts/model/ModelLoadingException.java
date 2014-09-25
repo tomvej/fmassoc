@@ -24,5 +24,11 @@ public class ModelLoadingException extends Exception {
 		super(message);
 	}
 
+	/**
+	 * Specify cause.
+	 */
+	public ModelLoadingException(Throwable cause) {
+		super(cause);
+	}
 
 }
