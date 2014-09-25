@@ -17,21 +17,6 @@ public class AssociationNode {
 
 	@XmlType
 	@XmlEnum
-	private enum Optional {
-		@XmlEnumValue("OPTIONAL")
-		OPTIONAL(false),
-		@XmlEnumValue("MANDATORY")
-		MANDATORY(true);
-
-		public final boolean mandatory;
-
-		private Optional(boolean mandatory) {
-			this.mandatory = mandatory;
-		}
-	}
-
-	@XmlType
-	@XmlEnum
 	private enum Mult {
 		@XmlEnumValue("TO_MANY")
 		TO_MANY(Multiplicity.MANY_TO_ONE), // it's reverse!

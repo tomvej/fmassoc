@@ -33,7 +33,6 @@ public class TypeNode {
 	@XmlPath("final_subtype/" + OID_COLUMN)
 	private String oid3;
 
-
 	/**
 	 * Return human-readable name.
 	 */

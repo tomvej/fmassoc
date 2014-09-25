@@ -15,6 +15,10 @@ public class PropertyNode {
 	private String name;
 	@XmlPath(DataModelNode.IMPL_NAME_XML_PATH)
 	private String implName;
+	@XmlAttribute
+	private String datatype;
+	@XmlAttribute
+	private Optional opt;
 
 	/**
 	 * Return human-readable name.
@@ -31,6 +35,20 @@ public class PropertyNode {
 	}
 
 	/**
+	 * Is this property association to blob.
+	 */
+	public boolean isBlob() {
+		return "BLOB".equals(datatype);
+	}
+
+	/**
+	 * Is this property mandatory.
+	 */
+	public boolean isMandatory() {
+		return opt.mandatory;
+	}
+
+	/**
 	 * Validates whether this object is well-defined.
 	 * 
 	 * @throws ModelLoadingException
@@ -43,6 +61,11 @@ public class PropertyNode {
 		if (implName == null) {
 			throw new ModelLoadingException("Unable to read implementation name of property `" + name + "'.");
 		}
+		if (datatype == null) {
+			throw new ModelLoadingException("Unable to read data type of property `" + name + "'.");
+		}
+		if (opt == null) {
+			throw new ModelLoadingException("Unable to read whether property `" + name + "' is mandatory.");
+		}
 	}
-
 }

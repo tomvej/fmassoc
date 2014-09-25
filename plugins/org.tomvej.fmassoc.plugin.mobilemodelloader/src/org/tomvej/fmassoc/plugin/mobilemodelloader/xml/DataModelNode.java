@@ -13,6 +13,7 @@ import org.tomvej.fmassoc.model.builder.simple.PropertyBuilder;
 import org.tomvej.fmassoc.model.builder.simple.TableBuilder;
 import org.tomvej.fmassoc.model.builder.simple.TableCache;
 import org.tomvej.fmassoc.model.builder.simple.TableImpl;
+import org.tomvej.fmassoc.model.db.Multiplicity;
 import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 
 /**
@@ -39,6 +40,8 @@ public class DataModelNode {
 		Map<TypeNode, TableImpl> tables = new HashMap<>();
 
 		DataModelBuilder result = new DataModelBuilder(byName);
+		TableImpl blob = createBlob(result);
+
 		for (TypeNode type : types) {
 			type.validate();
 			for (PropertyNode p : type.getProperties()) {
@@ -51,7 +54,16 @@ public class DataModelNode {
 				throw new ModelLoadingException("Duplicate type names: " + type.getName());
 			}
 			tables.put(type, table);
-			type.getProperties().forEach(p -> result.addProperty(new PropertyBuilder(p.getName(), p.getImplName()), table));
+			for (PropertyNode p : type.getProperties()) {
+				if (p.isBlob()) {
+					result.addAssociation(
+							new AssociationBuilder().setName(p.getName()).setReverseName("blob_for_" + p.getName())
+									.setImplName(p.getImplName()).setMultiplicity(Multiplicity.ONE_TO_ONE)
+									.setMandatory(p.isMandatory()), table, blob);
+				} else {
+					result.addProperty(new PropertyBuilder(p.getName(), p.getImplName()), table);
+				}
+			}
 		}
 
 		for (TypeNode type : types) {
@@ -69,5 +81,16 @@ public class DataModelNode {
 		}
 
 		return result;
+	}
+
+	private static TableImpl createBlob(DataModelBuilder builder) {
+		TableImpl blob = builder.addTable(new TableBuilder().setName("BLOB").setImplName("TFCBLOB407").setNumber(0)
+				.setIdImplName("ID_BLOB"));
+		builder.addProperty(new PropertyBuilder("NO_ROW"), blob);
+		builder.addProperty(new PropertyBuilder("TXT_BLOB"), blob);
+		builder.addProperty(new PropertyBuilder("LN_SIZE_UNCOMP"), blob);
+		builder.addProperty(new PropertyBuilder("TP_COMPRESSION"), blob);
+		builder.addProperty(new PropertyBuilder("DT_REAP_CHECK"), blob);
+		return blob;
 	}
 }
