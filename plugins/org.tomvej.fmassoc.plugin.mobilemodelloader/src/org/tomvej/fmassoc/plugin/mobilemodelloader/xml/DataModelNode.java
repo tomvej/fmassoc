@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.tomvej.fmassoc.model.builder.simple.AssociationBuilder;
 import org.tomvej.fmassoc.model.builder.simple.DataModelBuilder;
 import org.tomvej.fmassoc.model.builder.simple.PropertyBuilder;
@@ -31,11 +32,16 @@ public class DataModelNode {
 	/**
 	 * Transform this data model into a {@link DataModelBuilder}.
 	 * 
-	 * @return Newly created builder corresponding to this model.
+	 * @return Newly created builder corresponding to this model and cache of
+	 *         tables by their name.
 	 * @throws ModelLoadingException
 	 *             When transformation fails.
 	 */
-	public DataModelBuilder transform() throws ModelLoadingException {
+	public Pair<DataModelBuilder, TableCache<String>> transform() throws ModelLoadingException {
+		if (types == null) {
+			throw new ModelLoadingException("Data model contains no tables.");
+		}
+
 		TableCache<String> byName = new TableCache<>(t -> t.getName());
 		Map<TypeNode, TableImpl> tables = new HashMap<>();
 
@@ -80,7 +86,7 @@ public class DataModelNode {
 			}
 		}
 
-		return result;
+		return Pair.of(result, byName);
 	}
 
 	private static TableImpl createBlob(DataModelBuilder builder) {

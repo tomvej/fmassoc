@@ -16,10 +16,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 import org.tomvej.fmassoc.plugin.mobilemodelloader.MobileModelLoader;
+import org.tomvej.fmassoc.plugin.mobilemodelloader.ModelStorage;
 
 public class MobileModelWizard extends Wizard {
 	private FilePage file;
 	private ForbiddenPage forbidden;
+	private final ModelStorage preference;
+
+	public MobileModelWizard(String modelId) {
+		preference = new ModelStorage(modelId);
+	}
 
 	@Override
 	public String getWindowTitle() {
