@@ -27,11 +27,11 @@ public class TypeNode {
 	@XmlElement(name = "association")
 	private List<AssociationNode> associations;
 	@XmlPath("root_without_subtypes/" + OID_COLUMN)
-	private String oid1;
+	private String simple_root;
 	@XmlPath("root_with_subtypes/" + OID_COLUMN)
-	private String oid2;
+	private String root;
 	@XmlPath("final_subtype/" + OID_COLUMN)
-	private String oid3;
+	private String subtype;
 
 	/**
 	 * Return human-readable name.
@@ -78,14 +78,30 @@ public class TypeNode {
 	 * Return name of the primary key column.
 	 */
 	public String getOIDColumn() {
-		if (oid1 != null) {
-			return oid1;
+		if (simple_root != null) {
+			return simple_root;
 		}
-		if (oid2 != null) {
-			return oid2;
+		if (root != null) {
+			return root;
 		}
-		if (oid3 != null) {
-			return oid3;
+		if (subtype != null) {
+			return subtype;
+		}
+		return null;
+	}
+
+	/**
+	 * Return position of this type in type hierarchy.
+	 */
+	public DataTypeHierarchy getHierarchy() {
+		if (simple_root != null) {
+			return DataTypeHierarchy.ROOT_WITHOUT_SUBTYPES;
+		}
+		if (root != null) {
+			return DataTypeHierarchy.ROOT_WITH_SUBTYPES;
+		}
+		if (subtype != null) {
+			return DataTypeHierarchy.FINAL_SUBTYPE;
 		}
 		return null;
 	}
@@ -106,7 +122,7 @@ public class TypeNode {
 		if (number == null) {
 			error("Unable to read number of table `" + name + "'.");
 		}
-		if (oid1 == null && oid2 == null && oid3 == null) {
+		if (simple_root == null && root == null && subtype == null) {
 			error("Unable to read object id column of table `" + name + "'.");
 		}
 	}

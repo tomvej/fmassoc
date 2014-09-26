@@ -1,5 +1,7 @@
 package org.tomvej.fmassoc.plugin.mobilemodelloader.xml;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,10 @@ import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 @XmlRootElement(name = "data_model")
 public class DataModelNode {
 	static final String IMPL_NAME_XML_PATH = "imp_details/@oracle_sql_name";
+	private static final List<String> VERSION_PROPERTIES = Collections.unmodifiableList(Arrays.asList("ID_VERSION",
+			"ID_BRANCH", "ID_PREV_VERSION1", "ID_PREV_VERSION2", "FG_OBJ_DELETED", "ID_USER", "TS_USER", "TS_SERVER"));
+	private static final List<String> ROOT_PROPERTIES = Collections.unmodifiableList(Arrays.asList("ID_MSG_RCVD",
+			"IND_SYNC", "IND_COMMS_PRIORITY"));
 
 	@XmlElement(name = "type")
 	private List<TypeNode> types;
@@ -60,6 +66,8 @@ public class DataModelNode {
 				throw new ModelLoadingException("Duplicate type names: " + type.getName());
 			}
 			tables.put(type, table);
+
+			/* Add properties */
 			for (PropertyNode p : type.getProperties()) {
 				if (p.isBlob()) {
 					result.addAssociation(
@@ -69,6 +77,11 @@ public class DataModelNode {
 				} else {
 					result.addProperty(new PropertyBuilder(p.getName(), p.getImplName()), table);
 				}
+			}
+			/* Add default properties */
+			VERSION_PROPERTIES.forEach(s -> result.addProperty(new PropertyBuilder(s), table));
+			if (type.getHierarchy().isRoot()) {
+				ROOT_PROPERTIES.forEach(s -> result.addProperty(new PropertyBuilder(s), table));
 			}
 		}
 
@@ -99,4 +112,5 @@ public class DataModelNode {
 		builder.addProperty(new PropertyBuilder("DT_REAP_CHECK"), blob);
 		return blob;
 	}
+
 }
