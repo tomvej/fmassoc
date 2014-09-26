@@ -16,7 +16,7 @@
       <client
             class="org.tomvej.fmassoc.plugin.properties.basic.PathOptionality"
             description="Whether path is entirely made up of mandatory association."
-            name="Optional">
+            name="Mandatory">
       </client>
       <client
             class="org.tomvej.fmassoc.plugin.properties.basic.PathOptionalLength"

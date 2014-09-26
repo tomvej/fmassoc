@@ -5,7 +5,7 @@ import org.tomvej.fmassoc.model.property.PathProperty;
 import org.tomvej.fmassoc.model.property.PathPropertyBuilder;
 
 /**
- * Path optionality; {@code false} when the path is mandatory, {@code tue} when
+ * Path optionality; {@code true} when the path is mandatory, {@code false} when
  * it is optional.
  * 
  * @author Tomáš Vejpustek
@@ -18,7 +18,7 @@ public class PathOptionality implements PathProperty<Boolean> {
 
 		@Override
 		public Boolean getValue() {
-			return optAssociations > 0;
+			return optAssociations == 0;
 		}
 
 		@Override
