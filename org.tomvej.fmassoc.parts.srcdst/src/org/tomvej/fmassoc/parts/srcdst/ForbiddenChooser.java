@@ -21,6 +21,9 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -66,17 +69,29 @@ public class ForbiddenChooser extends Group {
 
 	private Consumer<Set<Table>> listener;
 
+	private static FormLayout createLayout() {
+		FormLayout result = new FormLayout();
+		result.marginTop = 5;
+		result.marginBottom = 5;
+		result.marginWidth = 5;
+		return result;
+	}
+
 	/**
 	 * Specify parent composite.
 	 */
 	public ForbiddenChooser(Composite parent) {
 		super(parent, SWT.SHADOW_ETCHED_OUT);
 		setText("Forbidden tables");
-		setLayout(new GridLayout(1, false));
-		GridDataFactory layout = GridDataFactory.fillDefaults().grab(true, true);
+		setLayout(createLayout());
 
 		Composite upper = new Composite(this, SWT.NONE);
-		upper.setLayoutData(layout.create());
+		FormData upperData = new FormData();
+		upperData.top = new FormAttachment(0);
+		upperData.bottom = new FormAttachment(40);
+		upperData.left = new FormAttachment(0);
+		upperData.right = new FormAttachment(100);
+		upper.setLayoutData(upperData);
 		upper.setLayout(new GridLayout(2, true));
 
 		forbiddenTable = TableLayoutSupport.createCheckboxTableViewer(upper, SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.BORDER
@@ -108,7 +123,12 @@ public class ForbiddenChooser extends Group {
 		rmBtn = createButton(upper, "Remove", e -> rmTable());
 
 		tables = new TableChooser(this);
-		tables.setLayoutData(layout.create());
+		FormData tablesData = new FormData();
+		tablesData.top = new FormAttachment(upper, 0);
+		tablesData.left = new FormAttachment(0);
+		tablesData.right = new FormAttachment(100);
+		tablesData.bottom = new FormAttachment(100);
+		tables.setLayoutData(tablesData);
 
 		tables.setTableListener(t -> addBtn.setEnabled(t != null));
 		forbiddenTable.addSelectionChangedListener(e -> rmBtn.setEnabled(!forbiddenTable.getSelection().isEmpty()));
