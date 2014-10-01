@@ -132,6 +132,10 @@ public class Part {
 		}
 	}
 
+	private void packColumns() {
+		propertyColumns.values().forEach(c -> c.pack());
+		pathColumn.getColumn().pack();
+	}
 
 	/**
 	 * Listens for table search finish.
@@ -141,6 +145,7 @@ public class Part {
 	public void searchFinished(@UIEventTopic(PathSearchTopic.FINISH) IStatus status) {
 		search = false;
 		pathTable.setItemCount(foundPaths.size());
+		packColumns();
 	}
 
 	/**
@@ -151,6 +156,7 @@ public class Part {
 	public void searchCancelled(@UIEventTopic(PathSearchTopic.CANCEL) IStatus status) {
 		search = false;
 		pathTable.setItemCount(foundPaths.size());
+		packColumns();
 	}
 
 	/**
@@ -199,6 +205,7 @@ public class Part {
 		column.setToolTipText(columnEntry.getDescription());
 		column.setWidth(100);
 		column.addSelectionListener(new SelectionWrapper(e -> broker.post(MultisortTopic.SINGLESORT, column)));
+		column.pack();
 
 		viewerColumn.setLabelProvider(new TextColumnLabelProvider<Path>(
 				p -> columnEntry.getProperty().getValue(p).toString()));
