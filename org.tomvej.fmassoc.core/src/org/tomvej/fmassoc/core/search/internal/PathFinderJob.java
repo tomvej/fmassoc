@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.commons.lang3.Validate;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
@@ -26,8 +28,18 @@ public class PathFinderJob extends Job {
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		// TODO this is perhaps too simple -- we'll see
-		return finder.run(this::publish, monitor);
+		try {
+			IStatus result = finder.run(this::publish, monitor);
+			if (result.isOK()) { // what about erroneous states?
+				eventBroker.post(PathSearchTopic.FINISH, result);
+			} else {
+				eventBroker.post(PathSearchTopic.CANCEL, result);
+			}
+			return result;
+		} catch (OperationCanceledException oce) {
+			eventBroker.post(PathSearchTopic.CANCEL, Status.CANCEL_STATUS);
+			return Status.CANCEL_STATUS;
+		}
 	}
 
 	private void publish(Path target) {

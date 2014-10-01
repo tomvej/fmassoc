@@ -1,5 +1,6 @@
 package org.tomvej.fmassoc.core.communicate;
 
+import org.eclipse.core.runtime.IStatus;
 import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.model.path.Path;
 
@@ -15,4 +16,11 @@ public interface PathSearchTopic {
 	public static final String PUBLISH = TOPIC + "/PUBLISH";
 	/** Search has been started. Sends a {@link SearchInput} */
 	public static final String START = TOPIC + "/START";
+	/** All paths have been found. Sends an {@link IStatus}. */
+	public static final String FINISH = TOPIC + "/FINISH";
+	/**
+	 * Search has been cancelled by the user or by reaching the maximum amount
+	 * of paths. Sends an {@link IStatus}.
+	 */
+	public static final String CANCEL = TOPIC + "/CANCEL";
 }
