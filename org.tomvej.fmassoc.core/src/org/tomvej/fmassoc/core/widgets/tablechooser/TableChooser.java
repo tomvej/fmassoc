@@ -19,6 +19,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
 import org.tomvej.fmassoc.core.tables.TableLayoutSupport;
+import org.tomvej.fmassoc.core.wrappers.FocusGainedWrapper;
+import org.tomvej.fmassoc.core.wrappers.KeyReleasedWrapper;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.core.wrappers.ViewerFilterWrapper;
 import org.tomvej.fmassoc.model.db.Table;
@@ -62,6 +64,14 @@ public class TableChooser extends Composite {
 				listener.accept(getSelection());
 			}
 		});
+
+		// focus
+		tables.getTable().addFocusListener(new FocusGainedWrapper(e -> {
+			if (tables.getSelection().isEmpty()) {
+				tables.getTable().setSelection(0);
+			}
+		}));
+		search.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_DOWN, SWT.NONE, e -> tables.getTable().setFocus()));
 
 		/* "name" column */
 		TableViewerColumn nameClmn = new TableViewerColumn(tables, SWT.NONE);
