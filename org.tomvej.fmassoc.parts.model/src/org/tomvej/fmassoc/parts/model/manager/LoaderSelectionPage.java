@@ -164,11 +164,6 @@ class LoaderSelectionPage extends WizardSelectionPage implements IWizardNode {
 			removeCurrentModel();
 			super.cancelPressed();
 		}
-
-		@Override
-		protected void nextPressed() {
-			super.nextPressed();
-		}
 	}
 
 	public WizardDialog getNewModelDialog() {
