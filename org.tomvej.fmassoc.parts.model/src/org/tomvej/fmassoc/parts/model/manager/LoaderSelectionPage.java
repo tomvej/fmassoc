@@ -84,6 +84,7 @@ class LoaderSelectionPage extends WizardSelectionPage implements IWizardNode {
 		boolean selected = !loaders.getSelection().isEmpty();
 		description.setText(selected ? getSelected().getDescription() : "");
 		removeCurrentModel();
+		currentWizard = null;
 		if (selected && StringUtils.isNotBlank(name.getText())) {
 			setSelectedNode(this);
 		} else {
@@ -162,6 +163,11 @@ class LoaderSelectionPage extends WizardSelectionPage implements IWizardNode {
 		protected void cancelPressed() {
 			removeCurrentModel();
 			super.cancelPressed();
+		}
+
+		@Override
+		protected void nextPressed() {
+			super.nextPressed();
 		}
 	}
 
