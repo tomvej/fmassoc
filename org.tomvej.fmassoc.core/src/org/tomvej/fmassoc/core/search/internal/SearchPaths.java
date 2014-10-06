@@ -11,6 +11,7 @@ import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.e4.core.services.log.Logger;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
 import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
 import org.tomvej.fmassoc.core.search.PathFinderProvider;
@@ -27,8 +28,9 @@ public class SearchPaths {
 	}
 
 	@Execute
-	public void execute(SearchInput input, PathFinderProvider provider, IEclipseContext context, IEventBroker broker) {
-		PathFinderJob job = new PathFinderJob(provider.createPathFinder(input), broker, foundPaths);
+	public void execute(SearchInput input, PathFinderProvider provider, IEclipseContext context, IEventBroker broker,
+			Logger logger) {
+		PathFinderJob job = new PathFinderJob(provider.createPathFinder(input), broker, foundPaths, logger);
 		context.set(PathFinderJob.class, job);
 		foundPaths.clear();
 		broker.post(PathSearchTopic.START, input);

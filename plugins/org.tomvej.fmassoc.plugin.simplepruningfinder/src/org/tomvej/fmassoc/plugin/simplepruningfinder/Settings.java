@@ -81,7 +81,7 @@ public class Settings {
 
 	@Override
 	public String toString() {
-		StringBuilder result = new StringBuilder("Simple pruning finder [");
+		StringBuilder result = new StringBuilder("Simple pruning [");
 		result.append("width <= ").append(width);
 		result.append(", length <= ").append(length);
 		if (optional) {
