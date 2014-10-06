@@ -79,4 +79,17 @@ public class Settings {
 		return length == other.length && mn == other.mn && optional == other.optional && width == other.width;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder("Simple pruning finder [");
+		result.append("width <= ").append(width);
+		result.append(", length <= ").append(length);
+		if (optional) {
+			result.append(", optional");
+		}
+		if (mn) {
+			result.append(", mn");
+		}
+		return result.append("]").toString();
+	}
 }
