@@ -1,5 +1,6 @@
 package org.tomvej.fmassoc.core.search;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,8 +23,8 @@ public class SearchInput {
 	 */
 	public SearchInput(Table source, List<Table> destinations, Set<Table> forbidden) {
 		this.source = Validate.notNull(source);
-		this.destinations = Validate.notEmpty(destinations, "There has to be at least one destination.");
-		this.forbidden = Validate.notNull(forbidden);
+		this.destinations = new ArrayList<>(Validate.notEmpty(destinations, "There has to be at least one destination."));
+		this.forbidden = new HashSet<>(forbidden);
 		Set<Table> inter = new HashSet<>(destinations);
 		Validate.isTrue(!inter.contains(null), "Destination tables contain null elements.");
 		Validate.isTrue(destinations.size() == inter.size(), "Destination tables contain duplicates.");
