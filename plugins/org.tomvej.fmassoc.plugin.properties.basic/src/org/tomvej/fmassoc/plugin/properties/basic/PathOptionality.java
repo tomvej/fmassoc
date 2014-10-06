@@ -11,7 +11,7 @@ import org.tomvej.fmassoc.model.property.PathPropertyBuilder;
  * @author Tomáš Vejpustek
  *
  */
-public class PathOptionality implements PathProperty<Boolean> {
+public final class PathOptionality implements PathProperty<Boolean> {
 
 	private static class Builder implements PathPropertyBuilder<Boolean> {
 		private int optAssociations = 0;
@@ -39,6 +39,16 @@ public class PathOptionality implements PathProperty<Boolean> {
 	@Override
 	public PathPropertyBuilder<Boolean> getBuilder() {
 		return new Builder();
+	}
+
+	@Override
+	public int hashCode() {
+		return 6977;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof PathOptionality;
 	}
 
 }

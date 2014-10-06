@@ -10,7 +10,7 @@ import org.tomvej.fmassoc.model.property.PathPropertyBuilder;
  * @author Tomáš Vejpustek
  *
  */
-public class PathOptionalLength implements PathProperty<Integer> {
+public final class PathOptionalLength implements PathProperty<Integer> {
 
 	private static class Builder implements PathPropertyBuilder<Integer> {
 		private int length;
@@ -38,6 +38,16 @@ public class PathOptionalLength implements PathProperty<Integer> {
 	@Override
 	public PathPropertyBuilder<Integer> getBuilder() {
 		return new Builder();
+	}
+
+	@Override
+	public int hashCode() {
+		return 5059;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof PathOptionalLength;
 	}
 
 }

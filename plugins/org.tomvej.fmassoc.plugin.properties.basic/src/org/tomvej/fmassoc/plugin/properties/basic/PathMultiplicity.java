@@ -13,7 +13,7 @@ import org.tomvej.fmassoc.model.property.StackPathPropertyBuilder;
  * @author Tomáš Vejpustek
  *
  */
-public class PathMultiplicity implements PathProperty<Multiplicity> {
+public final class PathMultiplicity implements PathProperty<Multiplicity> {
 
 	private static enum StackProperty implements StackPathProperty<Multiplicity, Multiplicity> {
 		INSTANCE;
@@ -32,5 +32,15 @@ public class PathMultiplicity implements PathProperty<Multiplicity> {
 	public PathPropertyBuilder<Multiplicity> getBuilder() {
 		return new StackPathPropertyBuilder<Multiplicity, Multiplicity>(StackProperty.INSTANCE, Multiplicity.ONE_TO_ONE);
 	};
+
+	@Override
+	public int hashCode() {
+		return 4363;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof PathMultiplicity;
+	}
 
 }

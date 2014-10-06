@@ -24,7 +24,7 @@ import org.tomvej.fmassoc.model.property.StackPathPropertyBuilder;
  * @author Tomáš Vejpustek
  *
  */
-public class PathWidth implements PathProperty<Integer> {
+public final class PathWidth implements PathProperty<Integer> {
 
 	private static enum StackProperty implements StackPathProperty<Integer, Pair<Multiplicity, Integer>> {
 		INSTANCE;
@@ -49,5 +49,15 @@ public class PathWidth implements PathProperty<Integer> {
 	public PathPropertyBuilder<Integer> getBuilder() {
 		return new StackPathPropertyBuilder<Integer, Pair<Multiplicity, Integer>>(
 				StackProperty.INSTANCE, Pair.of(Multiplicity.ONE_TO_ONE, 0));
+	}
+
+	@Override
+	public int hashCode() {
+		return 3539;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof PathWidth;
 	}
 }
