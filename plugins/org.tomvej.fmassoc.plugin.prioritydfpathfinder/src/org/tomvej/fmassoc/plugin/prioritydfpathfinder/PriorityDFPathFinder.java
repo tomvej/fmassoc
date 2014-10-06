@@ -80,7 +80,7 @@ class PriorityDFPathFinder implements PathFinder {
 			public void processNext(Table current) {
 				for (AssociationProperty association : current.getAssociations()) {
 					if (path.push(association)) {
-						if (prune.prune(path)) {
+						if (!prune.prune(path)) {
 							process(association.getDestination());
 						}
 						path.pop();
