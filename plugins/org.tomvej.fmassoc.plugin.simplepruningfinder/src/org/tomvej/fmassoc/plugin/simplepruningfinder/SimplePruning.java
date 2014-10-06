@@ -9,11 +9,18 @@ import org.tomvej.fmassoc.model.path.PathInfo;
 import org.tomvej.fmassoc.model.property.PathProperty;
 import org.tomvej.fmassoc.plugin.prioritydfpathfinder.Pruning;
 
+/**
+ * Pruning constructed from settings.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class SimplePruning implements Pruning {
 	private final Settings settings;
 	private final Set<PathProperty<?>> properties;
 
-
+	/**
+	 * Specify settings.
+	 */
 	public SimplePruning(Settings settings) {
 		this.settings = Validate.notNull(settings);
 

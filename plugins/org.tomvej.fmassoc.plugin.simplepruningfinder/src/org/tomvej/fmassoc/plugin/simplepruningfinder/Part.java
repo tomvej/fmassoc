@@ -19,6 +19,11 @@ import org.eclipse.swt.widgets.Spinner;
 import org.osgi.service.prefs.BackingStoreException;
 import org.tomvej.fmassoc.core.search.PathFinderProvider;
 
+/**
+ * Part used to specify simple pruning.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class Part {
 	private static final String KEY_LENGTH = "length", KEY_OPTIONAL = "optional", KEY_MN = "mn";
 
@@ -31,6 +36,9 @@ public class Part {
 	private Spinner length;
 	private Button optional, mn;
 
+	/**
+	 * Initialize GUI components.
+	 */
 	@PostConstruct
 	public void createComponents(Composite parent) {
 		parent.setLayout(new RowLayout(SWT.VERTICAL));
@@ -59,6 +67,9 @@ public class Part {
 		mn.setSelection(preference.getBoolean(KEY_MN, false));
 	}
 
+	/**
+	 * Store option preferences.
+	 */
 	@PersistState
 	public void savePreferences(Logger logger) {
 		preference.putInt(KEY_LENGTH, length.getSelection());
