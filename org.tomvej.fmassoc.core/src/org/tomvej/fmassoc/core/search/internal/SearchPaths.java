@@ -54,12 +54,12 @@ public class SearchPaths {
 
 	@Inject
 	public void jobFinished(@Optional @EventTopic(PathSearchTopic.FINISH) IStatus status) {
-		context.set(PathFinderJob.class, null);
+		context.remove(PathFinderJob.class);
 	}
 
 	@Inject
 	public void jobCancelled(@Optional @EventTopic(PathSearchTopic.CANCEL) IStatus status) {
-		context.set(PathFinderJob.class, null);
+		context.remove(PathFinderJob.class);
 	}
 
 }
