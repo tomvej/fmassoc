@@ -6,6 +6,7 @@
         <children xsi:type="basic:PartStack" xmi:id="_szSlwB4mEeS4_pQWRSwXHA" elementId="org.tomvej.fmassoc.core.partstack.search"/>
       </children>
     </children>
+    <handlers xmi:id="_jvsw4FOFEeSM8-ZLDUxvpQ" elementId="org.tomvej.fmassoc.core.handler.pathlimitreached" contributionURI="bundleclass://org.tomvej.fmassoc.core/org.tomvej.fmassoc.core.search.internal.ShowPathLimitReached" command="_T3i-sFOAEeSM8-ZLDUxvpQ"/>
     <trimBars xmi:id="_c85GoCN9EeSIYYTJAOONGw" elementId="org.tomvej.fmassoc.core.trimbar.top">
       <children xsi:type="menu:ToolBar" xmi:id="_cK1-MC27EeS3MvsXw3Morw" elementId="org.tomvej.fmassoc.core.toolbar.run">
         <children xsi:type="menu:HandledToolItem" xmi:id="_dLdGoC27EeS3MvsXw3Morw" elementId="org.tomvej.fmassoc.core.handledtoolitem.searchpaths" label="Search" command="_7uPIYC1LEeSrT_p8RPGkbg"/>
@@ -22,6 +23,7 @@
   <commands xmi:id="_7uPIYC1LEeSrT_p8RPGkbg" elementId="org.tomvej.fmassoc.core.command.searchpaths" commandName="Search Paths"/>
   <commands xmi:id="_rBsq4C1REeSrT_p8RPGkbg" elementId="org.tomvej.fmassoc.core.command.stopsearch" commandName="Stop Search"/>
   <commands xmi:id="_0GphwDnJEeSrK57h11jYsA" elementId="org.tomvej.fmassoc.core.command.pathtrans" commandName="Provide Path Transformer"/>
+  <commands xmi:id="_T3i-sFOAEeSM8-ZLDUxvpQ" elementId="org.tomvej.fmassoc.core.command.pathlimitreached" commandName="Show Path Limit Reached Dialog"/>
   <addons xmi:id="_TnMFwRPKEeSoD5WQk9Aqhg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_TnMFwhPKEeSoD5WQk9Aqhg" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_TnMFwxPKEeSoD5WQk9Aqhg" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

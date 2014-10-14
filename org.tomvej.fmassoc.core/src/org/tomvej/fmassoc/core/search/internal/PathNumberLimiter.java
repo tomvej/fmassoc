@@ -1,11 +1,14 @@
 package org.tomvej.fmassoc.core.search.internal;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.e4.core.commands.ECommandService;
+import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.di.extensions.EventTopic;
 import org.eclipse.e4.core.di.extensions.Preference;
@@ -59,13 +62,16 @@ public class PathNumberLimiter {
 			@Optional @EventTopic(PathSearchTopic.PUBLISH) Path target,
 			@Named(ContextObjects.FOUND_PATHS) List<Path> paths,
 			@Optional PathFinderJob job,
+			EHandlerService handlers,
+			ECommandService commands,
 			@Preference(nodePath = PathSearchPreference.NODE, value = PathSearchPreference.PATH_LIMIT) Integer limit,
 			@Preference(nodePath = PathSearchPreference.NODE, value = PathSearchPreference.SHOW_PATH_LIMIT_REACHED) Boolean showDialog) {
 		if (running && paths.size() >= limit) {
 			job.cancel();
 			running = false;
 			if (showDialog) {
-				// FIXME execute the command
+				handlers.executeHandler(commands.createCommand("org.tomvej.fmassoc.core.command.pathlimitreached",
+						Collections.emptyMap()));
 			}
 		}
 	}
