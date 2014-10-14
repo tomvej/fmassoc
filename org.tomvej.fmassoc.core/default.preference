@@ -1,0 +1,2 @@
+org.tomvej.fmassoc.core.search/path.limit=10000
+org.tomvej.fmassoc.core.search/path.limit.show=true
