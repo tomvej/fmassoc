@@ -14,12 +14,25 @@ import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
 import org.tomvej.fmassoc.core.search.PathFinder;
 import org.tomvej.fmassoc.model.path.Path;
 
+/**
+ * Job handling path finding.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class PathFinderJob extends Job {
 	private final PathFinder finder;
 	private final IEventBroker eventBroker;
 	private final List<Path> found;
 	private final Logger logger;
 
+	/**
+	 * Specify parameters.
+	 * 
+	 * @param finder
+	 *            Path finder used.
+	 * @param foundPaths
+	 *            List where found paths are published.
+	 */
 	public PathFinderJob(PathFinder finder, IEventBroker eventBroker, List<Path> foundPaths, Logger logger) {
 		super("Path search " + finder.toString());
 		this.finder = Validate.notNull(finder);

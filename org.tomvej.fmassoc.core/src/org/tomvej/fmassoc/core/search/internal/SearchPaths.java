@@ -20,21 +20,32 @@ import org.tomvej.fmassoc.core.search.PathFinderProvider;
 import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.model.path.Path;
 
+/**
+ * Handles for path search.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class SearchPaths {
 	private final List<Path> foundPaths;
 
 	// the context must be shared -- otherwise, the job might not be removed
 	// from the right context
-	@Inject
 	private IEclipseContext context;
 
 
+	/**
+	 * Put found path list into context.
+	 */
 	@Inject
 	public SearchPaths(IEclipseContext context) {
+		this.context = context;
 		foundPaths = new ArrayList<>();
 		context.set(ContextObjects.FOUND_PATHS, Collections.unmodifiableList(foundPaths));
 	}
 
+	/**
+	 * Start a path search.
+	 */
 	@Execute
 	public void execute(SearchInput input, PathFinderProvider provider, IEventBroker broker, Logger logger) {
 		PathFinderJob job = new PathFinderJob(provider.createPathFinder(input), broker, foundPaths, logger);
@@ -46,17 +57,26 @@ public class SearchPaths {
 		job.schedule();
 	}
 
+	/**
+	 * Check for path search necessary parameters.
+	 */
 	@Optional
 	@CanExecute
 	public boolean canExecute(SearchInput input, PathFinderProvider provider, PathFinderJob job) {
 		return input != null && provider != null && job == null;
 	}
 
+	/**
+	 * Clean-up context when job is finished.
+	 */
 	@Inject
 	public void jobFinished(@Optional @EventTopic(PathSearchTopic.FINISH) IStatus status) {
 		context.remove(PathFinderJob.class);
 	}
 
+	/**
+	 * Clean-up context when job is cancelled.
+	 */
 	@Inject
 	public void jobCancelled(@Optional @EventTopic(PathSearchTopic.CANCEL) IStatus status) {
 		context.remove(PathFinderJob.class);
