@@ -6,8 +6,16 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
 
+/**
+ * Handler for path search interruption.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class StopSearch {
 
+	/**
+	 * Interrupt the currently running job.
+	 */
 	@Execute
 	public void execute(PathFinderJob currentJob, IEventBroker broker) {
 		if (currentJob.cancel()) {
@@ -16,6 +24,9 @@ public class StopSearch {
 		}
 	}
 
+	/**
+	 * Check if there is a job running.
+	 */
 	@CanExecute
 	public boolean canExecute(PathFinderJob currentJob) {
 		return currentJob != null;
