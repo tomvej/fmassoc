@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_wjoKwFRTEeSsrYpkFjvv_g">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_y2C5UFRTEeSsrYpkFjvv_g" featurename="trimBars" parentElementId="org.tomvej.fmassoc.core.window.main">
+    <elements xsi:type="basic:TrimBar" xmi:id="_3aU80FRTEeSsrYpkFjvv_g" elementId="org.tomvej.fmassoc.parts.status.trimbar" side="Bottom">
+      <children xsi:type="menu:ToolBar" xmi:id="_FjFx0FRVEeSsrYpkFjvv_g" elementId="org.tomvej.fmassoc.parts.status.toolbar">
+        <children xsi:type="menu:ToolControl" xmi:id="_OwTvUFRVEeSsrYpkFjvv_g" elementId="org.tomvej.fmassoc.parts.status.toolcontrol.progress" contributionURI="bundleclass://org.tomvej.fmassoc.parts.status/org.tomvej.fmassoc.parts.status.Progress"/>
+      </children>
+    </elements>
+  </fragments>
+</fragment:ModelFragments>
