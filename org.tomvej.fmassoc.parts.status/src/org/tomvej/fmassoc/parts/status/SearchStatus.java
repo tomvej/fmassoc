@@ -18,11 +18,19 @@ import org.tomvej.fmassoc.core.search.PathFinderProvider;
 import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.model.path.Path;
 
+/**
+ * Shows current search information.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class SearchStatus {
 	private Label status;
 	private Composite parent;
 	private SearchInput input;
 
+	/**
+	 * Initialize UI.
+	 */
 	@PostConstruct
 	public void createComponents(Composite parent) {
 		this.parent = parent;
@@ -39,6 +47,9 @@ public class SearchStatus {
 				+ input.getDestinations().get(input.getDestinations().size() - 1).getImplName();
 	}
 
+	/**
+	 * Listen for search start.
+	 */
 	@Inject
 	@Optional
 	public void searchStarted(@UIEventTopic(PathSearchTopic.START) SearchInput input, PathFinderProvider provider) {
@@ -47,6 +58,9 @@ public class SearchStatus {
 		status.setToolTipText(input + "\n" + provider);
 	}
 
+	/**
+	 * Listen for search completion.
+	 */
 	@Inject
 	@Optional
 	public void searchFinished(@UIEventTopic(PathSearchTopic.FINISH) IStatus status,
@@ -54,6 +68,9 @@ public class SearchStatus {
 		setText("Showing paths " + formatInput() + "(" + paths.size() + " found).");
 	}
 
+	/**
+	 * Listen for search cancel.
+	 */
 	@Inject
 	@Optional
 	public void searchCancelled(@UIEventTopic(PathSearchTopic.CANCEL) IStatus status,
