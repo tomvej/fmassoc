@@ -16,4 +16,9 @@ public class DFPathFinderProvider implements PathFinderProvider {
 	public PathFinder createPathFinder(SearchInput input) {
 		return new DFPathFinder(input.getSource(), input.getDestinations(), input.getForbidden());
 	};
+
+	@Override
+	public String toString() {
+		return "Unpruned Depth-First Path Finder";
+	}
 }

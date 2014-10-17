@@ -44,6 +44,7 @@ public class SearchStatus {
 	public void searchStarted(@UIEventTopic(PathSearchTopic.START) SearchInput input, PathFinderProvider provider) {
 		this.input = input;
 		setText("Searching for paths " + formatInput() + ".");
+		status.setToolTipText(input + "\n" + provider);
 	}
 
 	@Inject

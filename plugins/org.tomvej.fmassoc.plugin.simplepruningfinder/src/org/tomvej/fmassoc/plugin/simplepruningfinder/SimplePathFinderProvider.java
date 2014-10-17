@@ -12,12 +12,14 @@ import org.tomvej.fmassoc.plugin.prioritydfpathfinder.Pruning;
  * @author Tomáš Vejpustek
  */
 public class SimplePathFinderProvider extends IteratedPriorityDFFinderProvider {
+	private final Settings settings;
 
 	/**
 	 * Specify settings.
 	 */
 	public SimplePathFinderProvider(Settings settings) {
 		super(generatePruning(settings));
+		this.settings = settings;
 	}
 
 	private static List<Pruning> generatePruning(Settings settings) {
@@ -42,6 +44,11 @@ public class SimplePathFinderProvider extends IteratedPriorityDFFinderProvider {
 				result.add(new SimplePruning(new Settings(true, true, length, width)));
 			}
 		}
+	}
+
+	@Override
+	public String toString() {
+		return settings.toString();
 	}
 
 }
