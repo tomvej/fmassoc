@@ -43,7 +43,8 @@ public class UseTransformer {
 	 * Listens to other parts being pinned and removes pinning.
 	 */
 	@Inject
-	public void otherSelected(@Optional @UIEventTopic(PathTransformerTopic.SELECT) MPart other, MPart thisPart) {
+	@Optional
+	public void otherSelected(@UIEventTopic(PathTransformerTopic.SELECT) MPart other, MPart thisPart) {
 		if (!thisPart.equals(other) && isSelected()) {
 			lastSelected.setSelected(false);
 			lastSelected = null;

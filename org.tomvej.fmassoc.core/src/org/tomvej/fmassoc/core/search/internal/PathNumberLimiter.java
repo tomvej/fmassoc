@@ -58,10 +58,11 @@ public class PathNumberLimiter {
 	 * Listen for path found. Terminate if there are too many paths.
 	 */
 	@Inject
+	@Optional
 	public void pathFound(
-			@Optional @EventTopic(PathSearchTopic.PUBLISH) Path target,
+			@EventTopic(PathSearchTopic.PUBLISH) Path target,
 			@Named(ContextObjects.FOUND_PATHS) List<Path> paths,
-			@Optional PathFinderJob job,
+			PathFinderJob job,
 			EHandlerService handlers,
 			ECommandService commands,
 			@Preference(nodePath = PathSearchPreference.NODE, value = PathSearchPreference.PATH_LIMIT) Integer limit,

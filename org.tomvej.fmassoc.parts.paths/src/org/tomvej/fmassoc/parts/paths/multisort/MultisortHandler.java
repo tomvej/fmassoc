@@ -64,18 +64,18 @@ public class MultisortHandler {
 	 * Listen to columns of path table change.
 	 */
 	@Inject
-	public void columnsChanged(@Optional @UIEventTopic(MultisortTopic.COLUMNS) Collection<TableColumn> columns) {
-		if (columns != null) {
-			dialog.setColumns(columns);
-			setSelected(false);
-		}
+	@Optional
+	public void columnsChanged(@UIEventTopic(MultisortTopic.COLUMNS) Collection<TableColumn> columns) {
+		dialog.setColumns(columns);
+		setSelected(false);
 	}
 
 	/**
 	 * Get notified when user uses column sort.
 	 */
 	@Inject
-	public void singleSort(@Optional @UIEventTopic(MultisortTopic.SINGLESORT) TableColumn column) {
+	@Optional
+	public void singleSort(@UIEventTopic(MultisortTopic.SINGLESORT) TableColumn column) {
 		// only deselect the handle
 		setSelected(false);
 		dialog.clearSort();

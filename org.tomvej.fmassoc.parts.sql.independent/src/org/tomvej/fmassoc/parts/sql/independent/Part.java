@@ -136,7 +136,8 @@ public class Part {
 	 * Listens to part pinning.
 	 */
 	@Inject
-	public void partPinned(@Optional @UIEventTopic(PathTransformerTopic.SELECT) MPart other, MPart thisPart) {
+	@Optional
+	public void partPinned(@UIEventTopic(PathTransformerTopic.SELECT) MPart other, MPart thisPart) {
 		pinned = thisPart.equals(other);
 		if (pinned) {
 			transformPath();

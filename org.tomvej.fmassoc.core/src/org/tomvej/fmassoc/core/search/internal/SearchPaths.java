@@ -70,7 +70,8 @@ public class SearchPaths {
 	 * Clean-up context when job is finished.
 	 */
 	@Inject
-	public void jobFinished(@Optional @EventTopic(PathSearchTopic.FINISH) IStatus status) {
+	@Optional
+	public void jobFinished(@EventTopic(PathSearchTopic.FINISH) IStatus status) {
 		context.remove(PathFinderJob.class);
 	}
 
@@ -78,7 +79,8 @@ public class SearchPaths {
 	 * Clean-up context when job is cancelled.
 	 */
 	@Inject
-	public void jobCancelled(@Optional @EventTopic(PathSearchTopic.CANCEL) IStatus status) {
+	@Optional
+	public void jobCancelled(@EventTopic(PathSearchTopic.CANCEL) IStatus status) {
 		context.remove(PathFinderJob.class);
 	}
 
