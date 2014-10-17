@@ -36,7 +36,7 @@ public class PathPreferenceManager {
 	private static final String LABEL_PROVIDER = "label.provider";
 
 	@Inject
-	@Preference("org.tomvej.fmassoc.parts.paths")
+	@Preference(nodePath = "org.tomvej.fmassoc.parts.paths")
 	private IEclipsePreferences preference;
 	@Inject
 	private IEventBroker broker;

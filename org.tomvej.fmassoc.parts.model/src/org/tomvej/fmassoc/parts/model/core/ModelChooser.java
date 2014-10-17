@@ -54,7 +54,7 @@ public class ModelChooser {
 	@Inject
 	private EHandlerService handlerService;
 	@Inject
-	@Preference("org.tomvej.fmassoc.parts.model.models")
+	@Preference(nodePath = "org.tomvej.fmassoc.parts.model.models")
 	private IEclipsePreferences modelPreference;
 
 	private IEclipseContext appContext;

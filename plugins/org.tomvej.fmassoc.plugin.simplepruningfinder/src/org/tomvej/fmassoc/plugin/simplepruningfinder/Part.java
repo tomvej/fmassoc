@@ -33,7 +33,7 @@ public class Part {
 
 	private IEclipseContext context;
 	@Inject
-	@Preference("org.tomvej.fmassoc.plugin.simplepruningfinder")
+	@Preference(nodePath = "org.tomvej.fmassoc.plugin.simplepruningfinder")
 	private IEclipsePreferences preference;
 	@Inject
 	private Logger logger;

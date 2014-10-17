@@ -44,7 +44,7 @@ public class Part {
 	@Inject
 	private Logger logger;
 	@Inject
-	@Preference("org.tomvej.fmassoc.parts.sql.independent")
+	@Preference(nodePath = "org.tomvej.fmassoc.parts.sql.independent")
 	private IEclipsePreferences preference;
 	private IEclipseContext context;
 
