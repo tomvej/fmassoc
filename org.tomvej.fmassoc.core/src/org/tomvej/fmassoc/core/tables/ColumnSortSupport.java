@@ -15,17 +15,21 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.BusyIndicator;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TableColumn;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 
 /**
  * Support for sorting by individual table columns.
+ * Optionally may display "busy" indicator while sorting.
  * 
  * @author Tomáš Vejpustek
  */
 @SuppressWarnings("rawtypes")
 public class ColumnSortSupport {
 	private final TableViewer table;
+	private final Display display; // display to show busy indicator
 	private List<SortEntry> sort = Collections.emptyList();
 	private final Map<TableColumn, Comparator> comparators = new HashMap<>();
 	private final ViewerComparator comparator = new ViewerComparator() {
@@ -62,7 +66,15 @@ public class ColumnSortSupport {
 	 * Add column sort support to table.
 	 */
 	public ColumnSortSupport(TableViewer viewer) {
+		this(viewer, null);
+	}
+
+	/**
+	 * Add column sort support with busy indicator to table.
+	 */
+	public ColumnSortSupport(TableViewer viewer, Display display) {
 		table = Validate.notNull(viewer);
+		this.display = display; // can be null
 		table.setComparator(comparator);
 		Arrays.asList(table.getTable().getColumns()).forEach(this::addColumn);
 		setDescending(false);
@@ -153,7 +165,11 @@ public class ColumnSortSupport {
 		sort = Collections.singletonList(entry);
 		setDescending(!entry.isAscending());
 		table.getTable().setSortColumn(entry.getColumn());
-		table.refresh();
+		if (display == null) {
+			table.refresh();
+		} else {
+			BusyIndicator.showWhile(display, table::refresh);
+		}
 	}
 
 	private void setDescending(boolean descending) {

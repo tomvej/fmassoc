@@ -77,7 +77,7 @@ public class Part {
 		pathTable.getTable().setHeaderVisible(true);
 		pathTable.getTable().setLinesVisible(true);
 		pathTable.getTable().setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
-		sortSupport = new ColumnSortSupport(pathTable);
+		sortSupport = new ColumnSortSupport(pathTable, display);
 
 		pathColumn = new TableViewerColumn(pathTable, SWT.LEFT);
 		pathColumn.getColumn().setText("Path");
