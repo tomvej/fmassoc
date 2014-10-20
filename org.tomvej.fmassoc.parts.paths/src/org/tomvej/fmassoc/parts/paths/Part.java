@@ -16,6 +16,7 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -35,7 +36,6 @@ import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
 import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
-import org.tomvej.fmassoc.core.tables.ListLazyContentProvider;
 import org.tomvej.fmassoc.core.tables.SortEntry;
 import org.tomvej.fmassoc.core.wrappers.KeyReleasedWrapper;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
@@ -63,8 +63,6 @@ public class Part {
 	private final Map<PathPropertyEntry<?>, TableColumn> propertyColumns = new HashMap<>();
 	private ColumnSortSupport sortSupport;
 	private Clipboard clipboard;
-	private List<Path> foundPaths;
-	private boolean search;
 
 	/**
 	 * Create components comprising the found table part.
@@ -72,10 +70,9 @@ public class Part {
 	@PostConstruct
 	public void createComponents(Composite parent, ESelectionService selectionService, Display display,
 			@Named(ContextObjects.FOUND_PATHS) List<Path> foundPaths, PathPreferenceManager preference) {
-		this.foundPaths = foundPaths;
 		clipboard = new Clipboard(display);
 
-		pathTable = new TableViewer(parent, SWT.VIRTUAL | SWT.SINGLE | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL);
+		pathTable = new TableViewer(parent, SWT.SINGLE | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL);
 		pathTable.getTable().setHeaderVisible(true);
 		pathTable.getTable().setLinesVisible(true);
 		pathTable.getTable().setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
@@ -89,7 +86,7 @@ public class Part {
 
 		labelProviderChanged(preference.getLabelProvider());
 
-		pathTable.setContentProvider(new ListLazyContentProvider<Path>(pathTable));
+		pathTable.setContentProvider(ArrayContentProvider.getInstance());
 		pathTable.setInput(foundPaths);
 		pathTable.addSelectionChangedListener(e -> selectionService.setSelection(
 				((IStructuredSelection) pathTable.getSelection()).getFirstElement()));
@@ -121,17 +118,6 @@ public class Part {
 		}
 	}
 
-	/**
-	 * Add path to the table. This only causes table refresh.
-	 */
-	@Inject
-	@Optional
-	public void receivePath(@UIEventTopic(PathSearchTopic.PUBLISH) Path target) {
-		if (search) { // this should remove delayed events
-			pathTable.setItemCount(foundPaths.size());
-		}
-	}
-
 	private void packColumns() {
 		propertyColumns.values().forEach(c -> c.pack());
 		pathColumn.getColumn().pack();
@@ -142,9 +128,10 @@ public class Part {
 	 */
 	@Inject
 	@Optional
-	public void searchFinished(@UIEventTopic(PathSearchTopic.FINISH) IStatus status) {
-		search = false;
-		pathTable.setItemCount(foundPaths.size());
+	public void searchFinished(@UIEventTopic(PathSearchTopic.FINISH) IStatus status,
+			@Named(ContextObjects.FOUND_PATHS) List<Path> paths) {
+		pathTable.setInput(paths);
+		pathTable.refresh();
 		packColumns();
 	}
 
@@ -153,9 +140,10 @@ public class Part {
 	 */
 	@Inject
 	@Optional
-	public void searchCancelled(@UIEventTopic(PathSearchTopic.CANCEL) IStatus status) {
-		search = false;
-		pathTable.setItemCount(foundPaths.size());
+	public void searchCancelled(@UIEventTopic(PathSearchTopic.CANCEL) IStatus status,
+			@Named(ContextObjects.FOUND_PATHS) List<Path> paths) {
+		pathTable.setInput(paths);
+		pathTable.refresh();
 		packColumns();
 	}
 
@@ -165,8 +153,8 @@ public class Part {
 	@Inject
 	@Optional
 	public void searchStarted(@UIEventTopic(PathSearchTopic.START) SearchInput target) {
-		search = true;
-		pathTable.setItemCount(0);
+		pathTable.setInput(null);
+		pathTable.refresh();
 	}
 
 	/**
