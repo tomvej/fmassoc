@@ -22,6 +22,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceAdapter;
@@ -123,16 +124,20 @@ public class Part {
 		pathColumn.getColumn().pack();
 	}
 
+	private void refresh() {
+		pathTable.refresh();
+		packColumns();
+	}
+
 	/**
 	 * Listens for table search finish.
 	 */
 	@Inject
 	@Optional
 	public void searchFinished(@UIEventTopic(PathSearchTopic.FINISH) IStatus status,
-			@Named(ContextObjects.FOUND_PATHS) List<Path> paths) {
+			@Named(ContextObjects.FOUND_PATHS) List<Path> paths, Display display) {
 		pathTable.setInput(paths);
-		pathTable.refresh();
-		packColumns();
+		BusyIndicator.showWhile(display, this::refresh);
 	}
 
 	/**
@@ -141,10 +146,9 @@ public class Part {
 	@Inject
 	@Optional
 	public void searchCancelled(@UIEventTopic(PathSearchTopic.CANCEL) IStatus status,
-			@Named(ContextObjects.FOUND_PATHS) List<Path> paths) {
+			@Named(ContextObjects.FOUND_PATHS) List<Path> paths, Display display) {
 		pathTable.setInput(paths);
-		pathTable.refresh();
-		packColumns();
+		BusyIndicator.showWhile(display, this::refresh);
 	}
 
 	/**
