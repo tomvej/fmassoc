@@ -7,6 +7,9 @@
       </children>
     </children>
     <handlers xmi:id="_jvsw4FOFEeSM8-ZLDUxvpQ" elementId="org.tomvej.fmassoc.core.handler.pathlimitreached" contributionURI="bundleclass://org.tomvej.fmassoc.core/org.tomvej.fmassoc.core.search.internal.ShowPathLimitReached" command="_T3i-sFOAEeSM8-ZLDUxvpQ"/>
+    <windows xsi:type="basic:Dialog" xmi:id="_8xE4AGjsEeSofq1pVoCung" elementId="org.tomvej.fmassoc.core.dialog.search" visible="false" label="Search in Progress" width="500" height="220">
+      <children xsi:type="basic:Part" xmi:id="_THx-0GjuEeSofq1pVoCung" elementId="org.tomvej.fmassoc.core.dialog.search.part" contributionURI="bundleclass://org.tomvej.fmassoc.core/org.tomvej.fmassoc.core.search.internal.SearchProgressDialog"/>
+    </windows>
     <trimBars xmi:id="_c85GoCN9EeSIYYTJAOONGw" elementId="org.tomvej.fmassoc.core.trimbar.top">
       <children xsi:type="menu:ToolBar" xmi:id="_cK1-MC27EeS3MvsXw3Morw" elementId="org.tomvej.fmassoc.core.toolbar.run">
         <children xsi:type="menu:HandledToolItem" xmi:id="_dLdGoC27EeS3MvsXw3Morw" elementId="org.tomvej.fmassoc.core.handledtoolitem.searchpaths" label="Search" command="_7uPIYC1LEeSrT_p8RPGkbg"/>
