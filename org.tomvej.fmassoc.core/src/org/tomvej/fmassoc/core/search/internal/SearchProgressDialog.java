@@ -19,6 +19,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.osgi.service.prefs.BackingStoreException;
 import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
@@ -27,11 +28,14 @@ import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 
 public class SearchProgressDialog {
 	private Button alwaysBgBtn;
+	private Label statusLbl;
 
 	@Inject
 	public void createControls(Composite parent, EHandlerService handlers, ECommandService commands, MDialog dialog,
 			@Preference(nodePath = PathSearchPreference.NODE) IEclipsePreferences searchPreference) {
 		parent.setLayout(new GridLayout(2, false));
+		statusLbl = new Label(parent, SWT.WRAP);
+		statusLbl.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, true).create());
 
 		ProgressBar progress = new ProgressBar(parent, SWT.HORIZONTAL | SWT.SMOOTH | SWT.INDETERMINATE);
 		progress.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, false).create());
