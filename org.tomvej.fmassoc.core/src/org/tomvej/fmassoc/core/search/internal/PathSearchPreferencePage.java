@@ -50,6 +50,7 @@ public class PathSearchPreferencePage extends PreferencePage implements ContextP
 
 	private Button showPathLimitDialog;
 	private Spinner pathLimit;
+	private Button showSearchProgressDialog;
 
 	/**
 	 * Create this preference page.
@@ -82,6 +83,10 @@ public class PathSearchPreferencePage extends PreferencePage implements ContextP
 		showPathLimitDialog.setText("Show the \"There are too many paths for given search input...\" dialog.");
 		showPathLimitDialog.setSelection(getBool(PathSearchPreference.SHOW_PATH_LIMIT_REACHED));
 
+		showSearchProgressDialog = new Button(container, SWT.CHECK);
+		showSearchProgressDialog.setText("Show dialog displaying search progress.");
+		showSearchProgressDialog.setSelection(getBool(PathSearchPreference.SHOW_SEARCH_PROGRESS_DIALOG));
+
 		return container;
 	}
 
@@ -89,6 +94,7 @@ public class PathSearchPreferencePage extends PreferencePage implements ContextP
 	public boolean performOk() {
 		preference.putInt(PathSearchPreference.PATH_LIMIT, pathLimit.getSelection());
 		preference.putBoolean(PathSearchPreference.SHOW_PATH_LIMIT_REACHED, showPathLimitDialog.getSelection());
+		preference.putBoolean(PathSearchPreference.SHOW_SEARCH_PROGRESS_DIALOG, showSearchProgressDialog.getSelection());
 		try {
 			preference.flush();
 		} catch (BackingStoreException bse) {

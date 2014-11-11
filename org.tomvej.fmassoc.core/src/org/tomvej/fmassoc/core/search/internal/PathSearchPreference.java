@@ -18,5 +18,5 @@ public interface PathSearchPreference {
 	/**
 	 * Whether search progress dialog should be shown.
 	 */
-	public static final String SHOW_SEARCH_DIALOG = "search.show";
+	public static final String SHOW_SEARCH_PROGRESS_DIALOG = "search.show";
 }

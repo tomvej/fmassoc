@@ -10,12 +10,15 @@ import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.di.extensions.Preference;
+import org.eclipse.e4.core.services.log.Logger;
+import org.eclipse.e4.ui.di.PersistState;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ProgressBar;
+import org.osgi.service.prefs.BackingStoreException;
 import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
 import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
@@ -38,7 +41,8 @@ public class SearchProgressDialog {
 		cancelBtn.setText("Cancel");
 
 		alwaysBgBtn.addSelectionListener(new SelectionWrapper(
-				e -> searchPreference.putBoolean(PathSearchPreference.SHOW_SEARCH_DIALOG, alwaysBgBtn.getSelection())));
+				e -> searchPreference.putBoolean(PathSearchPreference.SHOW_SEARCH_PROGRESS_DIALOG,
+						alwaysBgBtn.getSelection())));
 		bgBtn.addSelectionListener(new SelectionWrapper(e -> dialog.setVisible(false)));
 		cancelBtn.addSelectionListener(new SelectionWrapper(
 				e -> handlers.executeHandler(commands.createCommand(
@@ -47,8 +51,10 @@ public class SearchProgressDialog {
 
 	@Optional
 	@Inject
-	public void searchStarted(@UIEventTopic(PathSearchTopic.START) SearchInput input, MDialog dialog,
-			@Preference(nodePath = PathSearchPreference.NODE, value = PathSearchPreference.SHOW_SEARCH_DIALOG) Boolean show) {
+	public void searchStarted(
+			@UIEventTopic(PathSearchTopic.START) SearchInput input,
+			MDialog dialog,
+			@Preference(nodePath = PathSearchPreference.NODE, value = PathSearchPreference.SHOW_SEARCH_PROGRESS_DIALOG) Boolean show) {
 		if (show) {
 			dialog.setVisible(true);
 			alwaysBgBtn.setSelection(true);
@@ -65,5 +71,15 @@ public class SearchProgressDialog {
 	@Inject
 	public void searchCancelled(@UIEventTopic(PathSearchTopic.CANCEL) IStatus status, MDialog dialog) {
 		dialog.setVisible(false);
+	}
+
+	@PersistState
+	public void persistState(@Preference(nodePath = PathSearchPreference.NODE) IEclipsePreferences searchPreference,
+			Logger logger) {
+		try {
+			searchPreference.flush();
+		} catch (BackingStoreException e) {
+			logger.error(e, "Cannot store path search preference.");
+		}
 	}
 }
