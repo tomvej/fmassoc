@@ -15,4 +15,8 @@ public interface PathSearchPreference {
 	 * shown. Boolean.
 	 */
 	public static final String SHOW_PATH_LIMIT_REACHED = "path.limit.show";
+	/**
+	 * Whether search progress dialog should be shown.
+	 */
+	public static final String SHOW_SEARCH_DIALOG = "search.show";
 }

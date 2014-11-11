@@ -5,9 +5,11 @@ import java.util.Collections;
 import javax.inject.Inject;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MDialog;
 import org.eclipse.swt.SWT;
@@ -19,14 +21,15 @@ import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 
 public class SearchProgressDialog {
-
+	private Button alwaysBgBtn;
 
 	@Inject
-	public void createControls(Composite parent, EHandlerService handlers, ECommandService commands, MDialog dialog) {
+	public void createControls(Composite parent, EHandlerService handlers, ECommandService commands, MDialog dialog,
+			@Preference(nodePath = PathSearchPreference.NODE) IEclipsePreferences searchPreference) {
 		new ProgressBar(parent, SWT.HORIZONTAL | SWT.SMOOTH | SWT.INDETERMINATE);
 
-		Button alwaysBgBtn = new Button(parent, SWT.CHECK);
-		alwaysBgBtn.setText("Always run in background.");
+		alwaysBgBtn = new Button(parent, SWT.CHECK);
+		alwaysBgBtn.setText("Show search progress dialog.");
 
 		Button bgBtn = new Button(parent, SWT.PUSH);
 		bgBtn.setText("Run in background");
@@ -34,6 +37,8 @@ public class SearchProgressDialog {
 		Button cancelBtn = new Button(parent, SWT.PUSH);
 		cancelBtn.setText("Cancel");
 
+		alwaysBgBtn.addSelectionListener(new SelectionWrapper(
+				e -> searchPreference.putBoolean(PathSearchPreference.SHOW_SEARCH_DIALOG, alwaysBgBtn.getSelection())));
 		bgBtn.addSelectionListener(new SelectionWrapper(e -> dialog.setVisible(false)));
 		cancelBtn.addSelectionListener(new SelectionWrapper(
 				e -> handlers.executeHandler(commands.createCommand(
@@ -42,8 +47,12 @@ public class SearchProgressDialog {
 
 	@Optional
 	@Inject
-	public void searchStarted(@UIEventTopic(PathSearchTopic.START) SearchInput input, MDialog dialog) {
-		dialog.setVisible(true);
+	public void searchStarted(@UIEventTopic(PathSearchTopic.START) SearchInput input, MDialog dialog,
+			@Preference(nodePath = PathSearchPreference.NODE, value = PathSearchPreference.SHOW_SEARCH_DIALOG) Boolean show) {
+		if (show) {
+			dialog.setVisible(true);
+			alwaysBgBtn.setSelection(true);
+		}
 	}
 
 	@Optional
