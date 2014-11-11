@@ -14,7 +14,9 @@ import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.e4.ui.di.PersistState;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MDialog;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ProgressBar;
@@ -29,16 +31,22 @@ public class SearchProgressDialog {
 	@Inject
 	public void createControls(Composite parent, EHandlerService handlers, ECommandService commands, MDialog dialog,
 			@Preference(nodePath = PathSearchPreference.NODE) IEclipsePreferences searchPreference) {
-		new ProgressBar(parent, SWT.HORIZONTAL | SWT.SMOOTH | SWT.INDETERMINATE);
+		parent.setLayout(new GridLayout(2, false));
+
+		ProgressBar progress = new ProgressBar(parent, SWT.HORIZONTAL | SWT.SMOOTH | SWT.INDETERMINATE);
+		progress.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, false).create());
 
 		alwaysBgBtn = new Button(parent, SWT.CHECK);
 		alwaysBgBtn.setText("Show search progress dialog.");
+		alwaysBgBtn.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).create());
 
 		Button bgBtn = new Button(parent, SWT.PUSH);
 		bgBtn.setText("Run in background");
+		bgBtn.setLayoutData(GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.FILL).grab(true, false).create());
 
 		Button cancelBtn = new Button(parent, SWT.PUSH);
 		cancelBtn.setText("Cancel");
+		cancelBtn.setLayoutData(GridDataFactory.fillDefaults().create());
 
 		alwaysBgBtn.addSelectionListener(new SelectionWrapper(
 				e -> searchPreference.putBoolean(PathSearchPreference.SHOW_SEARCH_PROGRESS_DIALOG,
