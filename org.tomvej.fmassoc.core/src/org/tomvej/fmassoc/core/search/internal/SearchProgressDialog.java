@@ -26,10 +26,19 @@ import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
 import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 
+/**
+ * Dialog (optionally) displayed during path search. Displays sort settings and
+ * can be used to cancel the search.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class SearchProgressDialog {
 	private Button alwaysBgBtn;
 	private Label statusLbl;
 
+	/**
+	 * Create dialog area.
+	 */
 	@Inject
 	public void createControls(Composite parent, EHandlerService handlers, ECommandService commands, MDialog dialog,
 			@Preference(nodePath = PathSearchPreference.NODE) IEclipsePreferences searchPreference) {
@@ -61,6 +70,9 @@ public class SearchProgressDialog {
 						"org.tomvej.fmassoc.core.command.stopsearch", Collections.emptyMap()))));
 	}
 
+	/**
+	 * Show dialog when search is started.
+	 */
 	@Optional
 	@Inject
 	public void searchStarted(
@@ -73,18 +85,27 @@ public class SearchProgressDialog {
 		}
 	}
 
+	/**
+	 * Hide dialog when search is finished.
+	 */
 	@Optional
 	@Inject
 	public void searchFinished(@UIEventTopic(PathSearchTopic.FINISH) IStatus status, MDialog dialog) {
 		dialog.setVisible(false);
 	}
 
+	/**
+	 * Hide dialog when search is cancelled.
+	 */
 	@Optional
 	@Inject
 	public void searchCancelled(@UIEventTopic(PathSearchTopic.CANCEL) IStatus status, MDialog dialog) {
 		dialog.setVisible(false);
 	}
 
+	/**
+	 * Store dialog preferences.
+	 */
 	@PersistState
 	public void persistState(@Preference(nodePath = PathSearchPreference.NODE) IEclipsePreferences searchPreference,
 			Logger logger) {
