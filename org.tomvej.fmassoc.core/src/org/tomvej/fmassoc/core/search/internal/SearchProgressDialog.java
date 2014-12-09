@@ -23,8 +23,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.osgi.service.prefs.BackingStoreException;
 import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
+import org.tomvej.fmassoc.core.search.PathFinderProvider;
 import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
+import org.tomvej.fmassoc.model.db.Table;
 
 /**
  * Dialog (optionally) displayed during path search. Displays sort settings and
@@ -78,10 +80,12 @@ public class SearchProgressDialog {
 	public void searchStarted(
 			@UIEventTopic(PathSearchTopic.START) SearchInput input,
 			MDialog dialog,
+			PathFinderProvider provider,
 			@Preference(nodePath = PathSearchPreference.NODE, value = PathSearchPreference.SHOW_SEARCH_PROGRESS_DIALOG) Boolean show) {
 		if (show) {
 			dialog.setVisible(true);
 			alwaysBgBtn.setSelection(true);
+			statusLbl.setText("Searching paths through: " + formatInput(input) + "\n\nAlgorithm: " + provider);
 		}
 	}
 
@@ -114,5 +118,21 @@ public class SearchProgressDialog {
 		} catch (BackingStoreException e) {
 			logger.error(e, "Cannot store path search preference.");
 		}
+	}
+
+	private String formatInput(SearchInput input) {
+		StringBuilder result = new StringBuilder(input.getSource().getImplName());
+		for (Table dest : input.getDestinations()) {
+			result.append(" -> ").append(dest.getImplName());
+		}
+		if (!input.getForbidden().isEmpty()) {
+			result.append(" (skipping ");
+			for (Table forbidden : input.getForbidden()) {
+				result.append(forbidden.getImplName()).append(", ");
+			}
+			result.delete(result.length() - 2, result.length());
+			result.append(")");
+		}
+		return result.append(".").toString();
 	}
 }
