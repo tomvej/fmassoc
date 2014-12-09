@@ -18,9 +18,11 @@ import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.dnd.Clipboard;
@@ -106,6 +108,8 @@ public class Part {
 			};
 		});
 		pathTable.getTable().addKeyListener(new KeyReleasedWrapper('c', SWT.CTRL, e -> copyTransformedPath()));
+
+		ColumnViewerToolTipSupport.enableFor(pathTable, ToolTip.NO_RECREATE);
 	}
 
 	private String getTransformedPath() {
