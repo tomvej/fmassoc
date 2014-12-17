@@ -14,6 +14,8 @@ public interface DataModelTopic {
 	public static final String TOPIC = "TOPIC_DATAMODEL";
 	/** All topics for data model. */
 	public static final String ALL = TOPIC + "/*";
-	/** Selected data model has changed. */
+	/** New model is loading. Sends {@link String} -- model label. */
+	public static final String MODEL_LOADING = TOPIC + "/MODEL_LOADING";
+	/** Selected data model has changed. Sends {@link DataModel}. */
 	public static final String MODEL_CHANGED = TOPIC + "/MODEL_CHANGED";
 }

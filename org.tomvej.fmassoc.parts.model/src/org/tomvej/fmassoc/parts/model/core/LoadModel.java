@@ -33,6 +33,7 @@ public class LoadModel {
 	@Execute
 	public void execute(ModelEntry current, Shell shell) {
 		try {
+			events.post(DataModelTopic.MODEL_LOADING, current.getLabel());
 			DataModel model = current.load();
 			dataModelChanged(model);
 			logger.info("Model loaded: " + current);
