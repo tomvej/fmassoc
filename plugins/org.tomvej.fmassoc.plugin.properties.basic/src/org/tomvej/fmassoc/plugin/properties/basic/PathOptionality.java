@@ -42,6 +42,11 @@ public final class PathOptionality implements PathProperty<Boolean> {
 	}
 
 	@Override
+	public Class<Boolean> getType() {
+		return Boolean.class;
+	}
+
+	@Override
 	public int hashCode() {
 		return 6977;
 	}

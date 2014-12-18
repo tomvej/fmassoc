@@ -44,6 +44,11 @@ public final class PathLength implements PathProperty<Integer> {
 	}
 
 	@Override
+	public Class<Integer> getType() {
+		return Integer.class;
+	}
+
+	@Override
 	public int hashCode() {
 		return 4813;
 	}

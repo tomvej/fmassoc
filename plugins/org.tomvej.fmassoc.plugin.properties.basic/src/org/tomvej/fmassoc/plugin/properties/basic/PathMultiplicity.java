@@ -34,6 +34,11 @@ public final class PathMultiplicity implements PathProperty<Multiplicity> {
 	};
 
 	@Override
+	public Class<Multiplicity> getType() {
+		return Multiplicity.class;
+	}
+
+	@Override
 	public int hashCode() {
 		return 4363;
 	}

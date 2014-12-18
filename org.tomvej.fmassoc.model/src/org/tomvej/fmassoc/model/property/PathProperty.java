@@ -30,6 +30,11 @@ public interface PathProperty<T> {
 	}
 
 	/**
+	 * Returns type of this property values.
+	 */
+	Class<T> getType();
+
+	/**
 	 * Returns an algorithm which may be used to compute property value for
 	 * given path.
 	 */

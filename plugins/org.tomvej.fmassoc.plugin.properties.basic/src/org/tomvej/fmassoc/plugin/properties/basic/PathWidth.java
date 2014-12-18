@@ -52,6 +52,11 @@ public final class PathWidth implements PathProperty<Integer> {
 	}
 
 	@Override
+	public Class<Integer> getType() {
+		return Integer.class;
+	}
+
+	@Override
 	public int hashCode() {
 		return 3539;
 	}
