@@ -9,10 +9,12 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -36,6 +38,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TableColumn;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
 import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
+import org.tomvej.fmassoc.core.extension.ReferenceExtensionRegistry;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
 import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
@@ -60,6 +63,10 @@ public class Part {
 	private IEclipseContext context;
 	@Inject
 	private IEventBroker broker;
+	@Inject
+	private Logger logger;
+
+	private ReferenceExtensionRegistry<ColumnLabelProvider> typeLabelProviders, propertyLabelProviders;
 
 	private TableViewer pathTable;
 	private TableViewerColumn pathColumn;
@@ -72,7 +79,10 @@ public class Part {
 	 */
 	@PostConstruct
 	public void createComponents(Composite parent, ESelectionService selectionService, Display display,
-			@Named(ContextObjects.FOUND_PATHS) List<Path> foundPaths, PathPreferenceManager preference) {
+			@Named(ContextObjects.FOUND_PATHS) List<Path> foundPaths, PathPreferenceManager preference,
+			IExtensionRegistry extensions) {
+		loadProviders(extensions);
+
 		clipboard = new Clipboard(display);
 
 		pathTable = new TableViewer(parent, SWT.SINGLE | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL);
@@ -245,5 +255,14 @@ public class Part {
 	@PreDestroy
 	public void dispose() {
 		clipboard.dispose();
+	}
+
+	private void loadProviders(IExtensionRegistry registry) {
+		typeLabelProviders = new ReferenceExtensionRegistry<>(
+				registry.getConfigurationElementsFor("org.tomvej.fmassoc.parts.paths.typelabelprovider"),
+				ColumnLabelProvider.class, logger);
+		propertyLabelProviders = new ReferenceExtensionRegistry<>(
+				registry.getConfigurationElementsFor("org.tomvej.fmassoc.parts.paths.propertylabelprovider"),
+				ColumnLabelProvider.class, logger);
 	}
 }
