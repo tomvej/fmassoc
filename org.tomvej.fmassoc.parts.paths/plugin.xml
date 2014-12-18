@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin>
    <extension-point id="pathlabelprovider" name="Path Label Provider" schema="schema/pathlabelprovider.exsd"/>
+   <extension-point id="typelabelprovider" name="Type Label Provider" schema="schema/typelabelprovider.exsd"/>
+   <extension-point id="propertylabelprovider" name="Property Label Provider" schema="schema/propertylabelprovider.exsd"/>
 
    <extension
          id="org.tomvej.fmassoc.parts.paths.fragment"
