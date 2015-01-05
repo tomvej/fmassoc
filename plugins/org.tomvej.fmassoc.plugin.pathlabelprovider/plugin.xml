@@ -9,5 +9,18 @@
             name="Basic">
       </client>
    </extension>
+   <extension
+         point="org.tomvej.fmassoc.parts.paths.typelabelprovider">
+      <client
+            class="org.tomvej.fmassoc.plugin.pathlabelprovider.MultiplicityLabelProvider"
+            date="2014-01-05"
+            reference="org.tomvej.fmassoc.model.db.Multiplicity">
+      </client>
+      <client
+            class="org.tomvej.fmassoc.plugin.pathlabelprovider.BooleanLabelProvider"
+            date="2014-01-05"
+            reference="java.lang.Boolean">
+      </client>
+   </extension>
 
 </plugin>
