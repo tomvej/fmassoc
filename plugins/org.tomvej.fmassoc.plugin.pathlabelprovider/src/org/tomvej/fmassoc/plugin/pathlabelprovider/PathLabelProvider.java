@@ -18,8 +18,8 @@ public class PathLabelProvider extends TextPathLabelProvider {
 			add(Multiplicity.ONE_TO_ONE, "=").add(Multiplicity.ONE_TO_MANY, "<")
 			.add(Multiplicity.MANY_TO_ONE, ">").add(Multiplicity.MANY_TO_MANY, "x");
 	private static final MultiplicityFormatter VERTICAL_FORMATTER = new MultiplicityFormatter().
-			add(Multiplicity.ONE_TO_ONE, "||").add(Multiplicity.ONE_TO_MANY, "&land;").
-			add(Multiplicity.MANY_TO_ONE, "&lor;").add(Multiplicity.MANY_TO_MANY, "X");
+			add(Multiplicity.ONE_TO_ONE, "||").add(Multiplicity.ONE_TO_MANY, "/\\").
+			add(Multiplicity.MANY_TO_ONE, "V").add(Multiplicity.MANY_TO_MANY, "X");
 
 	@Override
 	protected String getTableText(Table target) {
