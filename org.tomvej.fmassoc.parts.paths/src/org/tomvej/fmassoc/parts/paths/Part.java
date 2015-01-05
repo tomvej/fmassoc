@@ -48,6 +48,7 @@ import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.model.db.AssociationProperty;
 import org.tomvej.fmassoc.model.path.Path;
+import org.tomvej.fmassoc.parts.paths.labelprovider.CustomColumnLabelProvider;
 import org.tomvej.fmassoc.parts.paths.multisort.MultisortTopic;
 import org.tomvej.fmassoc.parts.paths.preference.PathPreferenceManager;
 import org.tomvej.fmassoc.parts.paths.preference.PathTablePreferenceTopic;
@@ -66,7 +67,8 @@ public class Part {
 	@Inject
 	private Logger logger;
 
-	private ReferenceExtensionRegistry<ColumnLabelProvider> typeLabelProviders, propertyLabelProviders;
+	@SuppressWarnings("rawtypes")
+	private ReferenceExtensionRegistry<CustomColumnLabelProvider> typeLabelProviders, propertyLabelProviders;
 
 	private TableViewer pathTable;
 	private TableViewerColumn pathColumn;
@@ -213,8 +215,14 @@ public class Part {
 		column.addSelectionListener(new SelectionWrapper(e -> broker.post(MultisortTopic.SINGLESORT, column)));
 		column.pack();
 
-		viewerColumn.setLabelProvider(new TextColumnLabelProvider<Path>(
-				p -> columnEntry.getProperty().getValue(p).toString()));
+		CustomColumnLabelProvider<?> customProvider = propertyLabelProviders.apply(columnEntry.getProperty().getClass());
+		if (customProvider == null) {
+			customProvider = typeLabelProviders.apply(columnEntry.getProperty().getType());
+		}
+		viewerColumn.setLabelProvider(customProvider != null ?
+				new CustomPathLabelProvider(customProvider, columnEntry.getProperty()) :
+				new TextColumnLabelProvider<Path>(
+						p -> columnEntry.getProperty().getValue(p).toString()));
 
 		sortSupport.addColumn(column);
 		sortSupport.setComparator(column,
@@ -260,9 +268,9 @@ public class Part {
 	private void loadProviders(IExtensionRegistry registry) {
 		typeLabelProviders = new ReferenceExtensionRegistry<>(
 				registry.getConfigurationElementsFor("org.tomvej.fmassoc.parts.paths.typelabelprovider"),
-				ColumnLabelProvider.class, logger);
+				CustomColumnLabelProvider.class, logger);
 		propertyLabelProviders = new ReferenceExtensionRegistry<>(
 				registry.getConfigurationElementsFor("org.tomvej.fmassoc.parts.paths.propertylabelprovider"),
-				ColumnLabelProvider.class, logger);
+				CustomColumnLabelProvider.class, logger);
 	}
 }
