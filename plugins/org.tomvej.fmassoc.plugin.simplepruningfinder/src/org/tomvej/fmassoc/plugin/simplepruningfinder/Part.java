@@ -76,6 +76,7 @@ public class Part {
 		SelectionListener listener = new SelectionWrapper(e -> refresh());
 		optional.addSelectionListener(listener);
 		mn.addSelectionListener(listener);
+		refresh();
 	}
 
 	/**
