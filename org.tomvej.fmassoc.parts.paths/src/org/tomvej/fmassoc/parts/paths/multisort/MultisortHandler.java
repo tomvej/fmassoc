@@ -65,7 +65,6 @@ public class MultisortHandler {
 			}
 		} else {
 			setSelected(prevState);
-			setDefaultTooltip();
 		}
 	}
 
