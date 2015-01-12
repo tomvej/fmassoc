@@ -6,6 +6,7 @@
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_vqDYcDwrEeSKNJd9uleB0A" featurename="commands" parentElementId="org.tomvej.fmassoc.core.application">
     <elements xsi:type="commands:Command" xmi:id="_2JGfgDwrEeSKNJd9uleB0A" elementId="org.tomvej.fmassoc.parts.paths.command.multisort" commandName="Multisort"/>
+    <elements xsi:type="commands:Command" xmi:id="_oHaGEJpUEeSb0YieiPJ1BA" elementId="org.tomvej.fmassoc.parts.paths.command.filter" commandName="Filter"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_rOrS0JgAEeSUkZphneFToA" featurename="children" parentElementId="org.tomvej.fmassoc.core.partstack.paths">
     <elements xsi:type="basic:Part" xmi:id="_IuopUCEnEeSLQMaNm8aPHA" elementId="org.tomvej.fmassoc.parts.paths.part" contributionURI="bundleclass://org.tomvej.fmassoc.parts.paths/org.tomvej.fmassoc.parts.paths.Part" label="Found Paths">
@@ -16,6 +17,9 @@
         </children>
         <children xsi:type="menu:HandledToolItem" xmi:id="_77FFMDwrEeSKNJd9uleB0A" elementId="org.tomvej.fmassoc.parts.paths.handledtoolitem.multisort" label="Sort" tooltip="Sort wrt Multiple Columns" type="Check" command="_2JGfgDwrEeSKNJd9uleB0A">
           <persistedState key="tooltip" value="Sort wrt Multiple Columns"/>
+        </children>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_a9S1MJpUEeSb0YieiPJ1BA" elementId="org.tomvej.fmassoc.parts.paths.handledtoolitem.filter" label="Filter" tooltip="Filter" type="Check" command="_oHaGEJpUEeSb0YieiPJ1BA">
+          <persistedState key="tooltip" value="Filter"/>
         </children>
       </toolbar>
     </elements>
