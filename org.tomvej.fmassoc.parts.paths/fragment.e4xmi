@@ -11,6 +11,7 @@
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_rOrS0JgAEeSUkZphneFToA" featurename="children" parentElementId="org.tomvej.fmassoc.core.partstack.paths">
     <elements xsi:type="basic:Part" xmi:id="_IuopUCEnEeSLQMaNm8aPHA" elementId="org.tomvej.fmassoc.parts.paths.part" contributionURI="bundleclass://org.tomvej.fmassoc.parts.paths/org.tomvej.fmassoc.parts.paths.Part" label="Found Paths">
       <handlers xmi:id="_5LQo8DwrEeSKNJd9uleB0A" elementId="org.tomvej.fmassoc.parts.paths.handler.multisort" contributionURI="bundleclass://org.tomvej.fmassoc.parts.paths/org.tomvej.fmassoc.parts.paths.multisort.MultisortHandler" command="_2JGfgDwrEeSKNJd9uleB0A"/>
+      <handlers xmi:id="_j9uXEJpYEeSb0YieiPJ1BA" elementId="org.tomvej.fmassoc.parts.paths.handler.filter" contributionURI="bundleclass://org.tomvej.fmassoc.parts.paths/org.tomvej.fmassoc.parts.paths.filter.FilterHandler" command="_oHaGEJpUEeSb0YieiPJ1BA"/>
       <toolbar xmi:id="_tlxgoDJ0EeSrIp1cpcOcAQ" elementId="org.tomvej.fmassoc.parts.paths.toolbar">
         <children xsi:type="menu:HandledToolItem" xmi:id="_9HXmQDJ0EeSrIp1cpcOcAQ" elementId="org.tomvej.fmassoc.parts.paths.handledtoolitem.preference" label="Preferences" tooltip="Preferences" command="_T1k8MDJ4EeSrIp1cpcOcAQ">
           <parameters xmi:id="_mYBcUDJ7EeSrIp1cpcOcAQ" elementId="org.tomvej.fmassoc.parts.paths.handledtoolitem.preference.pageid" name="org.eclipse.ui.window.preferences.pageid" value="org.tomvej.fmassoc.parts.paths.preference"/>
