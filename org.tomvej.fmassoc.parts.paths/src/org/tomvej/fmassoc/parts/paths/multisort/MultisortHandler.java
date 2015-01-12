@@ -1,6 +1,7 @@
 package org.tomvej.fmassoc.parts.paths.multisort;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -14,6 +15,7 @@ import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableColumn;
+import org.tomvej.fmassoc.core.tables.SortEntry;
 import org.tomvej.fmassoc.core.widgets.multisort.MultisortDialog;
 
 /**
@@ -54,10 +56,35 @@ public class MultisortHandler {
 		dialog.open();
 		if (dialog.getReturnCode() == Dialog.OK) {
 			broker.post(MultisortTopic.MULTISORT, dialog.getSort());
-			setSelected(dialog.getSort().size() > 1);
+			boolean selected = dialog.getSort().size() > 1;
+			setSelected(selected);
+			if (selected) {
+				handle.setTooltip(formatSort(dialog.getSort()));
+			} else {
+				setDefaultTooltip();
+			}
 		} else {
 			setSelected(prevState);
+			setDefaultTooltip();
 		}
+	}
+
+	private void setDefaultTooltip() {
+		if (handle != null) {
+			handle.setTooltip(handle.getPersistedState().getOrDefault("tooltip", "Sort wrt Multiple Columns"));
+		}
+	}
+
+	private String formatSort(List<SortEntry> sort) {
+		StringBuilder result = new StringBuilder();
+		for (SortEntry entry : sort) {
+			result.append(entry.getColumn().getText()).append(" ").
+					append(entry.isAscending() ? "/\\" : "V").append(", ");
+		}
+		if (!sort.isEmpty()) {
+			result.delete(result.length() - 2, result.length());
+		}
+		return result.toString();
 	}
 
 	/**
@@ -68,6 +95,7 @@ public class MultisortHandler {
 	public void columnsChanged(@UIEventTopic(MultisortTopic.COLUMNS) Collection<TableColumn> columns) {
 		dialog.setColumns(columns);
 		setSelected(false);
+		setDefaultTooltip();
 	}
 
 	/**
@@ -79,7 +107,7 @@ public class MultisortHandler {
 		// only deselect the handle
 		setSelected(false);
 		dialog.clearSort();
+		setDefaultTooltip();
 	}
-
 
 }
