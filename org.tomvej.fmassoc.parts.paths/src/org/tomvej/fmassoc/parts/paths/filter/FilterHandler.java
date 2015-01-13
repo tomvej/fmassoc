@@ -35,6 +35,7 @@ public class FilterHandler {
 			if (dialog.getFilter() != null) {
 				handle.setTooltip(dialog.getFilter().toString());
 			} else {
+				handle.setSelected(false);
 				setDefaultTooltip();
 			}
 		} else {
