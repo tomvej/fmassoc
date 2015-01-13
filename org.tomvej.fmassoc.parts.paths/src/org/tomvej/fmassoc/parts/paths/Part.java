@@ -48,6 +48,7 @@ import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.model.db.AssociationProperty;
 import org.tomvej.fmassoc.model.path.Path;
+import org.tomvej.fmassoc.parts.paths.filter.FilterTopic;
 import org.tomvej.fmassoc.parts.paths.labelprovider.CustomColumnLabelProvider;
 import org.tomvej.fmassoc.parts.paths.multisort.MultisortTopic;
 import org.tomvej.fmassoc.parts.paths.preference.PathPreferenceManager;
@@ -229,8 +230,13 @@ public class Part {
 				new PathPropertyComparator(columnEntry.getProperty(), columnEntry.getComparator()));
 
 		propertyColumns.put(columnEntry, column);
-		broker.post(MultisortTopic.COLUMNS, propertyColumns.values());
+		fireColumnsChanged();
 		pathTable.refresh();
+	}
+
+	private void fireColumnsChanged() {
+		broker.post(MultisortTopic.COLUMNS, propertyColumns.values());
+		broker.post(FilterTopic.COLUMNS, propertyColumns.keySet());
 	}
 
 	/**
@@ -243,6 +249,7 @@ public class Part {
 		if (column != null) {
 			column.dispose();
 			sortSupport.setComparator(column, null);
+			fireColumnsChanged();
 		}
 	}
 
