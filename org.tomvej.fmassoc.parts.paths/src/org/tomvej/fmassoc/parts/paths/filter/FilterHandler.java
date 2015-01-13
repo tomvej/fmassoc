@@ -13,16 +13,27 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Shell;
 import org.tomvej.fmassoc.model.property.PathProperty;
 
+/**
+ * Dialog for path table filtering.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class FilterHandler {
 	private final FilterDialog dialog;
 	private MHandledItem handle;
 
 
+	/**
+	 * Initialize dialog.
+	 */
 	@Inject
 	public FilterHandler(Shell parent) {
 		dialog = new FilterDialog(parent);
 	}
 
+	/**
+	 * Show the dialog and apply chosen filter.
+	 */
 	@Execute
 	public void execute(MHandledItem handle, IEventBroker broker) {
 		this.handle = handle;
@@ -55,6 +66,9 @@ public class FilterHandler {
 		}
 	}
 
+	/**
+	 * Change which properties can be filtered.
+	 */
 	@Inject
 	@Optional
 	public void columnsChanged(@UIEventTopic(FilterTopic.COLUMNS) Collection<PathProperty<?>> properties) {

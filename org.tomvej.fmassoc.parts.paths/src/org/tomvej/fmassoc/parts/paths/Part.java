@@ -270,6 +270,12 @@ public class Part {
 		}
 	}
 
+	/**
+	 * Apply filter.
+	 * 
+	 * @param filter
+	 *            Returns {@code true} when the path should be filtered.
+	 */
 	@Inject
 	@Optional
 	public void filter(@UIEventTopic(FilterTopic.FILTER) Predicate<Path> filter) {

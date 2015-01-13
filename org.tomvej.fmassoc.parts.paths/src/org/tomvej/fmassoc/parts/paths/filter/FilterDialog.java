@@ -10,8 +10,18 @@ import org.eclipse.swt.widgets.Shell;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.model.property.PathProperty;
 
+/**
+ * Dialog for path filtering.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class FilterDialog extends Dialog {
 
+	/**
+	 * Initialize dialog.
+	 * 
+	 * @param parent
+	 */
 	public FilterDialog(Shell parent) {
 		super(parent);
 	}
@@ -28,10 +38,16 @@ public class FilterDialog extends Dialog {
 		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
 	}
 
+	/**
+	 * Set which properties can be filtered.
+	 */
 	public void setColumns(Collection<PathProperty<?>> columns) {
 		// FIXME
 	}
 
+	/**
+	 * Return actual filter.
+	 */
 	public Predicate<Path> getFilter() {
 		// FIXME
 		return null;
