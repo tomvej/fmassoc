@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.menu.MHandledItem;
 import org.eclipse.jface.dialogs.Dialog;
@@ -23,14 +24,19 @@ public class FilterHandler {
 	}
 
 	@Execute
-	public void execute(MHandledItem handle) {
+	public void execute(MHandledItem handle, IEventBroker broker) {
 		this.handle = handle;
 		boolean prevState = !handle.isSelected();
 		handle.setSelected(true);
 
 		dialog.open();
 		if (dialog.getReturnCode() == Dialog.OK) {
-			// FIXME
+			broker.post(FilterTopic.FILTER, dialog.getFilter());
+			if (dialog.getFilter() != null) {
+				handle.setTooltip(dialog.getFilter().toString());
+			} else {
+				setDefaultTooltip();
+			}
 		} else {
 			handle.setSelected(prevState);
 		}

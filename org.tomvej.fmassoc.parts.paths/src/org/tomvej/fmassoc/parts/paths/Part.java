@@ -3,6 +3,7 @@ package org.tomvej.fmassoc.parts.paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -262,6 +263,12 @@ public class Part {
 		if (sort != null) {
 			sortSupport.multisort(sort);
 		}
+	}
+
+	@Inject
+	@Optional
+	public void filter(@UIEventTopic(FilterTopic.FILTER) Predicate<Path> filter) {
+		// FIXME
 	}
 
 	/**
