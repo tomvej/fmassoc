@@ -47,6 +47,7 @@ import org.tomvej.fmassoc.core.tables.SortEntry;
 import org.tomvej.fmassoc.core.wrappers.KeyReleasedWrapper;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
+import org.tomvej.fmassoc.core.wrappers.ViewerFilterWrapper;
 import org.tomvej.fmassoc.model.db.AssociationProperty;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.parts.paths.filter.FilterTopic;
@@ -62,6 +63,8 @@ import org.tomvej.fmassoc.parts.paths.preference.PathTablePreferenceTopic;
  *
  */
 public class Part {
+	private static final Predicate<Path> DEFAULT_FILTER = p -> false;
+
 	@Inject
 	private IEclipseContext context;
 	@Inject
@@ -77,6 +80,7 @@ public class Part {
 	private final Map<PathPropertyEntry<?>, TableColumn> propertyColumns = new HashMap<>();
 	private ColumnSortSupport sortSupport;
 	private Clipboard clipboard;
+	private Predicate<Path> filter = DEFAULT_FILTER;
 
 	/**
 	 * Create components comprising the found table part.
@@ -122,6 +126,7 @@ public class Part {
 			};
 		});
 		pathTable.getTable().addKeyListener(new KeyReleasedWrapper('c', SWT.CTRL, e -> copyTransformedPath()));
+		pathTable.addFilter(new ViewerFilterWrapper<Path>(p -> !filter.test(p)));
 
 		ColumnViewerToolTipSupport.enableFor(pathTable, ToolTip.NO_RECREATE);
 	}
@@ -268,7 +273,12 @@ public class Part {
 	@Inject
 	@Optional
 	public void filter(@UIEventTopic(FilterTopic.FILTER) Predicate<Path> filter) {
-		// FIXME
+		if (filter == null) {
+			this.filter = DEFAULT_FILTER;
+		} else {
+			this.filter = filter;
+		}
+		pathTable.refresh();
 	}
 
 	/**
