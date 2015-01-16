@@ -85,7 +85,7 @@ class AssociationPropertyImpl extends NamedImpl implements AssociationProperty {
 
 		@Override
 		public Multiplicity getMultiplicity() {
-			return inner.getMultiplicity();
+			return inner.getMultiplicity().inverse();
 		}
 
 		@Override
