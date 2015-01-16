@@ -63,7 +63,7 @@ import org.tomvej.fmassoc.parts.paths.preference.PathTablePreferenceTopic;
  *
  */
 public class Part {
-	private static final Predicate<Path> DEFAULT_FILTER = p -> false;
+	private static final Predicate<Path> DEFAULT_FILTER = p -> true;
 
 	@Inject
 	private IEclipseContext context;
@@ -126,7 +126,9 @@ public class Part {
 			};
 		});
 		pathTable.getTable().addKeyListener(new KeyReleasedWrapper('c', SWT.CTRL, e -> copyTransformedPath()));
-		pathTable.addFilter(new ViewerFilterWrapper<Path>(p -> !filter.test(p)));
+		pathTable.addFilter(new ViewerFilterWrapper<Path>(p -> filter.test(p)));
+		// cannot be `filter' or `filter::test' since that would disregard
+		// filter change
 
 		ColumnViewerToolTipSupport.enableFor(pathTable, ToolTip.NO_RECREATE);
 	}
@@ -274,7 +276,7 @@ public class Part {
 	 * Apply filter.
 	 * 
 	 * @param filter
-	 *            Returns {@code true} when the path should be filtered.
+	 *            Returns {@code true} when the path should be shown.
 	 */
 	@Inject
 	@Optional
