@@ -1,6 +1,6 @@
 package org.tomvej.fmassoc.parts.paths.filter;
 
-import java.util.Collection;
+import java.util.Map;
 import java.util.function.Predicate;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -11,8 +11,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
 import org.tomvej.fmassoc.model.path.Path;
-import org.tomvej.fmassoc.model.property.PathProperty;
+import org.tomvej.fmassoc.parts.paths.filterprovider.FilterProvider;
 
 /**
  * Dialog for path filtering.
@@ -60,7 +61,7 @@ public class FilterDialog extends Dialog {
 	/**
 	 * Set which properties can be filtered.
 	 */
-	public void setColumns(Collection<PathProperty<?>> columns) {
+	public void setColumns(Map<PathPropertyEntry<?>, FilterProvider<?>> providers) {
 		// FIXME
 	}
 
