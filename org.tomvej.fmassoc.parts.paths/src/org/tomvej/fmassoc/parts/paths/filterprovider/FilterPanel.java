@@ -20,7 +20,7 @@ public abstract class FilterPanel<T> extends Composite {
 	 * 
 	 * @see Composite#Composite(Composite, int)
 	 */
-	public FilterPanel(Composite parent, int style) {
+	public FilterPanel(Composite parent) {
 		super(parent, SWT.NONE);
 	}
 
