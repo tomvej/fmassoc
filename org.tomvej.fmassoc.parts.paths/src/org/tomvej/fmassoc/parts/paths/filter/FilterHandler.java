@@ -2,7 +2,9 @@ package org.tomvej.fmassoc.parts.paths.filter;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -90,12 +92,22 @@ public class FilterHandler {
 			if (provider != null) {
 				columns.put(property, provider);
 			} else {
-				logger.warn("No filter provider for " + property.getName() + ".");
+				logMissingProvider(property);
 			}
 		}
 		dialog.setColumns(columns);
 		setSelected(false);
 		setDefaultTooltip();
+	}
+
+	private Set<PathPropertyEntry<?>> alreadyLogged = new HashSet<>();
+
+	private void logMissingProvider(PathPropertyEntry<?> property) {
+		if (alreadyLogged.contains(property)) {
+			return;
+		}
+		alreadyLogged.add(property);
+		logger.warn("No filter provider for " + property.getName() + ".");
 	}
 
 }
