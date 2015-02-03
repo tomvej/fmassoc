@@ -1,17 +1,22 @@
 package org.tomvej.fmassoc.parts.paths.filter;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import org.apache.commons.lang3.Validate;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
+import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.parts.paths.filterprovider.FilterProvider;
 
@@ -22,6 +27,9 @@ import org.tomvej.fmassoc.parts.paths.filterprovider.FilterProvider;
  */
 public class FilterDialog extends Dialog {
 	private Composite panel;
+	private ComboViewer availableFilters;
+
+	private Map<PathPropertyEntry<?>, FilterProvider<?>> providers = Collections.emptyMap();
 
 	/**
 	 * Initialize dialog.
@@ -55,6 +63,11 @@ public class FilterDialog extends Dialog {
 		panel.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).span(width, 1).create());
 		panel.setLayout(new GridLayout());
 
+		availableFilters = new ComboViewer(container, SWT.DROP_DOWN | SWT.READ_ONLY);
+		availableFilters.setContentProvider(ArrayContentProvider.getInstance());
+		availableFilters.setLabelProvider(new TextLabelProvider<PathPropertyEntry<?>>(e -> e.getName()));
+		availableFilters.setInput(providers.keySet());
+
 		return container;
 	}
 
@@ -62,7 +75,11 @@ public class FilterDialog extends Dialog {
 	 * Set which properties can be filtered.
 	 */
 	public void setColumns(Map<PathPropertyEntry<?>, FilterProvider<?>> providers) {
-		// FIXME
+		this.providers = Validate.notNull(providers);
+		if (availableFilters != null && !availableFilters.getCombo().isDisposed()) {
+			availableFilters.setInput(providers.keySet());
+		}
+		// FIXME clear filters
 	}
 
 	/**
