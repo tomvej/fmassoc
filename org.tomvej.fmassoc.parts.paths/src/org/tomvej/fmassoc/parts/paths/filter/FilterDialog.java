@@ -1,8 +1,8 @@
 package org.tomvej.fmassoc.parts.paths.filter;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -35,8 +35,10 @@ public class FilterDialog extends Dialog {
 	private ComboViewer availableFilters;
 	private Button addBtn;
 
+	private Collection<FilterInstance<?>> persistedFilters = Collections.emptyList();
+	private Map<FilterInstance<?>, Composite> currentFilters = new HashMap<>();
+
 	private Map<PathPropertyEntry<?>, FilterProvider<?>> providers = Collections.emptyMap();
-	private final List<FilterRow<?>> filters = new ArrayList<>();
 
 	/**
 	 * Initialize dialog.
@@ -76,9 +78,11 @@ public class FilterDialog extends Dialog {
 		availableFilters.setInput(providers.keySet());
 		availableFilters.addSelectionChangedListener(e -> addBtn.setEnabled(!e.getSelection().isEmpty()));
 
+		persistedFilters.forEach(this::addFilter);
+
 		addBtn = new Button(container, SWT.PUSH);
 		addBtn.setText("Add filter");
-		addBtn.addSelectionListener(new SelectionWrapper(e -> addFilter()));
+		addBtn.addSelectionListener(new SelectionWrapper(e -> addSelectedFilter()));
 		addBtn.setEnabled(false);
 
 		Button clearFilterBtn = new Button(container, SWT.PUSH);
@@ -89,10 +93,15 @@ public class FilterDialog extends Dialog {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void addFilter() {
-		PathPropertyEntry<?> property = (PathPropertyEntry<?>) ((IStructuredSelection) availableFilters.getSelection())
+	private void addSelectedFilter() {
+		PathPropertyEntry<?> entry = (PathPropertyEntry<?>) ((IStructuredSelection) availableFilters.getSelection())
 				.getFirstElement();
-		filters.add(new FilterRow(panel, property, providers.get(property), this::refresh));
+		addFilter(new FilterInstance(entry, providers.get(entry).get()));
+		refresh();
+	}
+
+	private void addFilter(FilterInstance<?> instance) {
+		currentFilters.put(instance, instance.createFilterPanel(panel, this::refresh));
 	}
 
 	private void refresh() {
@@ -103,9 +112,23 @@ public class FilterDialog extends Dialog {
 	}
 
 	private void clearFilter() {
-		filters.forEach(f -> f.dispose());
-		filters.clear();
+		currentFilters.values().forEach(f -> f.dispose());
+		currentFilters.clear();
 		refresh();
+	}
+
+	@Override
+	protected void okPressed() {
+		currentFilters.entrySet().removeIf(e -> e.getValue().isDisposed());
+		persistedFilters = currentFilters.keySet();
+		currentFilters = new HashMap<>();
+		super.okPressed();
+	}
+
+	@Override
+	protected void cancelPressed() {
+		currentFilters = new HashMap<>();
+		super.cancelPressed();
 	}
 
 	/**
@@ -123,7 +146,6 @@ public class FilterDialog extends Dialog {
 	 * Return actual filter.
 	 */
 	public Predicate<Path> getFilter() {
-		filters.removeIf(r -> r.isDisposed());
-		return filters.stream().map(r -> r.getFilter()).reduce(p -> true, (p1, p2) -> p1.and(p2));
+		return new CompoundFilter(persistedFilters);
 	}
 }

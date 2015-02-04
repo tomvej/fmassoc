@@ -1,21 +1,15 @@
 package org.tomvej.fmassoc.parts.paths.filterprovider;
 
-import java.util.function.Function;
-
-import org.eclipse.swt.widgets.Composite;
+import java.util.function.Supplier;
 
 
 /**
- * Creates filter panels.
+ * Creates filters.
  * 
  * @author Tomáš Vejpustek
  * @param <T>
+ *            type of filtered values.
  */
-public interface FilterProvider<T> extends Function<Composite, FilterPanel<T>> {
+public interface FilterProvider<T> extends Supplier<Filter<T>> {
 
-	/**
-	 * Create new filter panel with supplied parent {@link Composite}.
-	 */
-	@Override
-	public FilterPanel<T> apply(Composite t);
 }
