@@ -1,6 +1,8 @@
 package org.tomvej.fmassoc.parts.paths.filter;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -10,12 +12,15 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
+import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.parts.paths.filterprovider.FilterProvider;
@@ -28,8 +33,10 @@ import org.tomvej.fmassoc.parts.paths.filterprovider.FilterProvider;
 public class FilterDialog extends Dialog {
 	private Composite panel;
 	private ComboViewer availableFilters;
+	private Button addBtn;
 
 	private Map<PathPropertyEntry<?>, FilterProvider<?>> providers = Collections.emptyMap();
+	private final List<FilterRow<?>> filters = new ArrayList<>();
 
 	/**
 	 * Initialize dialog.
@@ -67,8 +74,38 @@ public class FilterDialog extends Dialog {
 		availableFilters.setContentProvider(ArrayContentProvider.getInstance());
 		availableFilters.setLabelProvider(new TextLabelProvider<PathPropertyEntry<?>>(e -> e.getName()));
 		availableFilters.setInput(providers.keySet());
+		availableFilters.addSelectionChangedListener(e -> addBtn.setEnabled(!e.getSelection().isEmpty()));
+
+		addBtn = new Button(container, SWT.PUSH);
+		addBtn.setText("Add filter");
+		addBtn.addSelectionListener(new SelectionWrapper(e -> addFilter()));
+		addBtn.setEnabled(false);
+
+		Button clearFilterBtn = new Button(container, SWT.PUSH);
+		clearFilterBtn.setText("Clear");
+		clearFilterBtn.addSelectionListener(new SelectionWrapper(e -> clearFilter()));
 
 		return container;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void addFilter() {
+		PathPropertyEntry<?> property = (PathPropertyEntry<?>) ((IStructuredSelection) availableFilters.getSelection())
+				.getFirstElement();
+		filters.add(new FilterRow(panel, property, providers.get(property), this::refresh));
+	}
+
+	private void refresh() {
+		Shell shell = getShell();
+		if (shell != null) {
+			shell.pack();
+		}
+	}
+
+	private void clearFilter() {
+		filters.forEach(f -> f.dispose());
+		filters.clear();
+		refresh();
 	}
 
 	/**
@@ -79,14 +116,14 @@ public class FilterDialog extends Dialog {
 		if (availableFilters != null && !availableFilters.getCombo().isDisposed()) {
 			availableFilters.setInput(providers.keySet());
 		}
-		// FIXME clear filters
+		clearFilter();
 	}
 
 	/**
 	 * Return actual filter.
 	 */
 	public Predicate<Path> getFilter() {
-		// FIXME
-		return null;
+		filters.removeIf(r -> r.isDisposed());
+		return filters.stream().map(r -> r.getFilter()).reduce(p -> true, (p1, p2) -> p1.and(p2));
 	}
 }
