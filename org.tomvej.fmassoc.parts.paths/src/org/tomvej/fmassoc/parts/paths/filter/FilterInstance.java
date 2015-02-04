@@ -14,15 +14,28 @@ import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.parts.paths.filterprovider.Filter;
 
+/**
+ * Instance of a filter for a path property.
+ * 
+ * @author Tomáš Vejpustek
+ * @param <T>
+ *            type of path property values
+ */
 public class FilterInstance<T> implements Predicate<Path> {
 	private final PathPropertyEntry<T> property;
 	private final Filter<T> filter;
 
+	/**
+	 * Specify path property and filter.
+	 */
 	public FilterInstance(PathPropertyEntry<T> property, Filter<T> filter) {
 		this.property = Validate.notNull(property);
 		this.filter = Validate.notNull(filter);
 	}
 
+	/**
+	 * Create panel containing the filter visual component.
+	 */
 	public Composite createFilterPanel(Composite parent, Runnable refresher) {
 		final Composite container = new Composite(parent, SWT.BORDER);
 		container.setLayoutData(GridDataFactory.fillDefaults().create());
