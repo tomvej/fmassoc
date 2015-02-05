@@ -11,6 +11,12 @@ import org.eclipse.swt.widgets.Spinner;
 import org.tomvej.fmassoc.parts.paths.filterprovider.Filter;
 import org.tomvej.fmassoc.parts.paths.filterprovider.FilterProvider;
 
+/**
+ * Provider of integer filter.
+ * 
+ * @author Tomáš Vejpustek
+ * @see OperatorFilter
+ */
 public class IntegerFilterProvider implements FilterProvider<Integer> {
 
 	@Override

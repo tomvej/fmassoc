@@ -15,6 +15,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.tomvej.fmassoc.parts.paths.filterprovider.Filter;
 
+/**
+ * Filter which works on basis of binary predicates where the predicate (or
+ * operator) and one value are specified via the visual component. The other
+ * value is the filtered value.
+ * 
+ * @author Tomáš Vejpustek
+ * @param <T>
+ *            type of filtered value
+ */
 public class OperatorFilter<T> implements Filter<T> {
 	private final Collection<Operator<? super T>> operators;
 	private final ValueControlProvider<T> controlProvider;
@@ -22,6 +31,10 @@ public class OperatorFilter<T> implements Filter<T> {
 	private Operator<? super T> operator;
 	private T value;
 
+	/**
+	 * Specify predicates (operators) and provider of visual component for
+	 * specifying one of the values.
+	 */
 	public OperatorFilter(Collection<Operator<? super T>> operators, ValueControlProvider<T> controlProvider) {
 		this.operators = Validate.notEmpty(Validate.noNullElements(operators));
 		this.controlProvider = Validate.notNull(controlProvider);
