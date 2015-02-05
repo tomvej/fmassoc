@@ -13,6 +13,11 @@
             date="2015-02-05"
             reference="org.tomvej.fmassoc.model.db.Multiplicity">
       </client>
+      <client
+            class="org.tomvej.fmassoc.plugin.filters.basic.IntegerFilterProvider"
+            date="2015-02-05"
+            reference="java.lang.Integer">
+      </client>
    </extension>
 
 </plugin>
