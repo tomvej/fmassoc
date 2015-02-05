@@ -4,7 +4,7 @@ import org.tomvej.fmassoc.parts.paths.filterprovider.Filter;
 import org.tomvej.fmassoc.parts.paths.filterprovider.FilterProvider;
 
 /**
- * Provider of boolean filter.
+ * Provides {@link BooleanFilter}.
  * 
  * @author Tomáš Vejpustek
  */

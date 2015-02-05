@@ -5,8 +5,13 @@
          point="org.tomvej.fmassoc.parts.paths.filterprovider">
       <client
             class="org.tomvej.fmassoc.plugin.filters.basic.BooleanFilterProvider"
-            date="2014-02-05"
+            date="2015-02-05"
             reference="java.lang.Boolean">
+      </client>
+      <client
+            class="org.tomvej.fmassoc.plugin.filters.basic.MultiplicityFilterProvider"
+            date="2015-02-05"
+            reference="org.tomvej.fmassoc.model.db.Multiplicity">
       </client>
    </extension>
 
