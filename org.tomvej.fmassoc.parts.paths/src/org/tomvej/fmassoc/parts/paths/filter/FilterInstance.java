@@ -38,14 +38,14 @@ public class FilterInstance<T> implements Predicate<Path> {
 	 */
 	public Composite createFilterPanel(Composite parent, Runnable refresher) {
 		final Composite container = new Composite(parent, SWT.BORDER);
-		container.setLayoutData(GridDataFactory.fillDefaults().create());
+		container.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 		container.setLayout(new GridLayout(3, false));
 
 		Label propertyLbl = new Label(container, SWT.NONE);
 		propertyLbl.setText(property.getName());
 		propertyLbl.setToolTipText(property.getDescription());
 
-		filter.createFilterPanel(container);
+		filter.createFilterPanel(container).setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 
 		Button rmBtn = new Button(container, SWT.PUSH);
 		rmBtn.setText("X");
