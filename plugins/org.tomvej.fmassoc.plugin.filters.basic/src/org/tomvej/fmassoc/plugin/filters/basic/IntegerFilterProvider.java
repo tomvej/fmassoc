@@ -37,6 +37,7 @@ public class IntegerFilterProvider implements FilterProvider<Integer> {
 				Spinner input = new Spinner(parent, SWT.BORDER);
 				if (initial == null) {
 					initial = 0;
+					listener.accept(0);
 				}
 				input.setValues(initial, Integer.MIN_VALUE, Integer.MAX_VALUE, 0, 1, 10);
 				input.addModifyListener(e -> listener.accept(input.getSelection()));
