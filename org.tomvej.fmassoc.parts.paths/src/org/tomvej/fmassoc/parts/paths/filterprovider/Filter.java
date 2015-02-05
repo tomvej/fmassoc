@@ -3,6 +3,7 @@ package org.tomvej.fmassoc.parts.paths.filterprovider;
 import java.util.function.Predicate;
 
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * Stores filter setting and creates visual components to change it.
@@ -26,5 +27,5 @@ public interface Filter<T> {
 	 * @param parent
 	 *            parent composite
 	 */
-	Composite createFilterPanel(Composite parent);
+	Control createFilterPanel(Composite parent);
 }
