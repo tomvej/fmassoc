@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Basic Filters
+Bundle-SymbolicName: org.tomvej.fmassoc.plugin.filters.basic;singleton:=true
+Bundle-Version: 2.0.0.SNAPSHOT
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.tomvej.fmassoc.parts.paths;bundle-version="2.0.0",
+ org.eclipse.swt;bundle-version="3.103.1",
+ org.eclipse.jface;bundle-version="3.10.1",
+ org.tomvej.fmassoc.core;bundle-version="2.0.0"
