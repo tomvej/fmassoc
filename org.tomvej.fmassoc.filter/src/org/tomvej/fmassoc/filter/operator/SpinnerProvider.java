@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.plugin.filters.basic;
+package org.tomvej.fmassoc.filter.operator;
 
 import java.util.function.Consumer;
 
@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Spinner;
  * 
  * @author Tomáš Vejpustek
  */
-final class SpinnerProvider implements ValueControlProvider<Integer> {
+public class SpinnerProvider implements ValueControlProvider<Integer> {
 
 	@Override
 	public Control createControl(Composite parent, Consumer<Integer> listener, Integer initial) {

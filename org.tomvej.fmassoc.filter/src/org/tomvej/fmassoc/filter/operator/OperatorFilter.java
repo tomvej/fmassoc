@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.plugin.filters.basic;
+package org.tomvej.fmassoc.filter.operator;
 
 import java.util.Collection;
 import java.util.function.Predicate;
