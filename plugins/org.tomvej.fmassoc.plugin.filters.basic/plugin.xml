@@ -2,20 +2,20 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.tomvej.fmassoc.parts.paths.filterprovider">
+         point="org.tomvej.fmassoc.filter.filterprovider">
       <client
-            class="org.tomvej.fmassoc.plugin.filters.basic.IntegerFilterProvider"
-            date="2015-02-05"
-            reference="java.lang.Integer">
+            class="org.tomvej.fmassoc.plugin.filters.basic.BooleanFilterProvider"
+            date="2015-02-06"
+            reference="java.lang.Boolean">
       </client>
       <client
             class="org.tomvej.fmassoc.plugin.filters.basic.MultiplicityFilterProvider"
-            date="2015-02-05"
+            date="2015-02-06"
             reference="org.tomvej.fmassoc.model.db.Multiplicity">
       </client>
       <client
             class="org.tomvej.fmassoc.plugin.filters.basic.IntegerFilterProvider"
-            date="2015-02-05"
+            date="2016-02-06"
             reference="java.lang.Integer">
       </client>
    </extension>

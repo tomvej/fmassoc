@@ -3,7 +3,6 @@
    <extension-point id="pathlabelprovider" name="Path Label Provider" schema="schema/pathlabelprovider.exsd"/>
    <extension-point id="typelabelprovider" name="Type Label Provider" schema="schema/typelabelprovider.exsd"/>
    <extension-point id="propertylabelprovider" name="Property Label Provider" schema="schema/propertylabelprovider.exsd"/>
-   <extension-point id="filterprovider" name="Filter Provider" schema="schema/filterprovider.exsd"/>
 
    <extension
          id="org.tomvej.fmassoc.parts.paths.fragment"

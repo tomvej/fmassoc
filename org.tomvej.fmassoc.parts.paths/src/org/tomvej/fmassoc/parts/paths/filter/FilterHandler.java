@@ -8,7 +8,6 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
@@ -17,9 +16,10 @@ import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.menu.MHandledItem;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Shell;
-import org.tomvej.fmassoc.core.extension.ReferenceExtensionRegistry;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
-import org.tomvej.fmassoc.parts.paths.filterprovider.FilterProvider;
+import org.tomvej.fmassoc.filter.FilterProvider;
+import org.tomvej.fmassoc.filter.FilterRegistry;
+import org.tomvej.fmassoc.filter.dialog.FilterDialog;
 
 /**
  * Dialog for path table filtering.
@@ -31,18 +31,13 @@ public class FilterHandler {
 	private Logger logger;
 	private final FilterDialog dialog;
 	private MHandledItem handle;
-	@SuppressWarnings("rawtypes")
-	private final ReferenceExtensionRegistry<FilterProvider> filterProviders;
 
 	/**
 	 * Initialize dialog.
 	 */
 	@Inject
-	public FilterHandler(Shell parent, IExtensionRegistry registry) {
+	public FilterHandler(Shell parent) {
 		dialog = new FilterDialog(parent);
-		filterProviders = new ReferenceExtensionRegistry<>(
-				registry.getConfigurationElementsFor("org.tomvej.fmassoc.parts.paths.filterprovider"), FilterProvider.class,
-				logger);
 	}
 
 	/**
@@ -85,7 +80,8 @@ public class FilterHandler {
 	 */
 	@Inject
 	@Optional
-	public void columnsChanged(@UIEventTopic(FilterTopic.COLUMNS) Collection<PathPropertyEntry<?>> properties) {
+	public void columnsChanged(@UIEventTopic(FilterTopic.COLUMNS) Collection<PathPropertyEntry<?>> properties,
+			FilterRegistry filterProviders) {
 		Map<PathPropertyEntry<?>, FilterProvider<?>> columns = new HashMap<>();
 		for (PathPropertyEntry<?> property : properties) {
 			FilterProvider<?> provider = filterProviders.apply(property.getProperty().getType());
