@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.filter.operator;
+package org.tomvej.fmassoc.plugins.filters.basic.operator;
 
 /**
  * Binary predicate.

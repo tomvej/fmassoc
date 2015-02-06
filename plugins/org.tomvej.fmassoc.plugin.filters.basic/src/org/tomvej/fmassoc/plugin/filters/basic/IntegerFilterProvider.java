@@ -6,11 +6,11 @@ import java.util.Collection;
 
 import org.tomvej.fmassoc.filter.Filter;
 import org.tomvej.fmassoc.filter.FilterProvider;
-import org.tomvej.fmassoc.filter.operator.ComparableOperator;
-import org.tomvej.fmassoc.filter.operator.ObjectOperator;
-import org.tomvej.fmassoc.filter.operator.Operator;
-import org.tomvej.fmassoc.filter.operator.OperatorFilter;
-import org.tomvej.fmassoc.filter.operator.SpinnerProvider;
+import org.tomvej.fmassoc.plugins.filters.basic.operator.ComparableOperator;
+import org.tomvej.fmassoc.plugins.filters.basic.operator.ObjectOperator;
+import org.tomvej.fmassoc.plugins.filters.basic.operator.Operator;
+import org.tomvej.fmassoc.plugins.filters.basic.operator.OperatorFilter;
+import org.tomvej.fmassoc.plugins.filters.basic.operator.SpinnerProvider;
 
 /**
  * Provider of integer filter.
