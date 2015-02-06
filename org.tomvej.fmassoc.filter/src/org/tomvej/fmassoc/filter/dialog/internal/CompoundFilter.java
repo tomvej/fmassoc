@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.filter.dialog;
+package org.tomvej.fmassoc.filter.dialog.internal;
 
 import java.util.Collection;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.filter;
+package org.tomvej.fmassoc.filter.dialog;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -22,8 +22,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
-import org.tomvej.fmassoc.filter.dialog.CompoundFilter;
-import org.tomvej.fmassoc.filter.dialog.FilterInstance;
+import org.tomvej.fmassoc.filter.FilterProvider;
+import org.tomvej.fmassoc.filter.dialog.internal.CompoundFilter;
+import org.tomvej.fmassoc.filter.dialog.internal.FilterInstance;
 import org.tomvej.fmassoc.model.path.Path;
 
 /**
