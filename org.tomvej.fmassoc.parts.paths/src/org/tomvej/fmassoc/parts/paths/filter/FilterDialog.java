@@ -81,12 +81,14 @@ public class FilterDialog extends Dialog {
 		persistedFilters.forEach(this::addFilter);
 
 		addBtn = new Button(container, SWT.PUSH);
-		addBtn.setText("Add filter");
+		addBtn.setText("Add");
+		addBtn.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.FILL).create());
 		addBtn.addSelectionListener(new SelectionWrapper(e -> addSelectedFilter()));
 		addBtn.setEnabled(false);
 
 		Button clearFilterBtn = new Button(container, SWT.PUSH);
 		clearFilterBtn.setText("Clear");
+		clearFilterBtn.setLayoutData(GridDataFactory.fillDefaults().align(SWT.END, SWT.FILL).create());
 		clearFilterBtn.addSelectionListener(new SelectionWrapper(e -> clearFilter()));
 
 		return container;
