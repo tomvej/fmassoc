@@ -1,7 +1,7 @@
 package org.tomvej.fmassoc.plugin.filters.basic;
 
-import org.tomvej.fmassoc.parts.paths.filterprovider.Filter;
-import org.tomvej.fmassoc.parts.paths.filterprovider.FilterProvider;
+import org.tomvej.fmassoc.filter.Filter;
+import org.tomvej.fmassoc.filter.FilterProvider;
 
 /**
  * Provides {@link BooleanFilter}.

@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
-import org.tomvej.fmassoc.parts.paths.filterprovider.Filter;
+import org.tomvej.fmassoc.filter.Filter;
 
 /**
  * Filter for boolean values -- simple check box.

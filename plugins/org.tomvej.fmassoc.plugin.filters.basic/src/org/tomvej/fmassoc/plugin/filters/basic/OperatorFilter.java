@@ -13,7 +13,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.tomvej.fmassoc.parts.paths.filterprovider.Filter;
+import org.tomvej.fmassoc.filter.Filter;
 
 /**
  * Filter which works on basis of binary predicates where the predicate (or

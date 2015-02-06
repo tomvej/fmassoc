@@ -4,9 +4,9 @@
    <extension
          point="org.tomvej.fmassoc.parts.paths.filterprovider">
       <client
-            class="org.tomvej.fmassoc.plugin.filters.basic.BooleanFilterProvider"
+            class="org.tomvej.fmassoc.plugin.filters.basic.IntegerFilterProvider"
             date="2015-02-05"
-            reference="java.lang.Boolean">
+            reference="java.lang.Integer">
       </client>
       <client
             class="org.tomvej.fmassoc.plugin.filters.basic.MultiplicityFilterProvider"
