@@ -92,6 +92,9 @@ public class PathSearchPreferencePage extends PreferencePage implements ContextP
 
 	@Override
 	public boolean performOk() {
+		if (pathLimit == null || pathLimit.isDisposed()) {
+			return true;
+		}
 		preference.putInt(PathSearchPreference.PATH_LIMIT, pathLimit.getSelection());
 		preference.putBoolean(PathSearchPreference.SHOW_PATH_LIMIT_REACHED, showPathLimitDialog.getSelection());
 		preference.putBoolean(PathSearchPreference.SHOW_SEARCH_PROGRESS_DIALOG, showSearchProgressDialog.getSelection());

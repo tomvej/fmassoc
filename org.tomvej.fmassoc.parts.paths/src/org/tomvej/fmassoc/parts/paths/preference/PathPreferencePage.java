@@ -124,6 +124,9 @@ public class PathPreferencePage extends PreferencePage implements ContextPrefere
 
 	@Override
 	public boolean performOk() {
+		if (provider == null || provider.getCombo().isDisposed()) {
+			return true;
+		}
 		manager.setLabelProvider(getSelectedEntry());
 		for (PathPropertyEntry<?> entry : properties) {
 			if (columns.getChecked(entry)) {
