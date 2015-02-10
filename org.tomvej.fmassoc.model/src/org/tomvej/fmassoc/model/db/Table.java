@@ -31,11 +31,4 @@ public interface Table extends Named {
 	 * Returns implementation name (see {@link Named}) of id property.
 	 */
 	String getIDImplName();
-
-	/**
-	 * When a table is a sink, it can only be at the beginning or end of a path.
-	 * 
-	 * @return {@code true} when this table is a sink, {@code false} otherwise.
-	 */
-	boolean isSink();
 }

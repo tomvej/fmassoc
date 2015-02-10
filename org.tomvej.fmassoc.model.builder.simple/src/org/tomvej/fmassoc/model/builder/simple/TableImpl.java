@@ -39,11 +39,6 @@ public class TableImpl extends NamedImpl implements Table {
 	}
 
 	@Override
-	public boolean isSink() {
-		return false;
-	}
-
-	@Override
 	public Collection<AssociationProperty> getAssociations() {
 		return Collections.unmodifiableCollection(associations);
 	}
