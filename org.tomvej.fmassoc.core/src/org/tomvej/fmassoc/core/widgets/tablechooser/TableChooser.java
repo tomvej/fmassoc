@@ -59,16 +59,13 @@ public class TableChooser extends Composite {
 		tables.addFilter(new ViewerFilterWrapper<Table>(
 				table -> pattern.matcher(table.getName()).find() || pattern.matcher(table.getImplName()).find()));
 		tables.addFilter(new ViewerFilterWrapper<Table>(table -> !filter.contains(table)));
-		tables.addSelectionChangedListener(event -> {
-			if (listener != null) {
-				listener.accept(getSelection());
-			}
-		});
+		tables.addSelectionChangedListener(event -> fireSelectionChanged());
 
 		// focus
 		tables.getTable().addFocusListener(new FocusGainedWrapper(e -> {
 			if (tables.getSelection().isEmpty()) {
 				tables.getTable().setSelection(0);
+				fireSelectionChanged();
 			}
 		}));
 		search.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_DOWN, SWT.NONE, e -> tables.getTable().setFocus()));
@@ -85,6 +82,12 @@ public class TableChooser extends Composite {
 
 		new ColumnSortSupport(tables).sortByFirstColumn();
 		TableLayoutSupport.create(tables, 1, true, nameClmn, implNameClmn);
+	}
+
+	private void fireSelectionChanged() {
+		if (listener != null) {
+			listener.accept(getSelection());
+		}
 	}
 
 	/**
