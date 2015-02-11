@@ -31,6 +31,7 @@ import org.osgi.service.prefs.BackingStoreException;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
 import org.tomvej.fmassoc.core.communicate.PathTransformerTopic;
 import org.tomvej.fmassoc.core.wrappers.FocusGainedWrapper;
+import org.tomvej.fmassoc.core.wrappers.KeyReleasedWrapper;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.transform.sql.formatters.JoinFormatter;
@@ -66,6 +67,7 @@ public class Part {
 		output.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		output.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).hint(0, 3 * output.getLineHeight()).create());
 		output.addFocusListener(new FocusGainedWrapper(e -> output.selectAll()));
+		output.addKeyListener(new KeyReleasedWrapper('a', SWT.CTRL, e -> output.selectAll()));
 
 		Composite optionPanel = new Composite(parent, SWT.NONE);
 		optionPanel.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
