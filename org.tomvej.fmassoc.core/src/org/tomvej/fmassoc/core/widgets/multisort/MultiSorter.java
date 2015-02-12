@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableColumn;
 import org.tomvej.fmassoc.core.tables.SortEntry;
+import org.tomvej.fmassoc.core.tables.ViewerDnDSupport;
 import org.tomvej.fmassoc.core.wrappers.ListChangeListenerWrapper;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
@@ -88,7 +89,7 @@ public class MultiSorter extends Composite {
 			}
 		}));
 
-		DnDSupport<SimpleSortEntry> dndSupport = new DnDSupport<>();
+		ViewerDnDSupport<SimpleSortEntry> dndSupport = new ViewerDnDSupport<>();
 		dndSupport.pluginViewer(availableList, available(), () -> getSingle(availableSelection()));
 		dndSupport.pluginViewer(selectedList, selected(), () -> getSingle(selectedSelection()));
 		dndSupport.setChangeListener((s, p) -> {

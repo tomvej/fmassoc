@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.core.widgets.multisort;
+package org.tomvej.fmassoc.core.tables;
 
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -17,8 +17,14 @@ import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
 
-
-class DnDSupport<T> {
+/**
+ * Support for dragging elements between viewers.
+ * 
+ * @author Tomáš Vejpustek
+ * @param <T>
+ *            Type of draggable elements
+ */
+public class ViewerDnDSupport<T> {
 	private static final Transfer[] TRANSFERS = new Transfer[] { LocalSelectionTransfer.getTransfer() };
 	private T selection;
 	// whether the item was actually dropped (to avoid losing items)
@@ -27,12 +33,26 @@ class DnDSupport<T> {
 
 	private BiConsumer<T, Pair<StructuredViewer, StructuredViewer>> listener;
 
+	/**
+	 * Attach drag and drop support to the viewer.
+	 * 
+	 * @param target
+	 *            Target viewer.
+	 * @param baseList
+	 *            List of elements in viewer.
+	 * @param getSelected
+	 *            Method for getting selected element of the viewer.
+	 */
 	public void pluginViewer(StructuredViewer target, List<T> baseList, Supplier<T> getSelected) {
 		ViewerEntry entry = new ViewerEntry(target, baseList, getSelected);
 		target.addDragSupport(DND.DROP_MOVE, TRANSFERS, entry.dragListener);
 		target.addDropSupport(DND.DROP_MOVE, TRANSFERS, entry.dropListener);
 	}
 
+	/**
+	 * Registers a listener which is notified of finished DnD events. Listeners
+	 * accepts dragged element, source viewer, target viewer.
+	 */
 	public void setChangeListener(BiConsumer<T, Pair<StructuredViewer, StructuredViewer>> listener) {
 		this.listener = listener;
 	}
