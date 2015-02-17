@@ -1,8 +1,10 @@
 package org.tomvej.fmassoc.plugin.filterpruningfinder;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Predicate;
 
+import org.apache.commons.lang3.Validate;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -15,13 +17,18 @@ import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.filter.FilterProvider;
 import org.tomvej.fmassoc.filter.dialog.FilterDialog;
 import org.tomvej.fmassoc.model.path.Path;
+import org.tomvej.fmassoc.plugin.prioritydfpathfinder.Pruning;
 
 public class PruningRow extends Composite {
 	private FilterDialog dialog;
 	private Label filterLbl;
+	private Runnable listener;
 
-	public PruningRow(Composite parent, Map<PathPropertyEntry<?>, FilterProvider<?>> providers, boolean removable) {
+	public PruningRow(Composite parent, Map<PathPropertyEntry<?>, FilterProvider<?>> providers, boolean removable,
+			Runnable pruningChangeListener) {
 		super(parent, SWT.BORDER);
+		listener = Validate.notNull(pruningChangeListener);
+
 		GridDataFactory grabLayout = GridDataFactory.fillDefaults().grab(true, false);
 		setLayoutData(grabLayout.create());
 		setLayout(new GridLayout(3, false));
@@ -51,14 +58,19 @@ public class PruningRow extends Composite {
 	}
 
 	private void showFilter() {
+		Predicate<Path> oldFilter = dialog.getFilter();
 		dialog.open();
-		filterLbl.setText(dialog.getFilter() != null ? dialog.getFilter().toString() : "");
-		getParent().layout(); // this one is for base pruning
-		getParent().getParent().layout();
+		Predicate<Path> newFilter = dialog.getFilter();
+		if (Objects.equals(oldFilter, dialog.getFilter())) {
+			listener.run();
+			filterLbl.setText(newFilter != null ? newFilter.toString() : "");
+			getParent().layout(); // this one is for base pruning
+			getParent().getParent().layout();
+		}
 	}
 
-	public Predicate<Path> getPruning() {
-		return dialog.getFilter();
+	public Pruning getPruning() {
+		return null;
 	}
 
 	public void pluginDnD(CompositeDnDSupport support) {

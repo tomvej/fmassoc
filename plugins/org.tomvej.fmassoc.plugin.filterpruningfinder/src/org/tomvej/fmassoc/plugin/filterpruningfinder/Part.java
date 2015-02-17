@@ -55,7 +55,7 @@ public class Part {
 		lbl.setText("Persistent Filter");
 		lbl.setLayoutData(twoColumnLayout.create());
 
-		basePruning = new PruningRow(parent, providers, false);
+		basePruning = new PruningRow(parent, providers, false, this::fireFilterChanged);
 		basePruning.setLayoutData(twoColumnLayout.create());
 
 		lbl = new Label(parent, SWT.NONE);
@@ -85,7 +85,7 @@ public class Part {
 	}
 
 	private void addRow() {
-		PruningRow newRow = new PruningRow(pruningPanel, providers, true);
+		PruningRow newRow = new PruningRow(pruningPanel, providers, true, this::fireFilterChanged);
 		pruning.add(newRow);
 		newRow.pluginDnD(dndSupport);
 		pruningPanel.getParent().layout();
@@ -94,6 +94,10 @@ public class Part {
 	private void clearRows() {
 		pruning.forEach(p -> p.dispose());
 		pruningPanel.getParent().layout();
+	}
+
+	private void fireFilterChanged() {
+
 	}
 
 }
