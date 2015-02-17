@@ -13,6 +13,7 @@ import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.filter.Filter;
 import org.tomvej.fmassoc.model.path.Path;
+import org.tomvej.fmassoc.model.path.PathInfo;
 
 /**
  * Instance of a filter for a path property.
@@ -59,6 +60,22 @@ public class FilterInstance<T> implements Predicate<Path> {
 	@Override
 	public boolean test(Path t) {
 		return filter.getFilter().test(property.getProperty().getValue(t));
+	}
+
+
+	/**
+	 * Returns predicate which tests whether given path info satisfies this
+	 * filter.
+	 */
+	public Predicate<PathInfo> getPruning() {
+		return info -> !filter.getFilter().test(info.getProperty(property.getProperty()));
+	}
+
+	/**
+	 * Returns used path property.
+	 */
+	public PathPropertyEntry<T> getProperty() {
+		return property;
 	}
 
 	@Override

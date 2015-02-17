@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.Validate;
 import org.eclipse.jface.dialogs.Dialog;
@@ -26,6 +27,8 @@ import org.tomvej.fmassoc.filter.FilterProvider;
 import org.tomvej.fmassoc.filter.dialog.internal.CompoundFilter;
 import org.tomvej.fmassoc.filter.dialog.internal.FilterInstance;
 import org.tomvej.fmassoc.model.path.Path;
+import org.tomvej.fmassoc.model.path.PathInfo;
+import org.tomvej.fmassoc.model.property.PathProperty;
 
 /**
  * Dialog for path filtering.
@@ -151,5 +154,20 @@ public class FilterDialog extends Dialog {
 	 */
 	public Predicate<Path> getFilter() {
 		return persistedFilters.isEmpty() ? null : new CompoundFilter<Path>(persistedFilters);
+	}
+
+	/**
+	 * Return inverse filter on path info.
+	 */
+	public Predicate<PathInfo> getPruning() {
+		return persistedFilters.isEmpty() ? null : new CompoundFilter<PathInfo>(persistedFilters.stream()
+				.map(f -> f.getPruning()).collect(Collectors.toList()));
+	}
+
+	/**
+	 * Returns used path properties.
+	 */
+	public Collection<PathProperty<?>> getProperties() {
+		return persistedFilters.stream().map(f -> f.getProperty().getProperty()).collect(Collectors.toSet());
 	}
 }
