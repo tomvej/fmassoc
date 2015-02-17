@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.function.Predicate;
 
 import org.apache.commons.lang3.Validate;
-import org.tomvej.fmassoc.model.path.Path;
 
 /**
  * Path filter made as a conjunction of another filters. Mostly a wrapper for
@@ -13,18 +12,18 @@ import org.tomvej.fmassoc.model.path.Path;
  * 
  * @author Tomáš Vejpustek
  */
-public class CompoundFilter implements Predicate<Path> {
-	private final Collection<Predicate<Path>> filters;
+public class CompoundFilter<T> implements Predicate<T> {
+	private final Collection<Predicate<T>> filters;
 
 	/**
 	 * Specify component filters.
 	 */
-	public CompoundFilter(Collection<? extends Predicate<Path>> filters) {
+	public CompoundFilter(Collection<? extends Predicate<T>> filters) {
 		this.filters = Collections.unmodifiableCollection(Validate.noNullElements(filters));
 	}
 
 	@Override
-	public boolean test(Path t) {
+	public boolean test(T t) {
 		return filters.stream().allMatch(f -> f.test(t));
 	}
 

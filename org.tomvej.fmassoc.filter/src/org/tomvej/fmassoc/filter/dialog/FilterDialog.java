@@ -150,6 +150,6 @@ public class FilterDialog extends Dialog {
 	 * Return actual filter.
 	 */
 	public Predicate<Path> getFilter() {
-		return persistedFilters.isEmpty() ? null : new CompoundFilter(persistedFilters);
+		return persistedFilters.isEmpty() ? null : new CompoundFilter<Path>(persistedFilters);
 	}
 }
