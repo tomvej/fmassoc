@@ -15,6 +15,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
 import org.tomvej.fmassoc.core.dnd.CompositeDnDSupport;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
@@ -48,12 +49,21 @@ public class Part {
 		// generate component
 		parent.setLayout(new GridLayout(2, false));
 
-		GridDataFactory pruningLayout = GridDataFactory.fillDefaults().span(2, 1).grab(true, false);
+		GridDataFactory twoColumnLayout = GridDataFactory.fillDefaults().span(2, 1).grab(true, false);
+
+		Label lbl = new Label(parent, SWT.NONE);
+		lbl.setText("Persistent Filter");
+		lbl.setLayoutData(twoColumnLayout.create());
+
 		basePruning = new PruningRow(parent, providers, false);
-		basePruning.setLayoutData(pruningLayout.create());
+		basePruning.setLayoutData(twoColumnLayout.create());
+
+		lbl = new Label(parent, SWT.NONE);
+		lbl.setText("Filter Iterations");
+		lbl.setLayoutData(twoColumnLayout.create());
 
 		pruningPanel = new Composite(parent, SWT.NONE);
-		pruningPanel.setLayoutData(pruningLayout.create());
+		pruningPanel.setLayoutData(twoColumnLayout.create());
 		GridLayout pruningPanelLayout = new GridLayout();
 		pruningPanelLayout.marginWidth = 0;
 		pruningPanelLayout.marginHeight = 0;
@@ -61,7 +71,7 @@ public class Part {
 
 		Button addBtn = new Button(parent, SWT.PUSH);
 		addBtn.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.FILL).create());
-		addBtn.setText("Add");
+		addBtn.setText("Add Filter");
 		addBtn.addSelectionListener(new SelectionWrapper(e -> addRow()));
 
 		Button clearBtn = new Button(parent, SWT.PUSH);
