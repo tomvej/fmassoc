@@ -1,7 +1,9 @@
 package org.tomvej.fmassoc.core.dnd;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.swt.dnd.DND;
@@ -26,6 +28,7 @@ public class CompositeDnDSupport {
 
 	private final Composite parent;
 	private final Map<Control, Integer> order = new HashMap<>();
+	private final Set<Control> registeredControls = new HashSet<>();
 
 	private Control selected;
 
@@ -68,9 +71,12 @@ public class CompositeDnDSupport {
 			}
 		});
 
-		DropTarget trg = new DropTarget(component, DND.DROP_MOVE);
-		trg.setTransfer(TRANSFERS);
-		trg.addDropListener(new DropListener(component));
+		if (!registeredControls.contains(component)) {
+			DropTarget trg = new DropTarget(component, DND.DROP_MOVE);
+			trg.setTransfer(TRANSFERS);
+			trg.addDropListener(new DropListener(component));
+			registeredControls.add(component);
+		}
 
 	}
 
