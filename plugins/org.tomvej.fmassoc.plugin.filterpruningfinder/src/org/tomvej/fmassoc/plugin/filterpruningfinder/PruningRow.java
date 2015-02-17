@@ -18,6 +18,7 @@ import org.tomvej.fmassoc.filter.FilterProvider;
 import org.tomvej.fmassoc.filter.dialog.FilterDialog;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.plugin.prioritydfpathfinder.Pruning;
+import org.tomvej.fmassoc.plugin.prioritydfpathfinder.PruningWrapper;
 
 public class PruningRow extends Composite {
 	private FilterDialog dialog;
@@ -70,7 +71,7 @@ public class PruningRow extends Composite {
 	}
 
 	public Pruning getPruning() {
-		return null;
+		return dialog.getPruning() != null ? new PruningWrapper(dialog.getPruning(), dialog.getProperties()) : null;
 	}
 
 	public void pluginDnD(CompositeDnDSupport support) {
