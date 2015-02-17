@@ -93,11 +93,12 @@ public class Part {
 
 	private void clearRows() {
 		pruning.forEach(p -> p.dispose());
+		pruning.clear();
 		pruningPanel.getParent().layout();
 	}
 
 	private void fireFilterChanged() {
-
+		pruning.removeIf(f -> f.isDisposed()); // clear up
 	}
 
 }
