@@ -33,6 +33,11 @@ import org.tomvej.fmassoc.plugin.prioritydfpathfinder.IteratedPriorityDFFinderPr
 import org.tomvej.fmassoc.plugin.prioritydfpathfinder.Pruning;
 import org.tomvej.fmassoc.plugin.prioritydfpathfinder.PruningWrapper;
 
+/**
+ * Visual component of filter pruning.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class Part {
 	@Inject
 	private Logger logger;
@@ -152,6 +157,9 @@ public class Part {
 		}
 	}
 
+	/**
+	 * Set path finder provider when focused.
+	 */
 	@Focus
 	public void onFocus() {
 		fireFilterChanged();

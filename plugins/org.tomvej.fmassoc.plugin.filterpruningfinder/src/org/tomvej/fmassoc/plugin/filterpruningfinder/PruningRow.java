@@ -20,11 +20,28 @@ import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.plugin.prioritydfpathfinder.Pruning;
 import org.tomvej.fmassoc.plugin.prioritydfpathfinder.PruningWrapper;
 
+/**
+ * Visual component for one filter pruning.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class PruningRow extends Composite {
 	private FilterDialog dialog;
 	private Label filterLbl;
 	private Runnable listener;
 
+	/**
+	 * Create component.
+	 * 
+	 * @param parent
+	 *            parent component
+	 * @param providers
+	 *            path properties and filters
+	 * @param removable
+	 *            whether pruning can be removed ("X" button)
+	 * @param pruningChangeListener
+	 *            called when filter is changed
+	 */
 	public PruningRow(Composite parent, Map<PathPropertyEntry<?>, FilterProvider<?>> providers, boolean removable,
 			Runnable pruningChangeListener) {
 		super(parent, SWT.BORDER);
@@ -68,10 +85,16 @@ public class PruningRow extends Composite {
 		}
 	}
 
+	/**
+	 * Return pruning specified by this row.
+	 */
 	public Pruning getPruning() {
 		return dialog.getPruning() != null ? new PruningWrapper(dialog.getPruning(), dialog.getProperties()) : null;
 	}
 
+	/**
+	 * Plug in DnD support.
+	 */
 	public void pluginDnD(CompositeDnDSupport support) {
 		support.registerKnob(filterLbl, this);
 		support.registerKnob(this, this);

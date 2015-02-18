@@ -7,6 +7,12 @@ import org.tomvej.fmassoc.model.path.PathInfo;
 import org.tomvej.fmassoc.plugin.prioritydfpathfinder.AbstractPruning;
 import org.tomvej.fmassoc.plugin.prioritydfpathfinder.Pruning;
 
+/**
+ * Pruning consisting of two prunings. If one of the pruning prunes the path, it
+ * is pruned.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class AndPruning extends AbstractPruning {
 	private final Pruning p1, p2;
 
@@ -16,6 +22,9 @@ public class AndPruning extends AbstractPruning {
 		return result;
 	}
 
+	/**
+	 * Specify pruning.
+	 */
 	public AndPruning(Pruning p1, Pruning p2) {
 		super(union(p1.getUsedProperties(), p2.getUsedProperties()));
 		this.p1 = p1;
