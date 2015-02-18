@@ -1,6 +1,7 @@
 package org.tomvej.fmassoc.plugin.filterpruningfinder;
 
 import java.util.Map;
+import java.util.function.Predicate;
 
 import org.apache.commons.lang3.Validate;
 import org.eclipse.jface.dialogs.Dialog;
@@ -15,6 +16,7 @@ import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.filter.FilterProvider;
 import org.tomvej.fmassoc.filter.dialog.FilterDialog;
+import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.plugin.prioritydfpathfinder.Pruning;
 import org.tomvej.fmassoc.plugin.prioritydfpathfinder.PruningWrapper;
 
@@ -75,5 +77,14 @@ public class PruningRow extends Composite {
 		support.registerKnob(this, this);
 	}
 
+	@Override
+	public String toString() {
+		Predicate<Path> filter = dialog.getFilter();
+		if (filter != null) {
+			return "[" + filter + "]";
+		} else {
+			return "none";
+		}
+	}
 
 }

@@ -135,5 +135,18 @@ public class Part {
 			result.add(new PruningWrapper(i -> false));
 		}
 		context.set(PathFinderProvider.class, new IteratedPriorityDFFinderProvider(result));
+
+		logger.info("Path finder selected: base filter " + basePruning + "; iterations " + formatPruning());
 	}
+
+	private String formatPruning() {
+		if (pruning.isEmpty()) {
+			return "none";
+		} else {
+			String result = pruning.toString();
+			return result.substring(1, result.length() - 1);
+		}
+	}
+
+
 }
