@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.eclipse.e4.core.services.log.Logger;
@@ -24,18 +25,22 @@ import org.tomvej.fmassoc.filter.FilterProvider;
 import org.tomvej.fmassoc.filter.FilterRegistry;
 
 public class Part {
-	private Map<PathPropertyEntry<?>, FilterProvider<?>> providers;;
+	@Inject
+	private Logger logger;
+	private final Map<PathPropertyEntry<?>, FilterProvider<?>> providers;
 
 	private Composite pruningPanel;
 	private PruningRow basePruning;
 	private List<PruningRow> pruning;
 	private CompositeDnDSupport dndSupport;
 
-	@PostConstruct
-	public void createComponents(Composite parent, FilterRegistry filters, Logger logger,
-			@Named(ContextObjects.PATH_PROPERTIES) List<PathPropertyEntry<?>> pathProperties) {
-		// generate provider map
-		providers = new HashMap<>();
+	/**
+	 * Initialize filter providers.
+	 */
+	@Inject
+	public Part(@Named(ContextObjects.PATH_PROPERTIES) List<PathPropertyEntry<?>> pathProperties,
+			FilterRegistry filters) {
+		Map<PathPropertyEntry<?>, FilterProvider<?>> providers = new HashMap<>();
 		for (PathPropertyEntry<?> property : pathProperties) {
 			FilterProvider<?> provider = filters.apply(property.getProperty().getType());
 			if (provider != null) {
@@ -44,8 +49,14 @@ public class Part {
 				logger.warn("No filter for " + property.getName() + ".");
 			}
 		}
-		providers = Collections.unmodifiableMap(providers);
+		this.providers = Collections.unmodifiableMap(providers);
+	}
 
+	/**
+	 * Create visual components.
+	 */
+	@PostConstruct
+	public void createComponents(Composite parent) {
 		// generate component
 		parent.setLayout(new GridLayout(2, false));
 
@@ -99,6 +110,7 @@ public class Part {
 
 	private void fireFilterChanged() {
 		pruning.removeIf(f -> f.isDisposed()); // clear up
+
 	}
 
 }
