@@ -138,10 +138,19 @@ public class CompositeDnDSupport {
 		}
 	}
 
+	/**
+	 * Register a listener which is notified when a component changes its
+	 * position.
+	 */
 	public void addListener(Consumer<CompositeDnDEvent> listener) {
 		listeners.add(listener);
 	}
 
+	/**
+	 * Remove position change listener.
+	 * 
+	 * @param listener
+	 */
 	public void removeListener(Consumer<CompositeDnDEvent> listener) {
 		listeners.remove(listener);
 	}
