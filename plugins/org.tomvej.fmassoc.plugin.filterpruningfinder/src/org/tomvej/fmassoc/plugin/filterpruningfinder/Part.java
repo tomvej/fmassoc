@@ -14,6 +14,7 @@ import javax.inject.Named;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.log.Logger;
+import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
@@ -104,6 +105,7 @@ public class Part {
 		// initialize reordering
 		dndSupport = new CompositeDnDSupport(pruningPanel);
 		pruning = new ArrayList<>();
+		fireFilterChanged();
 	}
 
 	private void addRow() {
@@ -117,6 +119,7 @@ public class Part {
 		pruning.forEach(p -> p.dispose());
 		pruning.clear();
 		pruningPanel.getParent().layout();
+		fireFilterChanged();
 	}
 
 	private void fireFilterChanged() {
@@ -149,5 +152,9 @@ public class Part {
 		}
 	}
 
+	@Focus
+	public void onFocus() {
+		fireFilterChanged();
+	}
 
 }
