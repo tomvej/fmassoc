@@ -160,8 +160,8 @@ public class FilterDialog extends Dialog {
 	 * Return inverse filter on path info.
 	 */
 	public Predicate<PathInfo> getPruning() {
-		return persistedFilters.isEmpty() ? null : new CompoundFilter<PathInfo>(persistedFilters.stream()
-				.map(f -> f.getPruning()).collect(Collectors.toList()));
+		return persistedFilters.isEmpty() ? null : persistedFilters.stream().map(e -> e.getPruning())
+				.reduce((f1, f2) -> f1.and(f2)).get();
 	}
 
 	/**
