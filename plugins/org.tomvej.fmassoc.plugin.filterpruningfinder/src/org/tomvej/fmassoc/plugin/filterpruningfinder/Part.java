@@ -109,6 +109,7 @@ public class Part {
 
 		// initialize reordering
 		dndSupport = new CompositeDnDSupport(pruningPanel);
+		dndSupport.addListener(e -> fireFilterChanged());
 		pruning = new ArrayList<>();
 		fireFilterChanged();
 	}
