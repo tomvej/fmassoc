@@ -76,6 +76,7 @@ public class CompositeDnDSupport {
 			trg.setTransfer(TRANSFERS);
 			trg.addDropListener(new DropListener(component));
 			registeredControls.add(component);
+			regenerateOrder();
 		}
 
 	}
@@ -88,6 +89,7 @@ public class CompositeDnDSupport {
 	}
 
 	private void regenerateOrder() {
+		order.clear();
 		Control[] children = parent.getChildren();
 		for (int i = 0; i < children.length; i++) {
 			order.put(children[i], i);
