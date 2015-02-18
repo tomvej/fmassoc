@@ -1,10 +1,9 @@
 package org.tomvej.fmassoc.plugin.filterpruningfinder;
 
 import java.util.Map;
-import java.util.Objects;
-import java.util.function.Predicate;
 
 import org.apache.commons.lang3.Validate;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -16,7 +15,6 @@ import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.filter.FilterProvider;
 import org.tomvej.fmassoc.filter.dialog.FilterDialog;
-import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.plugin.prioritydfpathfinder.Pruning;
 import org.tomvej.fmassoc.plugin.prioritydfpathfinder.PruningWrapper;
 
@@ -59,12 +57,10 @@ public class PruningRow extends Composite {
 	}
 
 	private void showFilter() {
-		Predicate<Path> oldFilter = dialog.getFilter();
 		dialog.open();
-		Predicate<Path> newFilter = dialog.getFilter();
-		if (Objects.equals(oldFilter, dialog.getFilter())) {
+		if (dialog.getReturnCode() == Dialog.OK) { // over-approximation
 			listener.run();
-			filterLbl.setText(newFilter != null ? newFilter.toString() : "");
+			filterLbl.setText(dialog.getFilter() != null ? dialog.getFilter().toString() : "");
 			getParent().layout(); // this one is for base pruning
 			getParent().getParent().layout();
 		}
