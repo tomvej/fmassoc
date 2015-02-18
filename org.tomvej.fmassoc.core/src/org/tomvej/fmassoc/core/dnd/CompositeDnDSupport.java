@@ -1,9 +1,12 @@
 package org.tomvej.fmassoc.core.dnd;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.swt.dnd.DND;
@@ -30,7 +33,10 @@ public class CompositeDnDSupport {
 	private final Map<Control, Integer> order = new HashMap<>();
 	private final Set<Control> registeredControls = new HashSet<>();
 
+	private final List<Consumer<CompositeDnDEvent>> listeners = new ArrayList<>();
+
 	private Control selected;
+	private int oldOrder;
 
 	/**
 	 * Specify parent composite.
@@ -63,10 +69,12 @@ public class CompositeDnDSupport {
 			public void dragStart(DragSourceEvent event) {
 				selected = component;
 				regenerateOrder();
+				oldOrder = getOrder(selected);
 			}
 
 			@Override
 			public void dragFinished(DragSourceEvent event) {
+				fireEvent();
 				selected = null;
 			}
 		});
@@ -122,4 +130,19 @@ public class CompositeDnDSupport {
 		}
 	}
 
+	private void fireEvent() {
+		int newOrder = getOrder(selected);
+		if (newOrder != oldOrder && !listeners.isEmpty()) {
+			CompositeDnDEvent event = new CompositeDnDEvent(this, parent, selected, oldOrder, newOrder);
+			listeners.forEach(l -> l.accept(event));
+		}
+	}
+
+	public void addListener(Consumer<CompositeDnDEvent> listener) {
+		listeners.add(listener);
+	}
+
+	public void removeListener(Consumer<CompositeDnDEvent> listener) {
+		listeners.remove(listener);
+	}
 }
