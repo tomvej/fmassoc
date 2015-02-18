@@ -140,10 +140,11 @@ public class Part {
 	}
 
 	private String formatPruning() {
-		if (pruning.isEmpty()) {
+		List<PruningRow> rows = pruning.stream().filter(p -> p.getPruning() != null).collect(Collectors.toList());
+		if (rows.isEmpty()) {
 			return "none";
 		} else {
-			String result = pruning.toString();
+			String result = rows.toString();
 			return result.substring(1, result.length() - 1);
 		}
 	}
