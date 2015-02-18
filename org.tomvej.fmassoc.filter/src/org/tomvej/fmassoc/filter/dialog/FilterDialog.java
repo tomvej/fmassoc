@@ -161,7 +161,7 @@ public class FilterDialog extends Dialog {
 	 */
 	public Predicate<PathInfo> getPruning() {
 		return persistedFilters.isEmpty() ? null : persistedFilters.stream().map(e -> e.getPruning())
-				.reduce((f1, f2) -> f1.and(f2)).get();
+				.reduce((f1, f2) -> f1.or(f2)).get();
 	}
 
 	/**
