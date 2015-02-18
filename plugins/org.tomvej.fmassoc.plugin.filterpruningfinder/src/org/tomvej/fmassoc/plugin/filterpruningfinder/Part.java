@@ -129,6 +129,7 @@ public class Part {
 
 	private void fireFilterChanged() {
 		pruning.removeIf(f -> f.isDisposed()); // clear up
+		Collections.sort(pruning, (p1, p2) -> Integer.compare(dndSupport.getOrder(p1), dndSupport.getOrder(p2)));
 		Stream<Pruning> pruneStream = pruning.stream().map(p -> p.getPruning()).filter(p -> p != null);
 
 		Pruning base = basePruning.getPruning();
