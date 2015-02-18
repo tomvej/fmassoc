@@ -5,12 +5,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.log.Logger;
+import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -20,14 +24,19 @@ import org.eclipse.swt.widgets.Label;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
 import org.tomvej.fmassoc.core.dnd.CompositeDnDSupport;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
+import org.tomvej.fmassoc.core.search.PathFinderProvider;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.filter.FilterProvider;
 import org.tomvej.fmassoc.filter.FilterRegistry;
+import org.tomvej.fmassoc.plugin.prioritydfpathfinder.IteratedPriorityDFFinderProvider;
+import org.tomvej.fmassoc.plugin.prioritydfpathfinder.Pruning;
+import org.tomvej.fmassoc.plugin.prioritydfpathfinder.PruningWrapper;
 
 public class Part {
 	@Inject
 	private Logger logger;
 	private final Map<PathPropertyEntry<?>, FilterProvider<?>> providers;
+	private final IEclipseContext context;
 
 	private Composite pruningPanel;
 	private PruningRow basePruning;
@@ -39,7 +48,9 @@ public class Part {
 	 */
 	@Inject
 	public Part(@Named(ContextObjects.PATH_PROPERTIES) List<PathPropertyEntry<?>> pathProperties,
-			FilterRegistry filters) {
+			FilterRegistry filters, MApplication app) {
+		context = app.getContext();
+
 		Map<PathPropertyEntry<?>, FilterProvider<?>> providers = new HashMap<>();
 		for (PathPropertyEntry<?> property : pathProperties) {
 			FilterProvider<?> provider = filters.apply(property.getProperty().getType());
@@ -110,7 +121,19 @@ public class Part {
 
 	private void fireFilterChanged() {
 		pruning.removeIf(f -> f.isDisposed()); // clear up
+		Stream<Pruning> pruneStream = pruning.stream().map(p -> p.getPruning()).filter(p -> p != null);
 
+		Pruning base = basePruning.getPruning();
+		if (base != null) {
+			pruneStream = pruneStream.map(p -> new AndPruning(p, base));
+		}
+
+		List<Pruning> result = pruneStream.collect(Collectors.toList());
+		if (base != null) {
+			result.add(base);
+		} else {
+			result.add(new PruningWrapper(i -> false));
+		}
+		context.set(PathFinderProvider.class, new IteratedPriorityDFFinderProvider(result));
 	}
-
 }
