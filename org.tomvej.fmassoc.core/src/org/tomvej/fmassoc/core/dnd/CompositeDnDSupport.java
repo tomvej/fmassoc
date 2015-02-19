@@ -30,7 +30,7 @@ public class CompositeDnDSupport {
 	private static final Transfer[] TRANSFERS = { LocalSelectionTransfer.getTransfer() };
 
 	private final Composite parent;
-	private final Map<Control, Integer> order = new HashMap<>();
+	private Map<Control, Integer> order;
 	private final Set<Control> registeredControls = new HashSet<>();
 
 	private final List<Consumer<CompositeDnDEvent>> listeners = new ArrayList<>();
@@ -68,7 +68,6 @@ public class CompositeDnDSupport {
 			@Override
 			public void dragStart(DragSourceEvent event) {
 				selected = component;
-				regenerateOrder();
 				oldOrder = getOrder(selected);
 			}
 
@@ -84,7 +83,7 @@ public class CompositeDnDSupport {
 			trg.setTransfer(TRANSFERS);
 			trg.addDropListener(new DropListener(component));
 			registeredControls.add(component);
-			regenerateOrder();
+			invalidateOrder();
 		}
 
 	}
@@ -93,15 +92,22 @@ public class CompositeDnDSupport {
 	 * Return order of child component.
 	 */
 	public int getOrder(Control child) {
+		if (order == null) {
+			regenerateOrder();
+		}
 		return order.get(child);
 	}
 
 	private void regenerateOrder() {
-		order.clear();
+		order = new HashMap<>();
 		Control[] children = parent.getChildren();
 		for (int i = 0; i < children.length; i++) {
 			order.put(children[i], i);
 		}
+	}
+
+	private void invalidateOrder() {
+		order = null;
 	}
 
 	private class DropListener extends DropTargetAdapter {
@@ -126,7 +132,7 @@ public class CompositeDnDSupport {
 			Point size = panel.getSize();
 			panel.redraw(0, 0, size.x, size.y, true);
 
-			regenerateOrder();
+			invalidateOrder();
 		}
 	}
 
