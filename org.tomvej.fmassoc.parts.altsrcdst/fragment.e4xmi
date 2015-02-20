@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ASCII"?>
 <fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmi:id="_K96qULhDEeS8_pP1-ndIfg">
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_xGY2MLhDEeS8_pP1-ndIfg" featurename="children" parentElementId="org.tomvej.fmassoc.core.partstack.tables" positionInList="first">
-    <elements xsi:type="basic:Part" xmi:id="_1tF7kLhDEeS8_pP1-ndIfg" elementId="org.tomvej.fmassoc.parts.altsrcdst.part" label="Source and Destination"/>
+    <elements xsi:type="basic:Part" xmi:id="_1tF7kLhDEeS8_pP1-ndIfg" elementId="org.tomvej.fmassoc.parts.altsrcdst.part" contributionURI="bundleclass://org.tomvej.fmassoc.parts.altsrcdst/org.tomvej.fmassoc.parts.altsrcdst.Part" label="Source and Destination"/>
   </fragments>
 </fragment:ModelFragments>
