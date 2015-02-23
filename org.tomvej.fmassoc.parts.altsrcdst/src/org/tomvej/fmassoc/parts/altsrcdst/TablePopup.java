@@ -9,9 +9,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -22,7 +24,7 @@ import org.tomvej.fmassoc.core.wrappers.ViewerFilterWrapper;
 import org.tomvej.fmassoc.model.db.Table;
 
 public class TablePopup {
-	private static int SHELL_STYLE = SWT.MODELESS | SWT.NO_TRIM | SWT.ON_TOP;
+	private static int SHELL_STYLE = SWT.MODELESS | SWT.NO_TRIM;
 
 	private final TableViewer tables;
 	private Collection<Object> tableFilter = Collections.emptySet();
@@ -37,6 +39,7 @@ public class TablePopup {
 				SWT.SINGLE | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER,
 				GridDataFactory.fillDefaults().grab(true, true).create());
 		setShellLayout();
+
 		tables.getTable().setHeaderVisible(true);
 		tables.getTable().setLinesVisible(true);
 		tables.setContentProvider(ArrayContentProvider.getInstance());
@@ -115,5 +118,43 @@ public class TablePopup {
 		}
 	}
 
+	public void show(Control c) {
+		Point size = c.getSize();
+		getShell().setLocation(c.toDisplay(0, size.y));
+		getShell().setVisible(true);
+	}
+
+	public void hide() {
+		getShell().setVisible(false);
+	}
+
+	public Table getSelection() {
+		return (Table) ((IStructuredSelection) tables.getSelection()).getFirstElement();
+	}
+
+	public void move(int increment) {
+		if (increment == 0) {
+			return;
+		}
+		int itemCount = tables.getTable().getItemCount();
+
+		int index;
+		if (tables.getTable().getSelectionCount() > 0) {
+			index = tables.getTable().getSelectionIndex();
+		} else {
+			if (increment > 0) {
+				index = -1;
+			} else {
+				index = itemCount;
+			}
+		}
+		index += increment;
+		if (index < 0) {
+			index = 0;
+		} else if (index >= itemCount) {
+			index = itemCount - 1;
+		}
+		tables.getTable().setSelection(index);
+	}
 
 }
