@@ -195,4 +195,11 @@ public class TablePopup {
 		return getShell().isVisible();
 	}
 
+	/**
+	 * Return whether the user moves in the window.
+	 */
+	public boolean hasFocus() {
+		return getShell().equals(getShell().getDisplay().getActiveShell());
+	}
+
 }

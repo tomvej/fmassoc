@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.core.wrappers.FocusGainedWrapper;
+import org.tomvej.fmassoc.core.wrappers.FocusLostWrapper;
 import org.tomvej.fmassoc.core.wrappers.KeyEventBlocker;
 import org.tomvej.fmassoc.core.wrappers.KeyReleasedWrapper;
 import org.tomvej.fmassoc.model.db.Table;
@@ -43,6 +44,11 @@ public class TableChooser extends Composite {
 		input.addKeyListener(new KeyEventBlocker(SWT.ARROW_UP, SWT.ARROW_DOWN));
 		input.addKeyListener(new KeyReleasedWrapper(SWT.PAGE_DOWN, SWT.NONE, e -> popup.move(10)));
 		input.addKeyListener(new KeyReleasedWrapper(SWT.PAGE_UP, SWT.NONE, e -> popup.move(-10)));
+		input.addFocusListener(new FocusLostWrapper(e -> {
+			if (!popup.hasFocus()) {
+				reject();
+			}
+		}));
 
 		Button rmBtButton = new Button(this, SWT.PUSH);
 		rmBtButton.setText("X");
@@ -79,16 +85,17 @@ public class TableChooser extends Composite {
 	private void accept(KeyEvent e, boolean forceFocus) {
 		Table selected = popup.getSelection();
 		if (selected != null) {
-			setTable(selected);
+			table = selected;
 			stopEditing(forceFocus);
+			setText();
 		} else if (e != null) {
 			e.doit = false;
 		}
 	}
 
 	private void reject() {
-		setTable(table);
 		stopEditing(true);
+		setText();
 	}
 
 	private void stopEditing(boolean forceFocus) {
@@ -98,8 +105,7 @@ public class TableChooser extends Composite {
 		popup.hide();
 	}
 
-	private void setTable(Table table) {
-		this.table = table;
+	private void setText() {
 		input.setText(table != null ? table.getName() : "");
 	}
 }
