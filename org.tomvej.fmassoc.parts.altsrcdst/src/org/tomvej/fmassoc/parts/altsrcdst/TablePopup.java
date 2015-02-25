@@ -30,6 +30,7 @@ public class TablePopup {
 	private Collection<Object> tableFilter = Collections.emptySet();
 	private Pattern namePattern = Pattern.compile(""),
 			implNamePattern = namePattern;
+	private Runnable listener;
 
 	/**
 	 * Specify parent shell.
@@ -62,6 +63,8 @@ public class TablePopup {
 		tables.addFilter(new ViewerFilterWrapper<Table>(
 				table -> (namePattern.matcher(table.getName()).find())
 						|| implNamePattern.matcher(table.getImplName()).find()));
+
+		tables.addSelectionChangedListener(e -> listener.run());
 	}
 
 	private void setShellLayout() {
@@ -118,14 +121,17 @@ public class TablePopup {
 		}
 	}
 
-	public void show(Control c) {
+	public void show(Control c, Runnable selectionListener) {
 		Point size = c.getSize();
 		getShell().setLocation(c.toDisplay(0, size.y));
 		getShell().setVisible(true);
+
+		listener = Validate.notNull(selectionListener);
 	}
 
 	public void hide() {
 		getShell().setVisible(false);
+		listener = null;
 	}
 
 	public Table getSelection() {
@@ -155,6 +161,10 @@ public class TablePopup {
 			index = itemCount - 1;
 		}
 		tables.getTable().setSelection(index);
+	}
+
+	public boolean isVisible() {
+		return getShell().isVisible();
 	}
 
 }
