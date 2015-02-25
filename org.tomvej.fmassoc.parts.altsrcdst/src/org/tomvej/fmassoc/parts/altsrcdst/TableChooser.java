@@ -15,11 +15,19 @@ import org.tomvej.fmassoc.core.wrappers.KeyEventBlocker;
 import org.tomvej.fmassoc.core.wrappers.KeyReleasedWrapper;
 import org.tomvej.fmassoc.model.db.Table;
 
+/**
+ * Component for choosing a table.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class TableChooser extends Composite {
 	private final TablePopup popup;
 	private final Text input;
 	private Table table;
 
+	/**
+	 * Specify parent composite and pop-up table chooser.
+	 */
 	public TableChooser(Composite parent, TablePopup popup) {
 		super(parent, SWT.BORDER);
 		this.popup = Validate.notNull(popup);

@@ -23,6 +23,11 @@ import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.core.wrappers.ViewerFilterWrapper;
 import org.tomvej.fmassoc.model.db.Table;
 
+/**
+ * Pop-up window for table selection.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class TablePopup {
 	private static int SHELL_STYLE = SWT.MODELESS | SWT.NO_TRIM;
 
@@ -121,6 +126,14 @@ public class TablePopup {
 		}
 	}
 
+	/**
+	 * Open this pop-up.
+	 * 
+	 * @param c
+	 *            Component under which to attach this pop-up.
+	 * @param selectionListener
+	 *            Run when table is selected by mouse.
+	 */
 	public void show(Control c, Runnable selectionListener) {
 		Point size = c.getSize();
 		getShell().setLocation(c.toDisplay(0, size.y));
@@ -129,15 +142,27 @@ public class TablePopup {
 		listener = Validate.notNull(selectionListener);
 	}
 
+	/**
+	 * Hide this pop-up.
+	 */
 	public void hide() {
 		getShell().setVisible(false);
 		listener = null;
 	}
 
+	/**
+	 * Return selected table.
+	 */
 	public Table getSelection() {
 		return (Table) ((IStructuredSelection) tables.getSelection()).getFirstElement();
 	}
 
+	/**
+	 * Move selection. If no table is selected, start from the beginning or end.
+	 * 
+	 * @param increment
+	 *            Number of positions to move selection.
+	 */
 	public void move(int increment) {
 		if (increment == 0) {
 			return;
@@ -163,6 +188,9 @@ public class TablePopup {
 		tables.getTable().setSelection(index);
 	}
 
+	/**
+	 * Return whether this pop-up is open.
+	 */
 	public boolean isVisible() {
 		return getShell().isVisible();
 	}
