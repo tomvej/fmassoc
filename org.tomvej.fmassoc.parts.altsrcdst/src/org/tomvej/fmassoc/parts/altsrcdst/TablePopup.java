@@ -13,39 +13,39 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Region;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
 import org.tomvej.fmassoc.core.tables.TableLayoutSupport;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.core.wrappers.ViewerFilterWrapper;
 import org.tomvej.fmassoc.model.db.Table;
 
-/**
- * Pop-up window for table selection.
- * 
- * @author Tomáš Vejpustek
- */
 public class TablePopup {
-	private static int SHELL_STYLE = SWT.MODELESS | SWT.NO_TRIM;
+	private static final int SHELL_STYLE = SWT.MODELESS | SWT.NO_TRIM;
 
 	private final TableViewer tables;
+	private final Text input;
 	private Collection<Object> tableFilter = Collections.emptySet();
 	private Pattern namePattern = Pattern.compile(""),
 			implNamePattern = namePattern;
-	private Runnable listener;
 
 	/**
 	 * Specify parent shell.
 	 */
 	public TablePopup(Shell parent) {
-		tables = TableLayoutSupport.createTableViewer(new Shell(parent, SHELL_STYLE),
+		Shell popup = new Shell(parent, SHELL_STYLE);
+		popup.setLayout(getShellLayout());
+
+		input = new Text(popup, SWT.SINGLE | SWT.BORDER);
+		input.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+
+		tables = TableLayoutSupport.createTableViewer(popup,
 				SWT.SINGLE | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER,
 				GridDataFactory.fillDefaults().grab(true, true).create());
-		setShellLayout();
-
 		tables.getTable().setHeaderVisible(true);
 		tables.getTable().setLinesVisible(true);
 		tables.setContentProvider(ArrayContentProvider.getInstance());
@@ -69,22 +69,20 @@ public class TablePopup {
 				table -> (namePattern.matcher(table.getName()).find())
 						|| implNamePattern.matcher(table.getImplName()).find()));
 
-		tables.addSelectionChangedListener(e -> listener.run());
+		/* input */
+		input.addModifyListener(e -> setFilter(input.getText()));
 	}
 
-	private void setShellLayout() {
+	private Layout getShellLayout() {
 		GridLayout layout = new GridLayout();
 		layout.marginWidth = 0;
 		layout.marginHeight = 0;
-		getShell().setLayout(layout);
+		layout.verticalSpacing = 1;
+		return layout;
 	}
 
 	private Shell getShell() {
-		return getControl().getShell();
-	}
-
-	private Control getControl() {
-		return tables.getTable();
+		return input.getShell();
 	}
 
 	/**
@@ -109,7 +107,7 @@ public class TablePopup {
 	/**
 	 * Set regular expression filter on shown tables.
 	 */
-	public void setFilter(String text) {
+	private void setFilter(String text) {
 		if (text == null) {
 			text = "";
 		}
@@ -127,43 +125,12 @@ public class TablePopup {
 	}
 
 	/**
-	 * Open this pop-up.
-	 * 
-	 * @param c
-	 *            Component under which to attach this pop-up.
-	 * @param selectionListener
-	 *            Run when table is selected by mouse.
-	 */
-	public void show(Control c, Runnable selectionListener) {
-		Point size = c.getSize();
-		getShell().setLocation(c.toDisplay(0, size.y));
-		getShell().setVisible(true);
-
-		listener = Validate.notNull(selectionListener);
-	}
-
-	/**
-	 * Hide this pop-up.
-	 */
-	public void hide() {
-		getShell().setVisible(false);
-		listener = null;
-	}
-
-	/**
-	 * Return selected table.
-	 */
-	public Table getSelection() {
-		return (Table) ((IStructuredSelection) tables.getSelection()).getFirstElement();
-	}
-
-	/**
 	 * Move selection. If no table is selected, start from the beginning or end.
 	 * 
 	 * @param increment
 	 *            Number of positions to move selection.
 	 */
-	public void move(int increment) {
+	private void move(int increment) {
 		if (increment == 0) {
 			return;
 		}
@@ -189,17 +156,25 @@ public class TablePopup {
 	}
 
 	/**
-	 * Return whether this pop-up is open.
+	 * Return selected table.
 	 */
-	public boolean isVisible() {
-		return getShell().isVisible();
+	public Table getSelecedTable() {
+		return (Table) ((IStructuredSelection) tables.getSelection()).getFirstElement();
 	}
 
-	/**
-	 * Return whether the user moves in the window.
-	 */
-	public boolean hasFocus() {
-		return getShell().equals(getShell().getDisplay().getActiveShell());
+	public void open(Text target) {
+		getShell().setVisible(true);
+		getShell().setLocation(target.getParent().toDisplay(target.getLocation()));
+
+		input.setSize(target.getSize());
+		setupTransparency();
 	}
 
+	private void setupTransparency() {
+		Region r = new Region();
+		r.add(input.getBounds());
+		r.add(tables.getTable().getParent().getBounds());
+		getShell().setRegion(r);
+		r.dispose();
+	}
 }
