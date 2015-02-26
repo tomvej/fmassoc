@@ -4,11 +4,14 @@ import java.util.Collection;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.graphics.Region;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.tomvej.fmassoc.core.wrappers.KeyEventBlocker;
+import org.tomvej.fmassoc.core.wrappers.KeyReleasedWrapper;
 import org.tomvej.fmassoc.model.db.Table;
 
 public class TablePopup {
@@ -25,14 +28,17 @@ public class TablePopup {
 		Shell popup = new Shell(parent, SHELL_STYLE);
 		popup.setLayout(getShellLayout());
 
-		tables = new TablePopupTable(popup);
-
 		input = new Text(popup, SWT.SINGLE | SWT.BORDER);
 		input.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 
+		tables = new TablePopupTable(popup);
 
 		/* input */
 		input.addModifyListener(e -> tables.setFilter(input.getText()));
+		input.addKeyListener(new KeyEventBlocker(SWT.ARROW_UP, SWT.ARROW_DOWN));
+		input.addTraverseListener(this::traverse);
+		input.addKeyListener(new KeyReleasedWrapper(SWT.PAGE_DOWN, SWT.NONE, e -> tables.move(10)));
+		input.addKeyListener(new KeyReleasedWrapper(SWT.PAGE_DOWN, SWT.NONE, e -> tables.move(-10)));
 	}
 
 	private Layout getShellLayout() {
@@ -77,4 +83,16 @@ public class TablePopup {
 		getShell().setRegion(r);
 		r.dispose();
 	}
+
+	private void traverse(TraverseEvent event) {
+		switch (event.detail) {
+			case SWT.TRAVERSE_ARROW_NEXT:
+				tables.move(1);
+				break;
+			case SWT.TRAVERSE_ARROW_PREVIOUS:
+				tables.move(-1);
+				break;
+		}
+	}
+
 }
