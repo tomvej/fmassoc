@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.graphics.Region;
 import org.eclipse.swt.layout.GridLayout;
@@ -20,13 +22,13 @@ public class TablePopup {
 	private final TablePopupTable tables;
 	private final Text input;
 
-
 	/**
 	 * Specify parent shell.
 	 */
 	public TablePopup(Shell parent) {
 		Shell popup = new Shell(parent, SHELL_STYLE);
 		popup.setLayout(getShellLayout());
+		popup.addShellListener(new ShellListener());
 
 		input = new Text(popup, SWT.SINGLE | SWT.BORDER);
 		input.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
@@ -92,6 +94,20 @@ public class TablePopup {
 			case SWT.TRAVERSE_ARROW_PREVIOUS:
 				tables.move(-1);
 				break;
+		}
+	}
+
+	private class ShellListener extends ShellAdapter {
+		@Override
+		public void shellClosed(ShellEvent e) {
+			/* prevent shell from being closed by pressing ESCAPE.
+			 * Not sure if good idea, seems to work. */
+			e.doit = false;
+		}
+
+		@Override
+		public void shellDeactivated(ShellEvent e) {
+			getShell().setVisible(false); // FIXME this should contain logic
 		}
 	}
 
