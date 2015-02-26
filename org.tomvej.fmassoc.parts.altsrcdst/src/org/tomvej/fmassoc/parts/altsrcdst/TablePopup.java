@@ -71,11 +71,14 @@ public class TablePopup {
 	}
 
 	public void open(Text target) {
-		getShell().setVisible(true);
 		getShell().setLocation(target.getParent().toDisplay(target.getLocation()));
-
+		getShell().setVisible(true);
 		input.setSize(target.getSize());
+
 		setupTransparency();
+		// synchronous exec would deactivate the shell right away
+		getShell().getDisplay().asyncExec(() -> input.setFocus());
+
 	}
 
 	private void setupTransparency() {
@@ -98,6 +101,7 @@ public class TablePopup {
 	}
 
 	private class ShellListener extends ShellAdapter {
+
 		@Override
 		public void shellClosed(ShellEvent e) {
 			/* prevent shell from being closed by pressing ESCAPE.
