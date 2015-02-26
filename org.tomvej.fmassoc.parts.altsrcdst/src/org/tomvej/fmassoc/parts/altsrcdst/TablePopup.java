@@ -1,7 +1,9 @@
 package org.tomvej.fmassoc.parts.altsrcdst;
 
 import java.util.Collection;
+import java.util.function.Consumer;
 
+import org.apache.commons.lang3.Validate;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellAdapter;
@@ -22,6 +24,10 @@ public class TablePopup {
 	private final TablePopupTable tables;
 	private final Text input;
 
+	private Consumer<Table> tableListener;
+	private Text target;
+	private boolean stopping;
+
 	/**
 	 * Specify parent shell.
 	 */
@@ -33,7 +39,7 @@ public class TablePopup {
 		input = new Text(popup, SWT.SINGLE | SWT.BORDER);
 		input.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 
-		tables = new TablePopupTable(popup);
+		tables = new TablePopupTable(popup, t -> focusOut());
 
 		/* input */
 		input.addModifyListener(e -> tables.setFilter(input.getText()));
@@ -70,15 +76,18 @@ public class TablePopup {
 		this.tables.setFilter(tables);
 	}
 
-	public void open(Text target) {
+	public void open(Text target, Consumer<Table> listener) {
+		this.target = target;
+		tableListener = Validate.notNull(listener);
+
 		getShell().setLocation(target.getParent().toDisplay(target.getLocation()));
 		getShell().setVisible(true);
 		input.setSize(target.getSize());
 
 		setupTransparency();
-		// synchronous exec would deactivate the shell right away
-		getShell().getDisplay().asyncExec(() -> input.setFocus());
 
+		// synchronous exec would deactivate the shell right away
+		getShell().getDisplay().asyncExec(this::setupInput);
 	}
 
 	private void setupTransparency() {
@@ -89,6 +98,12 @@ public class TablePopup {
 		r.dispose();
 	}
 
+	private void setupInput() {
+		input.setText(target.getText());
+		input.setFocus();
+		input.selectAll();
+	}
+
 	private void traverse(TraverseEvent event) {
 		switch (event.detail) {
 			case SWT.TRAVERSE_ARROW_NEXT:
@@ -97,7 +112,35 @@ public class TablePopup {
 			case SWT.TRAVERSE_ARROW_PREVIOUS:
 				tables.move(-1);
 				break;
+			case SWT.TRAVERSE_TAB_NEXT:
+			case SWT.TRAVERSE_TAB_PREVIOUS:
+			case SWT.TRAVERSE_RETURN:
+				Table selected = tables.getSelecedTable();
+				if (selected == null) {
+					event.doit = false;
+				} else {
+					if (event.detail == SWT.TRAVERSE_RETURN) {
+						focusOut();
+					} else {
+						target.traverse(event.detail, event);
+					}
+				}
+				break;
+			case SWT.TRAVERSE_ESCAPE:
+				focusOut();
+				break;
 		}
+	}
+
+	private void focusOut() {
+		stopping = true;
+		target.getParent().forceFocus();
+	}
+
+	private void cleanUp() {
+		stopping = false;
+		target = null;
+		tableListener = null;
 	}
 
 	private class ShellListener extends ShellAdapter {
@@ -111,8 +154,14 @@ public class TablePopup {
 
 		@Override
 		public void shellDeactivated(ShellEvent e) {
-			getShell().setVisible(false); // FIXME this should contain logic
+			// for some reason, this event is called twice
+			getShell().setVisible(false);
+			Table selected = tables.getSelecedTable();
+			if (selected != null && tableListener != null) {
+				tableListener.accept(selected);
+			}
+			cleanUp();
+
 		}
 	}
-
 }

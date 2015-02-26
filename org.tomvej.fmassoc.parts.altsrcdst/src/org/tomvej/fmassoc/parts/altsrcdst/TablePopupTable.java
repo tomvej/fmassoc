@@ -2,6 +2,7 @@ package org.tomvej.fmassoc.parts.altsrcdst;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -36,7 +37,7 @@ public class TablePopupTable {
 	/**
 	 * Specify parent pop-up shell.
 	 */
-	public TablePopupTable(Shell parent) {
+	public TablePopupTable(Shell parent, Consumer<Table> selectionListener) {
 		tables = TableLayoutSupport.createTableViewer(parent,
 				SWT.SINGLE | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER,
 				GridDataFactory.fillDefaults().grab(true, true).create());
@@ -62,6 +63,8 @@ public class TablePopupTable {
 		tables.addFilter(new ViewerFilterWrapper<Table>(
 				table -> (namePattern.matcher(table.getName()).find())
 						|| implNamePattern.matcher(table.getImplName()).find()));
+
+		tables.addSelectionChangedListener(e -> selectionListener.accept(getSelecedTable()));
 	}
 
 	/**
@@ -148,4 +151,5 @@ public class TablePopupTable {
 	public Rectangle getBounds() {
 		return tables.getTable().getParent().getBounds();
 	}
+
 }
