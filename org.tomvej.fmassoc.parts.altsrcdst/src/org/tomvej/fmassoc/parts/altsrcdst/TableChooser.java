@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.model.db.Table;
+import org.tomvej.fmassoc.parts.altsrcdst.popup.TablePopup;
 
 
 public class TableChooser extends Composite {

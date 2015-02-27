@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.parts.altsrcdst;
+package org.tomvej.fmassoc.parts.altsrcdst.popup;
 
 import java.util.Collection;
 import java.util.Collections;
