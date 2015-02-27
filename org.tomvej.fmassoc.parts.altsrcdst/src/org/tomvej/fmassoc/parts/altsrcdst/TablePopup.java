@@ -38,10 +38,11 @@ public class TablePopup {
 	/**
 	 * Specify parent shell.
 	 */
-	public TablePopup(Shell parent) {
+	public TablePopup(Shell parent, Point size) {
 		Shell popup = new Shell(parent, SHELL_STYLE);
 		popup.setLayout(getShellLayout());
 		popup.addShellListener(new ShellListener());
+		popup.setSize(size);
 
 		input = new Text(popup, SWT.SINGLE | SWT.BORDER);
 		input.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
