@@ -84,6 +84,7 @@ public class TablePopupTable {
 			tableFilter = tables;
 		}
 		this.tables.refresh();
+		selectSingle();
 	}
 
 	/**
@@ -96,6 +97,13 @@ public class TablePopupTable {
 		namePattern = compilePattern(text.replace(' ', '_'));
 		implNamePattern = compilePattern(StringUtils.remove(text, ' '));
 		tables.refresh();
+		selectSingle();
+	}
+
+	private void selectSingle() {
+		if (tables.getTable().getItemCount() == 1) {
+			tables.getTable().setSelection(0);
+		}
 	}
 
 	/**
