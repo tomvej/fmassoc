@@ -2,6 +2,7 @@ package org.tomvej.fmassoc.parts.altsrcdst;
 
 import java.util.Collection;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang3.Validate;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -9,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TypedEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Region;
 import org.eclipse.swt.layout.GridLayout;
@@ -16,6 +18,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.tomvej.fmassoc.core.wrappers.FocusGainedWrapper;
 import org.tomvej.fmassoc.core.wrappers.KeyEventBlocker;
 import org.tomvej.fmassoc.core.wrappers.KeyReleasedWrapper;
 import org.tomvej.fmassoc.model.db.Table;
@@ -88,13 +91,13 @@ public class TablePopup {
 	 * Open the pop-up window.
 	 * 
 	 * @param target
-	 *            Overlayed text input.
+	 *            Overlaid text input.
 	 * @param table
 	 *            Table which was previously selected.
 	 * @param listener
 	 *            Notified when table is selected.
 	 */
-	public void open(Text target, Table table, Consumer<Table> listener) {
+	private void open(Text target, Table table, Consumer<Table> listener) {
 		this.target = target;
 		tableListener = Validate.notNull(listener);
 		tables.setNonFilteredTable(table);
@@ -184,7 +187,7 @@ public class TablePopup {
 
 		@Override
 		public void shellDeactivated(ShellEvent e) {
-			deactivated = e.time & 0xFFFFFFFFL;
+			deactivated = formatTime(e);
 			// for some reason, this event is called twice
 			getShell().setVisible(false);
 			Table selected = tables.getSelecedTable();
@@ -196,9 +199,35 @@ public class TablePopup {
 		}
 	}
 
+	private static final int TIMEOUT = 500;
 	private long deactivated;
 
 	long getLastDeactivatedTime() {
 		return deactivated;
+	}
+
+	private long formatTime(TypedEvent event) {
+		return event.time & 0xFFFFFFFFL;
+	}
+
+	/**
+	 * Attach this pop-up to a text input.
+	 * 
+	 * @param target
+	 *            Overlaid text input.
+	 * @param tableSupplier
+	 *            Supplies table which was previously selected.
+	 * @param tableListener
+	 *            Notified when table is selected.
+	 */
+	public void attach(Text target, Supplier<Table> tableSupplier, Consumer<Table> tableListener) {
+		target.addFocusListener(new FocusGainedWrapper(e -> {
+			if (formatTime(e) - deactivated < TIMEOUT) {
+				// if focus is gained too early, relegate it to the parent
+				target.getParent().forceFocus();
+			} else {
+				open(target, tableSupplier.get(), tableListener);
+			}
+		}));
 	}
 }
