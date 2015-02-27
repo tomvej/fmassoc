@@ -134,7 +134,7 @@ public class TablePopup {
 	}
 
 	private void focusOut() {
-		target.getParent().forceFocus();
+		target.setFocus();
 	}
 
 	private void cleanUp() {
@@ -153,6 +153,7 @@ public class TablePopup {
 
 		@Override
 		public void shellDeactivated(ShellEvent e) {
+			deactivated = e.time & 0xFFFFFFFFL;
 			// for some reason, this event is called twice
 			getShell().setVisible(false);
 			Table selected = tables.getSelecedTable();
@@ -162,5 +163,11 @@ public class TablePopup {
 			cleanUp();
 
 		}
+	}
+
+	private long deactivated;
+
+	long getLastDeactivatedTime() {
+		return deactivated;
 	}
 }
