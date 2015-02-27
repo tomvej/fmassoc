@@ -10,6 +10,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.tomvej.fmassoc.core.dnd.CompositeDnDSupport;
 import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.parts.altsrcdst.popup.TablePopup;
@@ -17,6 +18,7 @@ import org.tomvej.fmassoc.parts.altsrcdst.popup.TablePopup;
 public class SourceDestinationPanel extends Composite {
 	private final TablePopup popup;
 	private final Composite chooserPanel;
+	private final CompositeDnDSupport dnd;
 	private final List<TableChooser> choosers = new ArrayList<>();
 
 	public SourceDestinationPanel(Composite parent) {
@@ -26,6 +28,8 @@ public class SourceDestinationPanel extends Composite {
 		chooserPanel = new Composite(this, SWT.NONE);
 		chooserPanel.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
 		chooserPanel.setLayout(new GridLayout());
+
+		dnd = new CompositeDnDSupport(chooserPanel);
 
 		Button addBtn = new Button(this, SWT.PUSH);
 		addBtn.setLayoutData(GridDataFactory.fillDefaults().create());
@@ -43,7 +47,7 @@ public class SourceDestinationPanel extends Composite {
 	private void addChooser() {
 		TableChooser newChooser = new TableChooser(chooserPanel, popup);
 		choosers.add(newChooser);
-		// TODO plugin DnD
+		newChooser.addDnDSupport(dnd);
 		// TODO add dispose listener
 
 		layout();
