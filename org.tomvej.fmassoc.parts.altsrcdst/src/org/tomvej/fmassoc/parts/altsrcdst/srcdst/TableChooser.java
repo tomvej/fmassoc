@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.parts.altsrcdst;
+package org.tomvej.fmassoc.parts.altsrcdst.srcdst;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
