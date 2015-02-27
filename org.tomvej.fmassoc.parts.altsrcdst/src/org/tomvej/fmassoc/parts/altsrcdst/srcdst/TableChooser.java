@@ -18,8 +18,8 @@ public class TableChooser extends Composite {
 
 	public TableChooser(Composite parent, TablePopup popup) {
 		super(parent, SWT.BORDER);
-
 		setLayout(new GridLayout(3, false));
+		setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 
 		input = new Text(this, SWT.SINGLE | SWT.BORDER);
 		popup.attach(input, () -> table, this::tableSet);
