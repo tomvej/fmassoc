@@ -9,8 +9,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Region;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -98,7 +100,7 @@ public class TablePopup {
 
 		getShell().setLocation(target.getParent().toDisplay(target.getLocation()));
 		getShell().setVisible(true);
-		input.setSize(target.getSize());
+		setSize();
 
 		setupTransparency();
 
@@ -106,10 +108,21 @@ public class TablePopup {
 		getShell().getDisplay().asyncExec(this::setupInput);
 	}
 
+	private void setSize() {
+		Point targetSize = target.getSize();
+		input.setSize(targetSize);
+
+		Control control = tables.getControl();
+		int upper = input.getLocation().y + targetSize.y + 1;
+
+		control.setLocation(control.getLocation().x, upper);
+		control.setSize(control.getSize().x, getShell().getSize().y - upper);
+	}
+
 	private void setupTransparency() {
 		Region r = new Region();
 		r.add(input.getBounds());
-		r.add(tables.getBounds());
+		r.add(tables.getControl().getBounds());
 		getShell().setRegion(r);
 		r.dispose();
 	}

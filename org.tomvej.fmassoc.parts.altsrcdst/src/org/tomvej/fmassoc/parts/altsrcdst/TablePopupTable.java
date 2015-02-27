@@ -14,7 +14,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
 import org.tomvej.fmassoc.core.tables.TableLayoutSupport;
@@ -164,10 +164,10 @@ public class TablePopupTable {
 	}
 
 	/**
-	 * Return bounds of table component.
+	 * Return control encapsulating this table component.
 	 */
-	public Rectangle getBounds() {
-		return tables.getTable().getParent().getBounds();
+	public Control getControl() {
+		return tables.getTable().getParent();
 	}
 
 	/**
