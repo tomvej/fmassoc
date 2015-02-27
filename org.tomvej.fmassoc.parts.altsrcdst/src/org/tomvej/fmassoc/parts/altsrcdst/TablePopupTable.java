@@ -152,4 +152,11 @@ public class TablePopupTable {
 		return tables.getTable().getParent().getBounds();
 	}
 
+	/**
+	 * Select no table.
+	 */
+	public void clearSelection() {
+		tables.getTable().setSelection(new int[0]);
+	}
+
 }

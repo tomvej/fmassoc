@@ -26,7 +26,6 @@ public class TablePopup {
 
 	private Consumer<Table> tableListener;
 	private Text target;
-	private boolean stopping;
 
 	/**
 	 * Specify parent shell.
@@ -99,6 +98,7 @@ public class TablePopup {
 	}
 
 	private void setupInput() {
+		tables.clearSelection();
 		input.setText(target.getText());
 		input.setFocus();
 		input.selectAll();
@@ -127,18 +127,17 @@ public class TablePopup {
 				}
 				break;
 			case SWT.TRAVERSE_ESCAPE:
+				tables.clearSelection();
 				focusOut();
 				break;
 		}
 	}
 
 	private void focusOut() {
-		stopping = true;
 		target.getParent().forceFocus();
 	}
 
 	private void cleanUp() {
-		stopping = false;
 		target = null;
 		tableListener = null;
 	}
