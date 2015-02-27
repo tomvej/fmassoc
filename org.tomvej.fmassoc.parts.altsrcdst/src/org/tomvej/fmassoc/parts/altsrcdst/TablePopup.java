@@ -18,6 +18,12 @@ import org.tomvej.fmassoc.core.wrappers.KeyEventBlocker;
 import org.tomvej.fmassoc.core.wrappers.KeyReleasedWrapper;
 import org.tomvej.fmassoc.model.db.Table;
 
+/**
+ * Pop-up window used to select a table. Contains a table list and a text which
+ * is used to filter the table list.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class TablePopup {
 	private static final int SHELL_STYLE = SWT.MODELESS | SWT.NO_TRIM;
 
@@ -75,9 +81,20 @@ public class TablePopup {
 		this.tables.setFilter(tables);
 	}
 
-	public void open(Text target, Consumer<Table> listener) {
+	/**
+	 * Open the pop-up window.
+	 * 
+	 * @param target
+	 *            Overlayed text input.
+	 * @param table
+	 *            Table which was previously selected.
+	 * @param listener
+	 *            Notified when table is selected.
+	 */
+	public void open(Text target, Table table, Consumer<Table> listener) {
 		this.target = target;
 		tableListener = Validate.notNull(listener);
+		tables.setNonFilteredTable(table);
 
 		getShell().setLocation(target.getParent().toDisplay(target.getLocation()));
 		getShell().setVisible(true);

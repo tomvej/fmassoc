@@ -40,7 +40,7 @@ public class TableChooser extends Composite {
 			// if focus is gained too early, relegate it to the parent
 			forceFocus();
 		} else {
-			popup.open(input, this::tableSet);
+			popup.open(input, table, this::tableSet);
 		}
 	}
 

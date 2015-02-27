@@ -31,6 +31,7 @@ public class TablePopupTable {
 
 	private final TableViewer tables;
 	private Collection<Object> tableFilter = Collections.emptySet();
+	private Table nonFilteredTable;
 	private Pattern namePattern = Pattern.compile(""),
 			implNamePattern = namePattern;
 
@@ -59,7 +60,8 @@ public class TablePopupTable {
 		TableLayoutSupport.create(tables, 1, true, nameClmn, implNameClmn);
 
 		/* filters */
-		tables.addFilter(new ViewerFilterWrapper<Table>(table -> !tableFilter.contains(table)));
+		tables.addFilter(new ViewerFilterWrapper<Table>(table -> table.equals(nonFilteredTable)
+				|| !tableFilter.contains(table)));
 		tables.addFilter(new ViewerFilterWrapper<Table>(
 				table -> (namePattern.matcher(table.getName()).find())
 						|| implNamePattern.matcher(table.getImplName()).find()));
@@ -85,6 +87,14 @@ public class TablePopupTable {
 		}
 		this.tables.refresh();
 		selectSingle();
+	}
+
+	/**
+	 * Select a table which is not filtered by table filter. This is used to
+	 * specify the previously selected table.
+	 */
+	public void setNonFilteredTable(Table table) {
+		nonFilteredTable = table;
 	}
 
 	/**
