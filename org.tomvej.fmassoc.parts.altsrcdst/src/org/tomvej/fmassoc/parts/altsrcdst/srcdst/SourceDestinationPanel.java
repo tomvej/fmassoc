@@ -99,6 +99,7 @@ public class SourceDestinationPanel extends Composite {
 	}
 
 	private void refresh() {
+		popup.setFilter(choosers.stream().map(c -> c.getTable()).filter(t -> t != null).collect(Collectors.toSet()));
 		if (listener != null) {
 			listener.accept(getTables());
 		}
