@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.log.Logger;
+import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -66,5 +67,10 @@ public class Part {
 		if (srcDst != null) {
 			srcDst.setTables(model.getTables());
 		}
+	}
+
+	@Focus
+	public void focus() {
+		buildSearchInput();
 	}
 }
