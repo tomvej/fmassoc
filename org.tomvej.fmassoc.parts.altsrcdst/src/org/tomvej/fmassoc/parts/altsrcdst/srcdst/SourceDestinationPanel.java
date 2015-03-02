@@ -17,12 +17,20 @@ import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.parts.altsrcdst.popup.TablePopup;
 
+/**
+ * Panel used to choose sequence of table from source to destination.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class SourceDestinationPanel extends Composite {
 	private final TablePopup popup;
 	private final Composite chooserPanel;
 	private final CompositeDnDSupport dnd;
 	private final List<TableChooser> choosers = new ArrayList<>();
 
+	/**
+	 * Specify parent component.
+	 */
 	public SourceDestinationPanel(Composite parent) {
 		super(parent, SWT.BORDER);
 		setLayout(new GridLayout(2, false));
@@ -78,6 +86,9 @@ public class SourceDestinationPanel extends Composite {
 		// TODO notify
 	}
 
+	/**
+	 * Set tables to choose from.
+	 */
 	public void setTables(Collection<Table> tables) {
 		clearChoosers();
 		popup.setTables(tables);

@@ -14,7 +14,11 @@ import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.parts.altsrcdst.popup.TablePopup;
 
-
+/**
+ * Component used to choose table in Source to Destination panel.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class TableChooser extends Composite {
 	private final Text input;
 	private final Label knob;
@@ -22,6 +26,9 @@ public class TableChooser extends Composite {
 	private Table table;
 	private Consumer<Table> listener;
 
+	/**
+	 * Specify parent panel and pop-up used to select table.
+	 */
 	public TableChooser(Composite parent, TablePopup popup) {
 		super(parent, SWT.BORDER);
 		setLayout(new GridLayout(3, false));
@@ -40,6 +47,9 @@ public class TableChooser extends Composite {
 		rmBtn.addSelectionListener(new SelectionWrapper(e -> dispose()));
 	}
 
+	/**
+	 * Plug-in drag and drop support to this component.
+	 */
 	public void addDnDSupport(CompositeDnDSupport dnd) {
 		dnd.registerKnob(knob, this);
 		dnd.registerKnob(this, this);
@@ -53,10 +63,16 @@ public class TableChooser extends Composite {
 		}
 	}
 
+	/**
+	 * Return table selected by this component.
+	 */
 	public Table getTable() {
 		return table;
 	}
 
+	/**
+	 * Specify listener which is notified when table selection is changed.
+	 */
 	public void setTableListener(Consumer<Table> listener) {
 		this.listener = listener;
 	}
