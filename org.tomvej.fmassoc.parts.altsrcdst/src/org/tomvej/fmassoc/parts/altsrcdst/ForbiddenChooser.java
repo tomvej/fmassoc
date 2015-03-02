@@ -3,6 +3,7 @@ package org.tomvej.fmassoc.parts.altsrcdst;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -13,38 +14,62 @@ import org.eclipse.core.databinding.property.Properties;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
 import org.tomvej.fmassoc.core.tables.TableLayoutSupport;
+import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.model.db.Table;
+import org.tomvej.fmassoc.parts.altsrcdst.popup.TablePopup;
 
 public class ForbiddenChooser extends Composite {
 	private final CheckboxTableViewer table;
 	private final IObservableList forbidden = Properties.selfList(Table.class).observe(new ArrayList<>());
+	private final Text input;
+	private final TablePopup popup;
+	private final Button addBtn;
 
 	private Collection<Table> defaultForbidden = Collections.emptySet();
 	private Consumer<Set<Table>> tableListener;
 
+	private Table inputTable;
+
 	public ForbiddenChooser(Composite parent) {
 		super(parent, SWT.BORDER);
-		setLayout(new GridLayout());
+		setLayout(new GridLayout(3, false));
 
 		table = TableLayoutSupport.createCheckboxTableViewer(this,
 				SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.BORDER | SWT.MULTI,
-				GridDataFactory.fillDefaults().grab(true, true).create());
+				GridDataFactory.fillDefaults().grab(true, true).span(3, 1).create());
 		table.getTable().setHeaderVisible(true);
 		table.getTable().setLinesVisible(true);
 		createColumns();
 
 		table.setContentProvider(new ObservableListContentProvider());
 		table.setInput(forbidden);
-
 		table.addCheckStateListener(e -> fireChanges());
+		table.addSelectionChangedListener(this::bypassSelection);
+
+		input = new Text(this, SWT.BORDER);
+		input.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+		popup = new TablePopup(getShell(), new Point(250, 350));
+		popup.attach(input, () -> inputTable, this::tableChosen);
+
+		addBtn = createButton("Add");
+		addBtn.addSelectionListener(new SelectionWrapper(e -> addTable()));
+		Button rmBtn = createButton("Remove");
+
+		table.addSelectionChangedListener(e -> rmBtn.setEnabled(!table.getSelection().isEmpty()));
 	}
 
 	private void createColumns() {
@@ -69,11 +94,50 @@ public class ForbiddenChooser extends Composite {
 				.setupWidthColumn(checkColumn, 30, false, false);
 	}
 
+	private Button createButton(String label) {
+		Button result = new Button(this, SWT.PUSH);
+		result.setText(label);
+		result.setLayoutData(GridDataFactory.fillDefaults().create());
+		result.setEnabled(false);
+		return result;
+	}
+
+	private void bypassSelection(SelectionChangedEvent e) {
+		List<Table> selection = getSelection();
+		if (selection.stream().anyMatch(t -> defaultForbidden.contains(t))) {
+			table.removeSelectionChangedListener(this::bypassSelection);
+			table.setSelection(new StructuredSelection(
+					selection.stream().filter(t -> !defaultForbidden.contains(t)).collect(Collectors.toList())));
+			table.addSelectionChangedListener(this::bypassSelection);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Table> getSelection() {
+		return ((IStructuredSelection) table.getSelection()).toList();
+	}
+
+	private void tableChosen(Table table) {
+		inputTable = table;
+		input.setText(table != null ? table.getName() : "");
+		addBtn.setEnabled(table != null);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void addTable() {
+		forbidden.add(inputTable);
+		tableChosen(null);
+		popup.setFilter(forbidden);
+	}
+
 	public void setTables(Collection<Table> tables, Collection<Table> forbidden) {
 		defaultForbidden = forbidden != null ? forbidden : Collections.emptySet();
 		this.forbidden.clear();
 		this.forbidden.addAll(defaultForbidden);
 		table.setCheckedElements(defaultForbidden.toArray());
+
+		popup.setTables(tables);
+		popup.setFilter(Collections.unmodifiableCollection(defaultForbidden));
 	}
 
 	public void setTableListener(Consumer<Set<Table>> listener) {

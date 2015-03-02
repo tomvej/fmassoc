@@ -84,6 +84,7 @@ public class TablePopup {
 	 * Set collection of tables not displayed in this pop-up window.
 	 */
 	public void setFilter(Collection<Object> tables) {
+		this.tables.clearSelection();
 		this.tables.setFilter(tables);
 	}
 
