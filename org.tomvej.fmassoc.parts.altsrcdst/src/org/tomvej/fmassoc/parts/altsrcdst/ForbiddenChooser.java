@@ -24,6 +24,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
 import org.tomvej.fmassoc.core.tables.TableLayoutSupport;
@@ -37,7 +38,10 @@ import org.tomvej.fmassoc.parts.altsrcdst.popup.TablePopup;
  * 
  * @author Tomáš Vejpustek
  */
-public class ForbiddenChooser extends Composite {
+public class ForbiddenChooser extends Group {
+	@Override
+	protected void checkSubclass() {} // can subclass
+
 	private final CheckboxTableViewer table;
 	private final IObservableList forbidden = Properties.selfList(Table.class).observe(new ArrayList<>());
 	private final Text input;
@@ -53,7 +57,8 @@ public class ForbiddenChooser extends Composite {
 	 * Specify parent component.
 	 */
 	public ForbiddenChooser(Composite parent) {
-		super(parent, SWT.BORDER);
+		super(parent, SWT.SHADOW_ETCHED_IN);
+		setText("Forbidden Tables");
 		setLayout(new GridLayout(3, false));
 
 		table = TableLayoutSupport.createCheckboxTableViewer(this,
