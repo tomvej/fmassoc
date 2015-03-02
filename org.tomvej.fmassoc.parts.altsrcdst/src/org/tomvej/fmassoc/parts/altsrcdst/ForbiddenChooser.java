@@ -68,6 +68,7 @@ public class ForbiddenChooser extends Composite {
 		addBtn = createButton("Add");
 		addBtn.addSelectionListener(new SelectionWrapper(e -> addTable()));
 		Button rmBtn = createButton("Remove");
+		rmBtn.addSelectionListener(new SelectionWrapper(e -> removeTables()));
 
 		table.addSelectionChangedListener(e -> rmBtn.setEnabled(!table.getSelection().isEmpty()));
 	}
@@ -128,6 +129,15 @@ public class ForbiddenChooser extends Composite {
 		forbidden.add(inputTable);
 		tableChosen(null);
 		popup.setFilter(forbidden);
+	}
+
+	private void removeTables() {
+		List<Table> selected = getSelection();
+		boolean changed = selected.stream().anyMatch(t -> table.getChecked(t));
+		forbidden.removeAll(selected);
+		if (changed) {
+			fireChanges();
+		}
 	}
 
 	public void setTables(Collection<Table> tables, Collection<Table> forbidden) {
