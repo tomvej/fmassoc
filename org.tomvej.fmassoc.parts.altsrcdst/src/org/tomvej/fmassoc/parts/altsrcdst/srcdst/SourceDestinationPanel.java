@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.eclipse.jface.layout.GridDataFactory;
@@ -28,6 +29,7 @@ public class SourceDestinationPanel extends Composite {
 	private final CompositeDnDSupport dnd;
 	private final List<TableChooser> choosers = new ArrayList<>();
 
+	private Consumer<List<Table>> listener;
 	private boolean cleaning;
 
 	/**
@@ -89,8 +91,17 @@ public class SourceDestinationPanel extends Composite {
 		addChooser();
 	}
 
+	/**
+	 * Specify listener which is notified when selected tables changed.
+	 */
+	public void setTableListener(Consumer<List<Table>> listener) {
+		this.listener = listener;
+	}
+
 	private void refresh() {
-		// FIXME
+		if (listener != null) {
+			listener.accept(getTables());
+		}
 	}
 
 	private List<Table> getTables() {
