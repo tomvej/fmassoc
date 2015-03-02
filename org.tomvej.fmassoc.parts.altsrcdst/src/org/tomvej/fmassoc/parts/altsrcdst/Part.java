@@ -1,7 +1,9 @@
 package org.tomvej.fmassoc.parts.altsrcdst;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -26,8 +28,12 @@ public class Part {
 	@Inject
 	private Logger logger;
 	private IEclipseContext context;
+
 	private SourceDestinationPanel srcDst;
+	private ForbiddenChooser forbiddenChooser;
+
 	private List<Table> tableSequence;
+	private Set<Table> forbidden;
 
 	@PostConstruct
 	public void createComponents(Composite parent, Shell shell, @Optional DataModel model, MPerspective perspective) {
@@ -39,13 +45,22 @@ public class Part {
 		srcDst.setLayoutData(layout.create());
 		srcDst.setTableListener(this::tablesChanged);
 
+		forbiddenChooser = new ForbiddenChooser(parent);
+		forbiddenChooser.setLayoutData(layout.create());
+		forbiddenChooser.setTableListener(this::forbiddenChanged);
+
 		if (model != null) {
-			srcDst.setTables(model.getTables());
+			setTables(model);
 		}
 	}
 
 	private void tablesChanged(List<Table> tables) {
 		tableSequence = tables;
+		buildSearchInput();
+	}
+
+	private void forbiddenChanged(Set<Table> tables) {
+		forbidden = tables;
 		buildSearchInput();
 	}
 
@@ -65,8 +80,14 @@ public class Part {
 	@Inject
 	public void dataModelChanged(@UIEventTopic(DataModelTopic.MODEL_CHANGED) DataModel model) {
 		if (srcDst != null) {
-			srcDst.setTables(model.getTables());
+			setTables(model);
 		}
+	}
+
+	private void setTables(DataModel model) {
+		srcDst.setTables(model.getTables());
+		forbiddenChooser.setTables(model.getTables(), model.getForbiddenTables());
+		forbidden = new HashSet<>(model.getForbiddenTables());
 	}
 
 	@Focus
