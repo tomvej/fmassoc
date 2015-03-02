@@ -1,6 +1,5 @@
 package org.tomvej.fmassoc.parts.altsrcdst;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -67,7 +66,7 @@ public class Part {
 	private void buildSearchInput() {
 		if (tableSequence != null) {
 			SearchInput input = new SearchInput(tableSequence.get(0), tableSequence.subList(1, tableSequence.size()),
-					Collections.emptySet());
+					forbidden);
 			context.set(SearchInput.class, input);
 			logger.info("Search input changed to: " + input);
 		} else {
