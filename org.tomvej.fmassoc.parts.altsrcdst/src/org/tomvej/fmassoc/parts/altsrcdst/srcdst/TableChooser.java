@@ -7,6 +7,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.core.dnd.CompositeDnDSupport;
@@ -48,6 +49,8 @@ public class TableChooser extends Composite {
 			dispose();
 			parent.getParent().layout();
 		}));
+
+		setTabList(new Control[] { input });
 	}
 
 	/**
