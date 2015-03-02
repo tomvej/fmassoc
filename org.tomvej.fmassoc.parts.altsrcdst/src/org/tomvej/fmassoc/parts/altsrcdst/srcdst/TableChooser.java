@@ -44,7 +44,10 @@ public class TableChooser extends Composite {
 
 		Button rmBtn = new Button(this, SWT.PUSH);
 		rmBtn.setText("X");
-		rmBtn.addSelectionListener(new SelectionWrapper(e -> dispose()));
+		rmBtn.addSelectionListener(new SelectionWrapper(e -> {
+			dispose();
+			parent.getParent().layout();
+		}));
 	}
 
 	/**

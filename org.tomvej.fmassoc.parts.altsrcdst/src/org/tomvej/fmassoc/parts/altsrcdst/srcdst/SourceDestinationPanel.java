@@ -28,6 +28,8 @@ public class SourceDestinationPanel extends Composite {
 	private final CompositeDnDSupport dnd;
 	private final List<TableChooser> choosers = new ArrayList<>();
 
+	private boolean cleaning;
+
 	/**
 	 * Specify parent component.
 	 */
@@ -59,18 +61,28 @@ public class SourceDestinationPanel extends Composite {
 		TableChooser newChooser = new TableChooser(chooserPanel, popup);
 		choosers.add(newChooser);
 		newChooser.addDnDSupport(dnd);
-		newChooser.addDisposeListener(e -> {
-			choosers.remove(newChooser);
-			refresh();
-		});
+		newChooser.addDisposeListener(e -> dispose(newChooser));
 		newChooser.setTableListener(t -> refresh());
 		layout();
+		refresh();
 	}
 
+	private void dispose(TableChooser chooser) {
+		if (!cleaning) {
+			choosers.remove(chooser);
+			if (choosers.size() < 2) {
+				addChooser();
+			} else {
+				refresh();
+			}
+		}
+	}
 
 	private void clearChoosers() {
+		cleaning = true;
 		choosers.forEach(p -> p.dispose());
 		choosers.clear();
+		cleaning = false;
 
 		// choosers for source an destination
 		addChooser();
@@ -78,12 +90,15 @@ public class SourceDestinationPanel extends Composite {
 	}
 
 	private void refresh() {
+		// FIXME
+	}
+
+	private List<Table> getTables() {
 		if (choosers.stream().anyMatch(c -> c.getTable() == null)) {
-			// TODO notify null
+			return null;
 		}
 		Collections.sort(choosers, (c1, c2) -> Integer.compare(dnd.getOrder(c1), dnd.getOrder(c2)));
-		List<Table> result = choosers.stream().map(c -> c.getTable()).collect(Collectors.toList());
-		// TODO notify
+		return choosers.stream().map(c -> c.getTable()).collect(Collectors.toList());
 	}
 
 	/**
