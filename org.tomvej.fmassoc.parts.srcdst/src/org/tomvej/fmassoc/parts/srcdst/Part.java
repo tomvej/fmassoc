@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.log.Logger;
+import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -92,16 +93,27 @@ public class Part {
 		Table source = this.source.getSelection();
 		List<Table> destinations = destination.getSelection();
 		Set<Table> forbidden = this.forbidden.getForbiddenTables();
+		SearchInput original = context.get(SearchInput.class);
 		if (source == null || destinations == null || destinations.isEmpty() || destinations.contains(source)) {
-			if (context.get(SearchInput.class) != null) {
+			if (original != null) {
 				context.set(SearchInput.class, null);
 				logger.info("Search input cleared.");
 			}
 		} else {
 			SearchInput input = new SearchInput(source, destinations, forbidden);
-			context.set(SearchInput.class, input);
-			logger.info("Search input changed to: " + input);
+			if (!input.equals(original)) {
+				context.set(SearchInput.class, input);
+				logger.info("Search input changed to: " + input);
+			}
 		}
 
+	}
+
+	/**
+	 * Put search input into context on focus.
+	 */
+	@Focus
+	public void focus() {
+		selectionChanged();
 	}
 }
