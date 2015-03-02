@@ -1,11 +1,16 @@
 package org.tomvej.fmassoc.parts.altsrcdst;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.property.Properties;
+import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -20,6 +25,7 @@ import org.tomvej.fmassoc.model.db.Table;
 
 public class ForbiddenChooser extends Composite {
 	private final CheckboxTableViewer table;
+	private final IObservableList forbidden = Properties.selfList(Table.class).observe(new ArrayList<>());
 
 	private Collection<Table> defaultForbidden = Collections.emptySet();
 	private Consumer<Set<Table>> tableListener;
@@ -33,7 +39,14 @@ public class ForbiddenChooser extends Composite {
 				GridDataFactory.fillDefaults().grab(true, true).create());
 		table.getTable().setHeaderVisible(true);
 		table.getTable().setLinesVisible(true);
+		createColumns();
 
+		table.setContentProvider(new ObservableListContentProvider());
+		table.setInput(forbidden);
+
+	}
+
+	private void createColumns() {
 		/* name */
 		TableViewerColumn nameColumn = new TableViewerColumn(table, SWT.LEFT);
 		nameColumn.getColumn().setText("Name");
@@ -48,6 +61,7 @@ public class ForbiddenChooser extends Composite {
 
 		/* check */
 		TableViewerColumn checkColumn = new TableViewerColumn(table, SWT.CENTER, 0);
+		checkColumn.setLabelProvider(new TextColumnLabelProvider<Table>(t -> ""));
 		checkColumn.getColumn().setResizable(false);
 
 		TableLayoutSupport.create(table, 1, true, nameColumn, implNameColumn)
@@ -56,10 +70,24 @@ public class ForbiddenChooser extends Composite {
 
 	public void setTables(Collection<Table> tables, Collection<Table> forbidden) {
 		defaultForbidden = forbidden != null ? forbidden : Collections.emptySet();
+		this.forbidden.clear();
+		this.forbidden.addAll(defaultForbidden);
+		table.setCheckedElements(defaultForbidden.toArray());
 	}
 
 	public void setTableListener(Consumer<Set<Table>> listener) {
 		tableListener = listener;
+	}
+
+	private void fireChanges() {
+		if (tableListener != null) {
+			tableListener.accept(getForbiddenTables());
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private Set<Table> getForbiddenTables() {
+		return (Set<Table>) forbidden.stream().filter(t -> table.getChecked(t)).collect(Collectors.toSet());
 	}
 
 
