@@ -44,6 +44,7 @@ public class ForbiddenChooser extends Composite {
 		table.setContentProvider(new ObservableListContentProvider());
 		table.setInput(forbidden);
 
+		table.addCheckStateListener(e -> fireChanges());
 	}
 
 	private void createColumns() {
