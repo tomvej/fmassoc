@@ -48,6 +48,7 @@ public class Part {
 	private PruningRow basePruning;
 	private List<PruningRow> pruning;
 	private CompositeDnDSupport dndSupport;
+	private boolean clearing;
 
 	/**
 	 * Initialize filter providers.
@@ -118,18 +119,25 @@ public class Part {
 		PruningRow newRow = new PruningRow(pruningPanel, providers, true, this::fireFilterChanged);
 		pruning.add(newRow);
 		newRow.pluginDnD(dndSupport);
+		newRow.addDisposeListener(e -> {
+			if (!clearing) {
+				pruning.remove(newRow);
+				fireFilterChanged();
+			}
+		});
 		pruningPanel.getParent().layout();
 	}
 
 	private void clearRows() {
+		clearing = true;
 		pruning.forEach(p -> p.dispose());
+		clearing = false;
 		pruning.clear();
 		pruningPanel.getParent().layout();
 		fireFilterChanged();
 	}
 
 	private void fireFilterChanged() {
-		pruning.removeIf(f -> f.isDisposed()); // clear up
 		Collections.sort(pruning, (p1, p2) -> Integer.compare(dndSupport.getOrder(p1), dndSupport.getOrder(p2)));
 		Stream<Pruning> pruneStream = pruning.stream().map(p -> p.getPruning()).filter(p -> p != null);
 
