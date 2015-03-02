@@ -72,14 +72,19 @@ public class Part {
 	}
 
 	private void buildSearchInput() {
+		SearchInput oldInput = context.get(SearchInput.class);
 		if (tableSequence != null) {
 			SearchInput input = new SearchInput(tableSequence.get(0), tableSequence.subList(1, tableSequence.size()),
 					forbidden);
-			context.set(SearchInput.class, input);
-			logger.info("Search input changed to: " + input);
+			if (!input.equals(oldInput)) {
+				context.set(SearchInput.class, input);
+				logger.info("Search input changed to: " + input);
+			}
 		} else {
-			context.remove(SearchInput.class);
-			logger.info("Search input cleared.");
+			if (oldInput != null) {
+				context.remove(SearchInput.class);
+				logger.info("Search input cleared.");
+			}
 		}
 	}
 
