@@ -32,6 +32,11 @@ import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.parts.altsrcdst.popup.TablePopup;
 
+/**
+ * Component used to select forbidden tables.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class ForbiddenChooser extends Composite {
 	private final CheckboxTableViewer table;
 	private final IObservableList forbidden = Properties.selfList(Table.class).observe(new ArrayList<>());
@@ -44,6 +49,9 @@ public class ForbiddenChooser extends Composite {
 
 	private Table inputTable;
 
+	/**
+	 * Specify parent component.
+	 */
 	public ForbiddenChooser(Composite parent) {
 		super(parent, SWT.BORDER);
 		setLayout(new GridLayout(3, false));
@@ -140,6 +148,14 @@ public class ForbiddenChooser extends Composite {
 		}
 	}
 
+	/**
+	 * Specify tables to choose from.
+	 * 
+	 * @param tables
+	 *            Tables to choose from.
+	 * @param forbidden
+	 *            Tables which are forbidden by default.
+	 */
 	public void setTables(Collection<Table> tables, Collection<Table> forbidden) {
 		defaultForbidden = forbidden != null ? forbidden : Collections.emptySet();
 		this.forbidden.clear();
@@ -150,6 +166,9 @@ public class ForbiddenChooser extends Composite {
 		popup.setFilter(Collections.unmodifiableCollection(defaultForbidden));
 	}
 
+	/**
+	 * Specify listener which is notified when forbidden tables are changed.
+	 */
 	public void setTableListener(Consumer<Set<Table>> listener) {
 		tableListener = listener;
 	}

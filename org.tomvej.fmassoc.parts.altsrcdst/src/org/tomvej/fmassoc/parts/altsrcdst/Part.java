@@ -23,6 +23,11 @@ import org.tomvej.fmassoc.model.db.DataModel;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.parts.altsrcdst.srcdst.SourceDestinationPanel;
 
+/**
+ * Part for choosing source and destination tables.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class Part {
 	@Inject
 	private Logger logger;
@@ -34,6 +39,9 @@ public class Part {
 	private List<Table> tableSequence;
 	private Set<Table> forbidden;
 
+	/**
+	 * Initiate visual components.
+	 */
 	@PostConstruct
 	public void createComponents(Composite parent, Shell shell, @Optional DataModel model, MPerspective perspective) {
 		context = perspective.getContext();
@@ -75,6 +83,9 @@ public class Part {
 		}
 	}
 
+	/**
+	 * Listens to data model change.
+	 */
 	@Optional
 	@Inject
 	public void dataModelChanged(@UIEventTopic(DataModelTopic.MODEL_CHANGED) DataModel model) {
@@ -89,6 +100,9 @@ public class Part {
 		forbidden = new HashSet<>(model.getForbiddenTables());
 	}
 
+	/**
+	 * Puts selected search input to context when it is focused.
+	 */
 	@Focus
 	public void focus() {
 		buildSearchInput();
