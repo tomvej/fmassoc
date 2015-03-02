@@ -2,7 +2,9 @@ package org.tomvej.fmassoc.parts.altsrcdst.srcdst;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
@@ -30,6 +32,7 @@ public class SourceDestinationPanel extends Composite {
 		chooserPanel.setLayout(new GridLayout());
 
 		dnd = new CompositeDnDSupport(chooserPanel);
+		dnd.addListener(e -> refresh());
 
 		Button addBtn = new Button(this, SWT.PUSH);
 		addBtn.setLayoutData(GridDataFactory.fillDefaults().create());
@@ -48,8 +51,11 @@ public class SourceDestinationPanel extends Composite {
 		TableChooser newChooser = new TableChooser(chooserPanel, popup);
 		choosers.add(newChooser);
 		newChooser.addDnDSupport(dnd);
-		// TODO add dispose listener
-
+		newChooser.addDisposeListener(e -> {
+			choosers.remove(newChooser);
+			refresh();
+		});
+		newChooser.setTableListener(t -> refresh());
 		layout();
 	}
 
@@ -61,6 +67,15 @@ public class SourceDestinationPanel extends Composite {
 		// choosers for source an destination
 		addChooser();
 		addChooser();
+	}
+
+	private void refresh() {
+		if (choosers.stream().anyMatch(c -> c.getTable() == null)) {
+			// TODO notify null
+		}
+		Collections.sort(choosers, (c1, c2) -> Integer.compare(dnd.getOrder(c1), dnd.getOrder(c2)));
+		List<Table> result = choosers.stream().map(c -> c.getTable()).collect(Collectors.toList());
+		// TODO notify
 	}
 
 	public void setTables(Collection<Table> tables) {

@@ -1,5 +1,7 @@
 package org.tomvej.fmassoc.parts.altsrcdst.srcdst;
 
+import java.util.function.Consumer;
+
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -18,6 +20,7 @@ public class TableChooser extends Composite {
 	private final Label knob;
 
 	private Table table;
+	private Consumer<Table> listener;
 
 	public TableChooser(Composite parent, TablePopup popup) {
 		super(parent, SWT.BORDER);
@@ -45,6 +48,17 @@ public class TableChooser extends Composite {
 	private void tableSet(Table table) {
 		this.table = table;
 		input.setText(table.getName());
+		if (listener != null) {
+			listener.accept(table);
+		}
+	}
+
+	public Table getTable() {
+		return table;
+	}
+
+	public void setTableListener(Consumer<Table> listener) {
+		this.listener = listener;
 	}
 
 }
