@@ -18,6 +18,7 @@
     <handlers xmi:id="_jvsw4FOFEeSM8-ZLDUxvpQ" elementId="org.tomvej.fmassoc.core.handler.pathlimitreached" contributionURI="bundleclass://org.tomvej.fmassoc.core/org.tomvej.fmassoc.core.search.internal.ShowPathLimitReached" command="_T3i-sFOAEeSM8-ZLDUxvpQ"/>
     <mainMenu xmi:id="_M6VlEMGWEeSQHqBnOEk0aQ" elementId="org.eclipse.ui.main.menu">
       <children xsi:type="menu:Menu" xmi:id="_puROAMGXEeSQHqBnOEk0aQ" elementId="org.eclipse.ui.file.menu" label="File">
+        <children xsi:type="menu:MenuSeparator" xmi:id="_zUcdEMGiEeSQHqBnOEk0aQ" elementId="org.tomvej.fmassoc.core.menuseparator.0"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_hD4-MMGfEeSQHqBnOEk0aQ" elementId="org.tomvej.fmassoc.core.handledmenuitem.exit" label="Exit" command="_3k4CYMGgEeSQHqBnOEk0aQ"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_tVERYMGeEeSQHqBnOEk0aQ" elementId="org.tomvej.fmassoc.core.menu.search" label="Search">
