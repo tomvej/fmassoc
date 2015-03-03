@@ -72,7 +72,7 @@ public class PruningRow extends Composite {
 				dispose();
 				parent.getParent().layout();
 			}));
-			showFilter();
+			getDisplay().asyncExec(this::showFilter);
 		}
 	}
 
