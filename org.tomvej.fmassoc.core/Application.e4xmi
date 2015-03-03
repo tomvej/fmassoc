@@ -16,6 +16,16 @@
       </children>
     </children>
     <handlers xmi:id="_jvsw4FOFEeSM8-ZLDUxvpQ" elementId="org.tomvej.fmassoc.core.handler.pathlimitreached" contributionURI="bundleclass://org.tomvej.fmassoc.core/org.tomvej.fmassoc.core.search.internal.ShowPathLimitReached" command="_T3i-sFOAEeSM8-ZLDUxvpQ"/>
+    <mainMenu xmi:id="_M6VlEMGWEeSQHqBnOEk0aQ" elementId="org.eclipse.ui.main.menu">
+      <children xsi:type="menu:Menu" xmi:id="_puROAMGXEeSQHqBnOEk0aQ" elementId="org.eclipse.ui.file.menu" label="File">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_hD4-MMGfEeSQHqBnOEk0aQ" elementId="org.tomvej.fmassoc.core.handledmenuitem.exit" label="Exit" command="_3k4CYMGgEeSQHqBnOEk0aQ"/>
+      </children>
+      <children xsi:type="menu:Menu" xmi:id="_tVERYMGeEeSQHqBnOEk0aQ" elementId="org.tomvej.fmassoc.core.menu.search" label="Search">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_PQYgUMGfEeSQHqBnOEk0aQ" elementId="org.tomvej.fmassoc.core.handledmenuitem.search.start" label="Start" command="_7uPIYC1LEeSrT_p8RPGkbg"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_bo6jQMGfEeSQHqBnOEk0aQ" elementId="org.tomvej.fmassoc.core.handledmenuitem.search.cancel" label="Stop" command="_rBsq4C1REeSrT_p8RPGkbg"/>
+      </children>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_yfd5sMGeEeSQHqBnOEk0aQ" elementId="org.tomvej.fmassoc.core.handledmenuitem.preference" label="Preferences" command="_MtRb0CMZEeSLr8eP527IEg"/>
+    </mainMenu>
     <windows xsi:type="basic:Dialog" xmi:id="_8xE4AGjsEeSofq1pVoCung" elementId="org.tomvej.fmassoc.core.dialog.search" visible="false" label="Search in Progress" width="500" height="220">
       <children xsi:type="basic:Part" xmi:id="_THx-0GjuEeSofq1pVoCung" elementId="org.tomvej.fmassoc.core.dialog.search.part" contributionURI="bundleclass://org.tomvej.fmassoc.core/org.tomvej.fmassoc.core.search.internal.SearchProgressDialog"/>
     </windows>
@@ -29,6 +39,7 @@
   <handlers xmi:id="_WzQ0YCMZEeSLr8eP527IEg" elementId="org.tomvej.fmassoc.core.handler.preferences" contributionURI="bundleclass://org.tomvej.fmassoc.core/org.tomvej.fmassoc.core.preference.PreferenceHandler" command="_MtRb0CMZEeSLr8eP527IEg"/>
   <handlers xmi:id="_-xkWgC1LEeSrT_p8RPGkbg" elementId="org.tomvej.fmassoc.core.handler.searchpaths" contributionURI="bundleclass://org.tomvej.fmassoc.core/org.tomvej.fmassoc.core.search.internal.SearchPaths" command="_7uPIYC1LEeSrT_p8RPGkbg"/>
   <handlers xmi:id="_bhoUAC25EeS3MvsXw3Morw" elementId="org.tomvej.fmassoc.core.handler.stopsearch" contributionURI="bundleclass://org.tomvej.fmassoc.core/org.tomvej.fmassoc.core.search.internal.StopSearch" command="_rBsq4C1REeSrT_p8RPGkbg"/>
+  <handlers xmi:id="_LW1UgMGiEeSQHqBnOEk0aQ" elementId="org.tomvej.fmassoc.core.handler.exit" contributionURI="bundleclass://org.tomvej.fmassoc.core/org.tomvej.fmassoc.core.ExitHandler" command="_3k4CYMGgEeSQHqBnOEk0aQ"/>
   <commands xmi:id="_MtRb0CMZEeSLr8eP527IEg" elementId="org.eclipse.ui.window.preferences" commandName="Preferences">
     <parameters xmi:id="_UOkzACN6EeSIYYTJAOONGw" elementId="org.eclipse.ui.window.preferences.pageid" name="Page ID"/>
   </commands>
@@ -36,6 +47,7 @@
   <commands xmi:id="_rBsq4C1REeSrT_p8RPGkbg" elementId="org.tomvej.fmassoc.core.command.stopsearch" commandName="Stop Search"/>
   <commands xmi:id="_0GphwDnJEeSrK57h11jYsA" elementId="org.tomvej.fmassoc.core.command.pathtrans" commandName="Provide Path Transformer"/>
   <commands xmi:id="_T3i-sFOAEeSM8-ZLDUxvpQ" elementId="org.tomvej.fmassoc.core.command.pathlimitreached" commandName="Show Path Limit Reached Dialog"/>
+  <commands xmi:id="_3k4CYMGgEeSQHqBnOEk0aQ" elementId="org.eclipse.ui.file.exit" commandName="Exit"/>
   <addons xmi:id="_TnMFwRPKEeSoD5WQk9Aqhg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_TnMFwhPKEeSoD5WQk9Aqhg" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_TnMFwxPKEeSoD5WQk9Aqhg" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
