@@ -11,6 +11,7 @@ import org.apache.commons.lang3.Validate;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -30,15 +31,19 @@ import org.tomvej.fmassoc.model.db.Table;
 public class TablePopupTable {
 
 	private final TableViewer tables;
+	private final Consumer<Table> selectionListener;
 	private Collection<Object> tableFilter = Collections.emptySet();
 	private Table nonFilteredTable;
 	private Pattern namePattern = Pattern.compile(""),
 			implNamePattern = namePattern;
+	private boolean bypassSelection;
 
 	/**
 	 * Specify parent pop-up shell.
 	 */
 	public TablePopupTable(Shell parent, Consumer<Table> selectionListener) {
+		this.selectionListener = Validate.notNull(selectionListener);
+
 		tables = TableLayoutSupport.createTableViewer(parent,
 				SWT.SINGLE | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER,
 				GridDataFactory.fillDefaults().grab(true, true).create());
@@ -66,7 +71,13 @@ public class TablePopupTable {
 				table -> (namePattern.matcher(table.getName()).find())
 						|| implNamePattern.matcher(table.getImplName()).find()));
 
-		tables.addSelectionChangedListener(e -> selectionListener.accept(getSelecedTable()));
+		tables.addSelectionChangedListener(this::selectionChanged);
+	}
+
+	private void selectionChanged(SelectionChangedEvent e) {
+		if (!bypassSelection) {
+			selectionListener.accept(getSelecedTable());
+		}
 	}
 
 	/**
@@ -106,7 +117,9 @@ public class TablePopupTable {
 		}
 		namePattern = compilePattern(text.replace(' ', '_'));
 		implNamePattern = compilePattern(StringUtils.remove(text, ' '));
-		tables.refresh();
+		bypassSelection = true;
+		tables.refresh(); // do not throw selection events
+		bypassSelection = false;
 		selectSingle();
 	}
 
