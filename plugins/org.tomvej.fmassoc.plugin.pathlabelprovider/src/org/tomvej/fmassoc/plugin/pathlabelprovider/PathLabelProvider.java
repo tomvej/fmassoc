@@ -44,13 +44,14 @@ public class PathLabelProvider extends TextPathLabelProvider {
 	@Override
 	protected String getAssociationToolTipText(AssociationProperty target) {
 		StringBuilder result = new StringBuilder("   ");
-		if (target.isMandatory()) {
+		result.append(VERTICAL_FORMATTER.toString(target.getMultiplicity())).append(" ");
+		if (!target.isMandatory()) {
 			result.append("(");
 		}
-		result.append(VERTICAL_FORMATTER.toString(target.getMultiplicity()));
-		if (target.isMandatory()) {
+		result.append(target.getName());
+		if (!target.isMandatory()) {
 			result.append(")");
 		}
-		return result.append(" ").append(target.getName()).append("\n").toString();
+		return result.append("\n").toString();
 	}
 }
