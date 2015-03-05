@@ -3,6 +3,9 @@ package org.tomvej.fmassoc.test.path.tables;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.model.db.Table;
@@ -19,6 +22,7 @@ public class SinglePathChecker {
 
 		append(checkSource());
 		append(checkDestination());
+		append(checkMissingInterrmitent());
 	}
 
 	public List<String> getErrors() {
@@ -47,4 +51,24 @@ public class SinglePathChecker {
 		return null;
 	}
 
+	private String checkMissingInterrmitent() {
+		Set<Table> pathTables = getPathIntermittent().collect(Collectors.toSet());
+		List<Table> missing = getInputIntermittent().filter(t -> !pathTables.contains(t)).collect(Collectors.toList());
+		if (missing.isEmpty()) {
+			return null;
+		}
+
+		StringBuilder result = new StringBuilder("Missing intermmitent tables: ");
+		missing.forEach(t -> result.append(t.getName()).append(", "));
+		result.delete(result.length() - 2, result.length());
+		return result.toString();
+	}
+
+	private Stream<Table> getPathIntermittent() {
+		return path.getAssociations().stream().map(a -> a.getSource()).skip(1);
+	}
+
+	private Stream<Table> getInputIntermittent() {
+		return input.getDestinations().stream().limit(input.getDestinations().size() - 1);
+	}
 }
