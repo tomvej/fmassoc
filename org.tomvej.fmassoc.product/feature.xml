@@ -38,13 +38,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.tomvej.fmassoc.parts.srcdst"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.tomvej.fmassoc.parts.paths"
          download-size="0"
          install-size="0"
@@ -144,13 +137,6 @@
 
    <plugin
          id="org.tomvej.fmassoc.filter"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.tomvej.fmassoc.plugin.filterpruningfinder"
          download-size="0"
          install-size="0"
          version="0.0.0"
