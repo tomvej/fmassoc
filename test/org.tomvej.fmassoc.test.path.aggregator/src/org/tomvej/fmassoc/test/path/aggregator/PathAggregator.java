@@ -53,6 +53,9 @@ public class PathAggregator {
 	}
 
 	private void logAggregate(List<Path> found) {
+		if (found.isEmpty()) {
+			return;
+		}
 		StringBuilder log = new StringBuilder("Found paths aggregate property values:");
 		properties.forEach(p -> log.append("\n" + p.getName() + " " + createAggregate(found, p)));
 		logger.info(log.toString());
