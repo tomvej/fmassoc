@@ -12,7 +12,7 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
+import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -43,8 +43,8 @@ public class Part {
 	 * Create components comprising this part.
 	 */
 	@PostConstruct
-	public void createComponents(Composite parent, @Optional DataModel model, MPerspective perspective) {
-		context = perspective.getContext();
+	public void createComponents(Composite parent, @Optional DataModel model, MApplication app) {
+		context = app.getContext();
 
 		parent.setLayout(new GridLayout(3, true));
 		GridDataFactory layout = GridDataFactory.fillDefaults().grab(true, true);
