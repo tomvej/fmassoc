@@ -2,6 +2,7 @@ package org.tomvej.fmassoc.test.path.tables;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -22,6 +23,14 @@ import org.tomvej.fmassoc.model.path.Path;
 public class PathChecker {
 	@Inject
 	private Logger logger;
+
+	/**
+	 * Log that this addon is plugged in.
+	 */
+	@PostConstruct
+	public void plugin() {
+		logger.info("Path checker plugged in.");
+	}
 
 	/**
 	 * Notified on path search finish.
