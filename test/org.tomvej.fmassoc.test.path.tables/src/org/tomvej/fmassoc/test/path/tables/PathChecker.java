@@ -13,10 +13,19 @@ import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
 import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.model.path.Path;
 
+/**
+ * Checks that found tables correspond to search input.
+ * 
+ * @author Tomáš Vejpustek
+ * 
+ */
 public class PathChecker {
 	@Inject
 	private Logger logger;
 
+	/**
+	 * Notified on path search finish.
+	 */
 	@Inject
 	@Optional
 	public void searchFinished(@EventTopic(PathSearchTopic.FINISH) Object result, SearchInput input,
@@ -24,6 +33,9 @@ public class PathChecker {
 		checkPaths(paths, input);
 	}
 
+	/**
+	 * Notified on path search cancel.
+	 */
 	@Inject
 	@Optional
 	public void searchCancelled(@EventTopic(PathSearchTopic.CANCEL) Object result, SearchInput input,

@@ -12,12 +12,20 @@ import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.model.path.Path;
 
+/**
+ * Checks single path against search input.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class SinglePathChecker {
 	private final Path path;
 	private final SearchInput input;
 	private final List<String> errors = new ArrayList<>();
 
-	SinglePathChecker(Path path, SearchInput input) {
+	/**
+	 * Specify path and search input. Perform all checks.
+	 */
+	public SinglePathChecker(Path path, SearchInput input) {
 		this.path = path;
 		this.input = input;
 
@@ -27,6 +35,9 @@ public class SinglePathChecker {
 		append(checkIntermittentOrder());
 	}
 
+	/**
+	 * Get a list of error messages from checking errors/discrepancies.
+	 */
 	public List<String> getErrors() {
 		return Collections.unmodifiableList(errors);
 	}
