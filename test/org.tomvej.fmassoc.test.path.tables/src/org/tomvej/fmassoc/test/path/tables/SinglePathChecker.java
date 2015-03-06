@@ -2,6 +2,7 @@ package org.tomvej.fmassoc.test.path.tables;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,6 +24,7 @@ public class SinglePathChecker {
 		append(checkSource());
 		append(checkDestination());
 		append(checkMissingInterrmitent());
+		append(checkIntermittentOrder());
 	}
 
 	public List<String> getErrors() {
@@ -62,6 +64,17 @@ public class SinglePathChecker {
 		missing.forEach(t -> result.append(t.getName()).append(", "));
 		result.delete(result.length() - 2, result.length());
 		return result.toString();
+	}
+
+	private String checkIntermittentOrder() {
+		Set<Table> inputInterSet = getInputIntermittent().collect(Collectors.toSet());
+		List<Table> pathInter = getPathIntermittent().filter(t -> inputInterSet.contains(t)).collect(Collectors.toList());
+		Set<Table> pathInterSet = new HashSet<>(pathInter);
+		List<Table> inputInter = getInputIntermittent().filter(t -> pathInterSet.contains(t)).collect(Collectors.toList());
+		if (!inputInter.equals(pathInter)) {
+			return "Wrong intermittent tables order.";
+		}
+		return null;
 	}
 
 	private Stream<Table> getPathIntermittent() {
