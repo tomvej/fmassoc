@@ -9,5 +9,6 @@ Require-Bundle: org.eclipse.swt;bundle-version="3.103.1",
  org.tomvej.fmassoc.model;bundle-version="2.0.0",
  org.tomvej.fmassoc.core;bundle-version="2.0.0",
  org.apache.commons.lang3;bundle-version="3.1.0",
- org.tomvej.fmassoc.filter;bundle-version="2.0.0"
+ org.tomvej.fmassoc.filter;bundle-version="2.0.0",
+ org.tomvej.fmassoc.swt
 Export-Package: org.tomvej.fmassoc.plugins.filters.basic.operator
