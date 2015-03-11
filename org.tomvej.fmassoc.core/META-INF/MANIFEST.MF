@@ -24,5 +24,4 @@ Export-Package: org.tomvej.fmassoc.core.communicate,
  org.tomvej.fmassoc.core.extension,
  org.tomvej.fmassoc.core.preference,
  org.tomvej.fmassoc.core.properties,
- org.tomvej.fmassoc.core.search,
- org.tomvej.fmassoc.core.widgets.tablechooser
+ org.tomvej.fmassoc.core.search
