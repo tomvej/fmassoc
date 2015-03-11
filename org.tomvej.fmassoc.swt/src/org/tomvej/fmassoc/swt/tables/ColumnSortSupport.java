@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.core.tables;
+package org.tomvej.fmassoc.swt.tables;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,7 +18,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TableColumn;
-import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
+import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 
 /**
  * Support for sorting by individual table columns.

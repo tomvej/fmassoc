@@ -11,14 +11,14 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.tomvej.fmassoc.core.dnd.CompositeDnDSupport;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
-import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.filter.FilterProvider;
 import org.tomvej.fmassoc.filter.dialog.FilterDialog;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.plugin.prioritydfpathfinder.Pruning;
 import org.tomvej.fmassoc.plugin.prioritydfpathfinder.PruningWrapper;
+import org.tomvej.fmassoc.swt.dnd.CompositeDnDSupport;
+import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 
 /**
  * Visual component for one filter pruning.

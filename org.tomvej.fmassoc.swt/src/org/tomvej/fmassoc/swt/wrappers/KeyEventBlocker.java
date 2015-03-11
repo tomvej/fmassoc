@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.core.wrappers;
+package org.tomvej.fmassoc.swt.wrappers;
 
 import java.util.Arrays;
 import java.util.Collection;

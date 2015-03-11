@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.core.wrappers;
+package org.tomvej.fmassoc.swt.wrappers;
 
 import java.util.function.Consumer;
 
@@ -9,23 +9,24 @@ import org.eclipse.swt.events.FocusListener;
 
 /**
  * Wrapper of {@link FocusListener} so that it can be used functionally.
- * Listens only for {@link FocusListener#focusGained(FocusEvent)}.
+ * Listens only for {@link FocusListener#focusLost(FocusEvent)}.
  * 
  * @author Tomáš Vejpustek
  */
-public class FocusGainedWrapper extends FocusAdapter implements FocusListener {
+public class FocusLostWrapper extends FocusAdapter implements FocusListener {
 	private final Consumer<FocusEvent> listener;
 
 	/**
-	 * Specify action for {@link FocusListener#focusGained(FocusEvent)}.
+	 * Specify action for {@link FocusListener#focusLost(FocusEvent)}.
 	 */
-	public FocusGainedWrapper(Consumer<FocusEvent> listener) {
+	public FocusLostWrapper(Consumer<FocusEvent> listener) {
 		this.listener = Validate.notNull(listener);
 	}
 
 	@Override
-	public void focusGained(FocusEvent e) {
+	public void focusLost(FocusEvent e) {
 		listener.accept(e);
 	}
+
 
 }

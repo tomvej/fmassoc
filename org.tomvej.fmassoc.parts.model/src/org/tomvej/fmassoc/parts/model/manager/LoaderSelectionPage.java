@@ -21,10 +21,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
 import org.tomvej.fmassoc.parts.model.core.ModelEntry;
 import org.tomvej.fmassoc.parts.model.core.ModelList;
 import org.tomvej.fmassoc.parts.model.core.ModelLoaderEntry;
+import org.tomvej.fmassoc.swt.wrappers.TextLabelProvider;
 
 class LoaderSelectionPage extends WizardSelectionPage implements IWizardNode {
 	private final Shell parentShell;

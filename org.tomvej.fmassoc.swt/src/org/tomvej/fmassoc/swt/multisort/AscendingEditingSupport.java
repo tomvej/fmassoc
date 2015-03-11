@@ -1,10 +1,10 @@
-package org.tomvej.fmassoc.core.widgets.multisort;
+package org.tomvej.fmassoc.swt.multisort;
 
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.EditingSupport;
-import org.tomvej.fmassoc.core.tables.SortEntry;
+import org.tomvej.fmassoc.swt.tables.SortEntry;
 
 class AscendingEditingSupport extends EditingSupport {
 	private final CellEditor editor = new CheckboxCellEditor();

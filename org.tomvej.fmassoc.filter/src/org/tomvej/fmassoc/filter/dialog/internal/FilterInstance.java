@@ -10,10 +10,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
-import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.filter.Filter;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.model.path.PathInfo;
+import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 
 /**
  * Instance of a filter for a path property.

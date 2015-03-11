@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.core.dnd;
+package org.tomvej.fmassoc.swt.dnd;
 
 import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;

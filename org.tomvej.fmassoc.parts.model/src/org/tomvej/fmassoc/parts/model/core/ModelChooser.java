@@ -34,9 +34,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.osgi.service.prefs.BackingStoreException;
 import org.tomvej.fmassoc.core.communicate.DataModelTopic;
-import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
 import org.tomvej.fmassoc.model.db.DataModel;
 import org.tomvej.fmassoc.parts.model.ModelLoader;
+import org.tomvej.fmassoc.swt.wrappers.TextLabelProvider;
 
 /**
  * Toolbar widget used to switch data models.

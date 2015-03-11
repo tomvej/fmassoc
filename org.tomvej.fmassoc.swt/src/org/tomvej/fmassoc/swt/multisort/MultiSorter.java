@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.core.widgets.multisort;
+package org.tomvej.fmassoc.swt.multisort;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,11 +24,11 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableColumn;
-import org.tomvej.fmassoc.core.dnd.ViewerDnDSupport;
-import org.tomvej.fmassoc.core.tables.SortEntry;
-import org.tomvej.fmassoc.core.wrappers.ListChangeListenerWrapper;
-import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
-import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
+import org.tomvej.fmassoc.swt.dnd.ViewerDnDSupport;
+import org.tomvej.fmassoc.swt.tables.SortEntry;
+import org.tomvej.fmassoc.swt.wrappers.ListChangeListenerWrapper;
+import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
+import org.tomvej.fmassoc.swt.wrappers.TextColumnLabelProvider;
 
 /**
  * Component used to set set multisort for a table.

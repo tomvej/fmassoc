@@ -21,8 +21,8 @@ import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
 import org.tomvej.fmassoc.core.preference.ContextPreferencePage;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
-import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
-import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
+import org.tomvej.fmassoc.swt.wrappers.TextColumnLabelProvider;
+import org.tomvej.fmassoc.swt.wrappers.TextLabelProvider;
 
 /**
  * Preference page for found paths table. Sets label provider and visible

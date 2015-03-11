@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.osgi.service.prefs.BackingStoreException;
 import org.tomvej.fmassoc.core.search.PathFinderProvider;
-import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
+import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 
 /**
  * Part used to specify simple pruning.

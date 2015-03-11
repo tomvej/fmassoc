@@ -21,12 +21,12 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
-import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
 import org.tomvej.fmassoc.parts.model.core.Constants;
 import org.tomvej.fmassoc.parts.model.core.ModelEntry;
 import org.tomvej.fmassoc.parts.model.core.ModelList;
 import org.tomvej.fmassoc.parts.model.core.ModelLoaderEntry;
+import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
+import org.tomvej.fmassoc.swt.wrappers.TextLabelProvider;
 
 /**
  * Dialog used to manage (add, edit, remove) available data models. Uses

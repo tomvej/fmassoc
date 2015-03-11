@@ -1,8 +1,8 @@
-package org.tomvej.fmassoc.core.widgets.multisort;
+package org.tomvej.fmassoc.swt.multisort;
 
 import org.apache.commons.lang3.Validate;
 import org.eclipse.swt.widgets.TableColumn;
-import org.tomvej.fmassoc.core.tables.SortEntry;
+import org.tomvej.fmassoc.swt.tables.SortEntry;
 
 class SimpleSortEntry implements SortEntry {
 	private final TableColumn column;

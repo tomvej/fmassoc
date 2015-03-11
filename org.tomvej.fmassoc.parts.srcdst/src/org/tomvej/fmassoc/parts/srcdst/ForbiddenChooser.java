@@ -29,12 +29,12 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
-import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
-import org.tomvej.fmassoc.core.tables.TableLayoutSupport;
 import org.tomvej.fmassoc.core.widgets.tablechooser.TableChooser;
-import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
-import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.model.db.Table;
+import org.tomvej.fmassoc.swt.tables.ColumnSortSupport;
+import org.tomvej.fmassoc.swt.tables.TableLayoutSupport;
+import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
+import org.tomvej.fmassoc.swt.wrappers.TextColumnLabelProvider;
 
 /**
  * Component used to select forbidden tables.

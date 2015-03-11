@@ -17,8 +17,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
-import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.model.path.Path;
+import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 
 /**
  * Handler which shows "too many paths found, search interrupted" dialog.

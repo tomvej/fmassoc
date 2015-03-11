@@ -21,14 +21,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
-import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
-import org.tomvej.fmassoc.core.wrappers.TextLabelProvider;
 import org.tomvej.fmassoc.filter.FilterProvider;
 import org.tomvej.fmassoc.filter.dialog.internal.CompoundFilter;
 import org.tomvej.fmassoc.filter.dialog.internal.FilterInstance;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.model.path.PathInfo;
 import org.tomvej.fmassoc.model.property.PathProperty;
+import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
+import org.tomvej.fmassoc.swt.wrappers.TextLabelProvider;
 
 /**
  * Dialog for path filtering.

@@ -23,15 +23,15 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
-import org.tomvej.fmassoc.core.dnd.CompositeDnDSupport;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
 import org.tomvej.fmassoc.core.search.PathFinderProvider;
-import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.filter.FilterProvider;
 import org.tomvej.fmassoc.filter.FilterRegistry;
 import org.tomvej.fmassoc.plugin.prioritydfpathfinder.IteratedPriorityDFFinderProvider;
 import org.tomvej.fmassoc.plugin.prioritydfpathfinder.Pruning;
 import org.tomvej.fmassoc.plugin.prioritydfpathfinder.PruningWrapper;
+import org.tomvej.fmassoc.swt.dnd.CompositeDnDSupport;
+import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 
 /**
  * Visual component of filter pruning.

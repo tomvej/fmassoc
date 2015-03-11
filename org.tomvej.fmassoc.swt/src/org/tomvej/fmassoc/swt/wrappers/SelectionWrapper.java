@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.core.wrappers;
+package org.tomvej.fmassoc.swt.wrappers;
 
 import java.util.function.Consumer;
 
@@ -10,28 +10,28 @@ import org.eclipse.swt.events.SelectionListener;
 /**
  * 
  * Wrapper of {@link SelectionListener} so that it can be used functionally.
- * Uses {@link SelectionListener#widgetDefaultSelected(SelectionEvent)} method.
+ * Uses {@link SelectionListener#widgetSelected(SelectionEvent)} method.
  * 
  * @author Tomáš Vejpustek
  *
  */
-public class DefaultSelectionWrapper extends SelectionAdapter implements SelectionListener {
+public class SelectionWrapper extends SelectionAdapter implements SelectionListener {
 	private final Consumer<SelectionEvent> listener;
 
 	/**
 	 * Specify action for
-	 * {@link SelectionListener#widgetDefaultSelected(SelectionEvent)}.
+	 * {@link SelectionListener#widgetSelected(SelectionEvent)}.
 	 * 
 	 * @param listener
 	 *            Performed for
-	 *            {@link SelectionListener#widgetDefaultSelected(SelectionEvent)}
+	 *            {@link SelectionListener#widgetSelected(SelectionEvent)}
 	 */
-	public DefaultSelectionWrapper(Consumer<SelectionEvent> listener) {
+	public SelectionWrapper(Consumer<SelectionEvent> listener) {
 		this.listener = Validate.notNull(listener);
 	}
 
 	@Override
-	public void widgetDefaultSelected(SelectionEvent e) {
+	public void widgetSelected(SelectionEvent e) {
 		listener.accept(e);
 	}
 }

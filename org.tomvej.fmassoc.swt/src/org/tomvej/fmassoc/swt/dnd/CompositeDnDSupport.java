@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.core.dnd;
+package org.tomvej.fmassoc.swt.dnd;
 
 import java.util.ArrayList;
 import java.util.HashMap;

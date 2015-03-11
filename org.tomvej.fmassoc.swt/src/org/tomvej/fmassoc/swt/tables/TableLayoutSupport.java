@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.core.tables;
+package org.tomvej.fmassoc.swt.tables;
 
 import java.util.Arrays;
 

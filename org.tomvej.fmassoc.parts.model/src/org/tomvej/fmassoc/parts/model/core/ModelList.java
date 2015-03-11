@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.Validate;
 import org.eclipse.core.databinding.observable.list.ListDiffEntry;
 import org.eclipse.core.databinding.observable.list.WritableList;
-import org.tomvej.fmassoc.core.wrappers.ListChangeListenerWrapper;
+import org.tomvej.fmassoc.swt.wrappers.ListChangeListenerWrapper;
 
 /**
  * List of models. Permits only one add operation:

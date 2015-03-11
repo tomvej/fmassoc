@@ -18,10 +18,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.tomvej.fmassoc.core.wrappers.FocusGainedWrapper;
-import org.tomvej.fmassoc.core.wrappers.KeyEventBlocker;
-import org.tomvej.fmassoc.core.wrappers.KeyReleasedWrapper;
 import org.tomvej.fmassoc.model.db.Table;
+import org.tomvej.fmassoc.swt.wrappers.FocusGainedWrapper;
+import org.tomvej.fmassoc.swt.wrappers.KeyEventBlocker;
+import org.tomvej.fmassoc.swt.wrappers.KeyReleasedWrapper;
 
 /**
  * Pop-up window used to select a table. Contains a table list and a text which

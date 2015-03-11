@@ -42,12 +42,6 @@ import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
 import org.tomvej.fmassoc.core.extension.ReferenceExtensionRegistry;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
 import org.tomvej.fmassoc.core.search.SearchInput;
-import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
-import org.tomvej.fmassoc.core.tables.SortEntry;
-import org.tomvej.fmassoc.core.wrappers.KeyReleasedWrapper;
-import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
-import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
-import org.tomvej.fmassoc.core.wrappers.ViewerFilterWrapper;
 import org.tomvej.fmassoc.model.db.AssociationProperty;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.parts.paths.filter.FilterTopic;
@@ -55,6 +49,12 @@ import org.tomvej.fmassoc.parts.paths.labelprovider.CustomColumnLabelProvider;
 import org.tomvej.fmassoc.parts.paths.multisort.MultisortTopic;
 import org.tomvej.fmassoc.parts.paths.preference.PathPreferenceManager;
 import org.tomvej.fmassoc.parts.paths.preference.PathTablePreferenceTopic;
+import org.tomvej.fmassoc.swt.tables.ColumnSortSupport;
+import org.tomvej.fmassoc.swt.tables.SortEntry;
+import org.tomvej.fmassoc.swt.wrappers.KeyReleasedWrapper;
+import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
+import org.tomvej.fmassoc.swt.wrappers.TextColumnLabelProvider;
+import org.tomvej.fmassoc.swt.wrappers.ViewerFilterWrapper;
 
 /**
  * Part with found paths table.

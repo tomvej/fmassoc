@@ -10,10 +10,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.tomvej.fmassoc.core.dnd.CompositeDnDSupport;
-import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.parts.altsrcdst.popup.TablePopup;
+import org.tomvej.fmassoc.swt.dnd.CompositeDnDSupport;
+import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 
 /**
  * Component used to choose table in Source to Destination panel.

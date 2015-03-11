@@ -9,9 +9,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.filter.Filter;
 import org.tomvej.fmassoc.model.db.Multiplicity;
+import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 
 /**
  * Filter for multiplicity. Contains simple checkbox for each multiplicity.

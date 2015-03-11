@@ -30,10 +30,10 @@ import org.eclipse.swt.widgets.Text;
 import org.osgi.service.prefs.BackingStoreException;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
 import org.tomvej.fmassoc.core.communicate.PathTransformerTopic;
-import org.tomvej.fmassoc.core.wrappers.FocusGainedWrapper;
-import org.tomvej.fmassoc.core.wrappers.KeyReleasedWrapper;
-import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.model.path.Path;
+import org.tomvej.fmassoc.swt.wrappers.FocusGainedWrapper;
+import org.tomvej.fmassoc.swt.wrappers.KeyReleasedWrapper;
+import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.transform.sql.formatters.JoinFormatter;
 
 /**

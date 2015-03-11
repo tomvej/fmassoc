@@ -17,11 +17,11 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
-import org.tomvej.fmassoc.core.tables.TableLayoutSupport;
-import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
-import org.tomvej.fmassoc.core.wrappers.ViewerFilterWrapper;
 import org.tomvej.fmassoc.model.db.Table;
+import org.tomvej.fmassoc.swt.tables.ColumnSortSupport;
+import org.tomvej.fmassoc.swt.tables.TableLayoutSupport;
+import org.tomvej.fmassoc.swt.wrappers.TextColumnLabelProvider;
+import org.tomvej.fmassoc.swt.wrappers.ViewerFilterWrapper;
 
 /**
  * Pop-up table chooser table list component.

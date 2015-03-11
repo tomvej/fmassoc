@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.core.dnd;
+package org.tomvej.fmassoc.swt.dnd;
 
 import java.util.List;
 import java.util.function.BiConsumer;

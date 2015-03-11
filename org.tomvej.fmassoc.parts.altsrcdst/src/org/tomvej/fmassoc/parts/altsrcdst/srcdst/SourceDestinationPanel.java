@@ -14,10 +14,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.tomvej.fmassoc.core.dnd.CompositeDnDSupport;
-import org.tomvej.fmassoc.core.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.parts.altsrcdst.popup.TablePopup;
+import org.tomvej.fmassoc.swt.dnd.CompositeDnDSupport;
+import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 
 /**
  * Panel used to choose sequence of table from source to destination.

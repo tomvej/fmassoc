@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.swt.widgets.TableColumn;
-import org.tomvej.fmassoc.core.tables.SortEntry;
+import org.tomvej.fmassoc.swt.tables.SortEntry;
 
 /**
  * Event constants for path table multisort.

@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.core.tables;
+package org.tomvej.fmassoc.swt.tables;
 
 import org.eclipse.swt.widgets.TableColumn;
 

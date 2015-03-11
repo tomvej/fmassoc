@@ -17,13 +17,13 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-import org.tomvej.fmassoc.core.tables.ColumnSortSupport;
-import org.tomvej.fmassoc.core.tables.TableLayoutSupport;
-import org.tomvej.fmassoc.core.wrappers.FocusGainedWrapper;
-import org.tomvej.fmassoc.core.wrappers.KeyReleasedWrapper;
-import org.tomvej.fmassoc.core.wrappers.TextColumnLabelProvider;
-import org.tomvej.fmassoc.core.wrappers.ViewerFilterWrapper;
 import org.tomvej.fmassoc.model.db.Table;
+import org.tomvej.fmassoc.swt.tables.ColumnSortSupport;
+import org.tomvej.fmassoc.swt.tables.TableLayoutSupport;
+import org.tomvej.fmassoc.swt.wrappers.FocusGainedWrapper;
+import org.tomvej.fmassoc.swt.wrappers.KeyReleasedWrapper;
+import org.tomvej.fmassoc.swt.wrappers.TextColumnLabelProvider;
+import org.tomvej.fmassoc.swt.wrappers.ViewerFilterWrapper;
 
 /**
  * Widget which allows user to select among a list of tables. Entails a regular

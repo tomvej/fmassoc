@@ -15,8 +15,8 @@ import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableColumn;
-import org.tomvej.fmassoc.core.tables.SortEntry;
-import org.tomvej.fmassoc.core.widgets.multisort.MultisortDialog;
+import org.tomvej.fmassoc.swt.multisort.MultisortDialog;
+import org.tomvej.fmassoc.swt.tables.SortEntry;
 
 /**
  * Dialog for path table multisort.
