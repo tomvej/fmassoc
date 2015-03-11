@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.core.widgets.tablechooser;
+package org.tomvej.fmassoc.swt.tablechooser;
 
 import java.util.Collection;
 

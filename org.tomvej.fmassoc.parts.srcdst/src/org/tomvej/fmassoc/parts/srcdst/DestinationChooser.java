@@ -19,9 +19,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.tomvej.fmassoc.core.widgets.tablechooser.TableChooser;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.swt.dnd.ViewerDnDSupport;
+import org.tomvej.fmassoc.swt.tablechooser.TableChooser;
 import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.swt.wrappers.TextLabelProvider;
 
