@@ -14,6 +14,7 @@ import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.e4.ui.di.PersistState;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MDialog;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -80,10 +81,12 @@ public class SearchProgressDialog {
 	public void searchStarted(
 			@UIEventTopic(PathSearchTopic.START) SearchInput input,
 			MDialog dialog,
+			MPart part,
 			PathFinderProvider provider,
 			@Preference(nodePath = PathSearchPreference.NODE, value = PathSearchPreference.SHOW_SEARCH_PROGRESS_DIALOG) Boolean show) {
 		if (show) {
 			dialog.setVisible(true);
+			part.setVisible(true);
 			alwaysBgBtn.setSelection(true);
 			statusLbl.setText("Searching paths through: " + formatInput(input) + "\n\nAlgorithm: " + provider);
 		}

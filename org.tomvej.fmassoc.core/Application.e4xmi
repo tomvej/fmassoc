@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="ASCII"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_TnMFwBPKEeSoD5WQk9Aqhg" elementId="org.tomvej.fmassoc.core.application">
   <children xsi:type="basic:TrimmedWindow" xmi:id="_08pOkBPKEeSoD5WQk9Aqhg" elementId="org.tomvej.fmassoc.core.window.main" label="Field Manager Association Search" x="100" y="100" width="1000" height="800">
-    <children xsi:type="advanced:PerspectiveStack" xmi:id="_oK5eUB4mEeS4_pQWRSwXHA" elementId="org.tomvej.fmassoc.core.perspectivestack">
-      <children xsi:type="advanced:Perspective" xmi:id="_php14B4mEeS4_pQWRSwXHA" elementId="org.tomvej.fmassoc.core.perspective.search">
-        <children xsi:type="basic:PartSashContainer" xmi:id="_cPP7kJf_EeSUkZphneFToA" elementId="org.tomvej.fmassoc.core.partsashcontainer.top">
-          <children xsi:type="basic:PartSashContainer" xmi:id="_eHBVgJf_EeSUkZphneFToA" elementId="org.tomvej.fmassoc.core.partsashcontainer.tables" horizontal="true">
-            <children xsi:type="basic:PartStack" xmi:id="_deDbkJgAEeSUkZphneFToA" elementId="org.tomvej.fmassoc.core.partstack.tables" containerData="700"/>
-            <children xsi:type="basic:PartStack" xmi:id="_f4uuQJgAEeSUkZphneFToA" elementId="org.tomvej.fmassoc.core.partstack.tablesettings" containerData="200"/>
-          </children>
-          <children xsi:type="basic:PartSashContainer" xmi:id="_i9TH8Jf_EeSUkZphneFToA" elementId="org.tomvej.fmassoc.core.partsashcontainer.paths" horizontal="true">
-            <children xsi:type="basic:PartStack" xmi:id="_hW4HQJgAEeSUkZphneFToA" elementId="org.tomvej.fmassoc.core.partstack.paths" containerData="700"/>
-            <children xsi:type="basic:PartStack" xmi:id="_jBfO8JgAEeSUkZphneFToA" elementId="org.tomvej.fmassoc.core.partstack.pathsettings" containerData="200"/>
-          </children>
-        </children>
-      </children>
-    </children>
+    <children xsi:type="advanced:PerspectiveStack" xmi:id="_oK5eUB4mEeS4_pQWRSwXHA" elementId="org.tomvej.fmassoc.core.perspectivestack"/>
     <mainMenu xmi:id="_M6VlEMGWEeSQHqBnOEk0aQ" elementId="org.eclipse.ui.main.menu">
       <children xsi:type="menu:Menu" xmi:id="_puROAMGXEeSQHqBnOEk0aQ" elementId="org.eclipse.ui.file.menu" label="File">
         <children xsi:type="menu:MenuSeparator" xmi:id="_zUcdEMGiEeSQHqBnOEk0aQ" elementId="org.tomvej.fmassoc.core.menuseparator.0"/>

@@ -17,8 +17,18 @@
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_sSg7AMf7EeSdd9EYpvWwUQ" featurename="children" parentElementId="org.tomvej.fmassoc.core.perspectivestack">
     <elements xsi:type="advanced:Perspective" xmi:id="_vkCWIMf7EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.perspective.search">
+      <children xsi:type="basic:PartSashContainer" xmi:id="_fkA_UMjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partsashcontainer.top">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_hTLP0MjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partsashcontainer.tables" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_uYqfYMjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partstack.tables" containerData="700"/>
+          <children xsi:type="basic:PartStack" xmi:id="_xnt1UMjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partstack.tablesettings" containerData="200"/>
+        </children>
+        <children xsi:type="basic:PartSashContainer" xmi:id="_iC7RwMjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partsashcontainer.paths" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_1o4ksMjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partstack.paths"/>
+          <children xsi:type="basic:PartStack" xmi:id="_44AzIMjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partstack.pathsettings"/>
+        </children>
+      </children>
       <windows xsi:type="basic:Dialog" xmi:id="_63oKQMf7EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.dialog.search" visible="false" label="Search in Progress" width="500" height="220">
-        <children xsi:type="basic:Part" xmi:id="__V1a8Mf7EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.dialog.search.part" contributionURI="bundleclass://org.tomvej.fmassoc.search/org.tomvej.fmassoc.core.search.internal.SearchProgressDialog"/>
+        <children xsi:type="basic:Part" xmi:id="__V1a8Mf7EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.dialog.search.part" visible="false" contributionURI="bundleclass://org.tomvej.fmassoc.search/org.tomvej.fmassoc.core.search.internal.SearchProgressDialog"/>
       </windows>
     </elements>
   </fragments>
