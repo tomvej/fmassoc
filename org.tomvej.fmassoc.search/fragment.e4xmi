@@ -23,8 +23,8 @@
           <children xsi:type="basic:PartStack" xmi:id="_xnt1UMjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partstack.tablesettings" containerData="200"/>
         </children>
         <children xsi:type="basic:PartSashContainer" xmi:id="_iC7RwMjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partsashcontainer.paths" horizontal="true">
-          <children xsi:type="basic:PartStack" xmi:id="_1o4ksMjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partstack.paths"/>
-          <children xsi:type="basic:PartStack" xmi:id="_44AzIMjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partstack.pathsettings"/>
+          <children xsi:type="basic:PartStack" xmi:id="_1o4ksMjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partstack.paths" containerData="700"/>
+          <children xsi:type="basic:PartStack" xmi:id="_44AzIMjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partstack.pathsettings" containerData="200"/>
         </children>
       </children>
       <windows xsi:type="basic:Dialog" xmi:id="_63oKQMf7EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.dialog.search" visible="false" label="Search in Progress" width="500" height="220">
