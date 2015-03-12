@@ -28,6 +28,7 @@
 
    <features>
       <feature id="org.tomvej.fmassoc.product"/>
+      <feature id="org.tomvej.fmassoc.search.feature"/>
       <feature id="org.eclipse.e4.rcp"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.emf.common"/>

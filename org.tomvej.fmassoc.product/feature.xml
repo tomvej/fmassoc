@@ -38,20 +38,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.tomvej.fmassoc.parts.paths"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.tomvej.fmassoc.plugin.pathlabelprovider"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.tomvej.fmassoc.parts.model"
          download-size="0"
          install-size="0"
@@ -59,21 +45,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.tomvej.fmassoc.plugin.constantmodelloader"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.tomvej.fmassoc.model.builder.simple"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.tomvej.fmassoc.plugin.prioritydfpathfinder"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -94,28 +66,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.tomvej.fmassoc.parts.sql.independent"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.tomvej.fmassoc.plugin.mobilemodelloader"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.tomvej.fmassoc.plugin.simplepruningfinder"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.tomvej.fmassoc.parts.status"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -143,13 +94,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.tomvej.fmassoc.parts.altsrcdst"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.tomvej.fmassoc.swt"
          download-size="0"
          install-size="0"
@@ -164,7 +108,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.tomvej.fmassoc.search"
+         id="org.tomvej.fmassoc.parts.sql.independent"
          download-size="0"
          install-size="0"
          version="0.0.0"
