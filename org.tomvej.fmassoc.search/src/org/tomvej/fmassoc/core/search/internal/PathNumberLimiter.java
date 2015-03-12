@@ -13,7 +13,7 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.di.extensions.EventTopic;
 import org.eclipse.e4.core.di.extensions.Preference;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
-import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
+import org.tomvej.fmassoc.core.search.PathSearchTopic;
 import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.model.path.Path;
 
@@ -71,7 +71,7 @@ public class PathNumberLimiter {
 			job.cancel();
 			running = false;
 			if (showDialog) {
-				handlers.executeHandler(commands.createCommand("org.tomvej.fmassoc.core.command.pathlimitreached",
+				handlers.executeHandler(commands.createCommand("org.tomvej.fmassoc.search.command.pathlimitreached",
 						Collections.emptyMap()));
 			}
 		}

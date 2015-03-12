@@ -22,8 +22,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.osgi.service.prefs.BackingStoreException;
-import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
 import org.tomvej.fmassoc.core.search.PathFinderProvider;
+import org.tomvej.fmassoc.core.search.PathSearchTopic;
 import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
@@ -69,7 +69,7 @@ public class SearchProgressDialog {
 		bgBtn.addSelectionListener(new SelectionWrapper(e -> dialog.setVisible(false)));
 		cancelBtn.addSelectionListener(new SelectionWrapper(
 				e -> handlers.executeHandler(commands.createCommand(
-						"org.tomvej.fmassoc.core.command.stopsearch", Collections.emptyMap()))));
+						"org.tomvej.fmassoc.search.command.stopsearch", Collections.emptyMap()))));
 	}
 
 	/**

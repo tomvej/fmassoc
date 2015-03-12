@@ -10,8 +10,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.log.Logger;
-import org.tomvej.fmassoc.core.communicate.PathSearchTopic;
 import org.tomvej.fmassoc.core.search.PathFinder;
+import org.tomvej.fmassoc.core.search.PathSearchTopic;
 import org.tomvej.fmassoc.model.path.Path;
 
 /**

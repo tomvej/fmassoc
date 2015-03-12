@@ -7,7 +7,7 @@ package org.tomvej.fmassoc.core.search.internal;
  */
 public interface PathSearchPreference {
 	/** Preference node name */
-	public static final String NODE = "org.tomvej.fmassoc.core.search";
+	public static final String NODE = "org.tomvej.fmassoc.search";
 	/** Maximum found paths. Integer (since list size is). */
 	public static final String PATH_LIMIT = "path.limit";
 	/**

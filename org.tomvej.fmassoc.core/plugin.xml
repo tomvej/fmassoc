@@ -14,18 +14,7 @@
                name="appName"
                value="fmassoc">
          </property>
-         <property
-               name="preferenceCustomization"
-               value="default.preference">
-         </property>
       </product>
-   </extension>
-   <extension
-         point="org.tomvej.fmassoc.core.preferencePage">
-      <client
-            class="org.tomvej.fmassoc.core.search.internal.PathSearchPreferencePage"
-            id="org.tomvej.fmassoc.core.search">
-      </client>
    </extension>
 
 </plugin>

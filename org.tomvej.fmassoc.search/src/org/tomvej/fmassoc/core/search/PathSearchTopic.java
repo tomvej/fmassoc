@@ -1,7 +1,6 @@
-package org.tomvej.fmassoc.core.communicate;
+package org.tomvej.fmassoc.core.search;
 
 import org.eclipse.core.runtime.IStatus;
-import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.model.path.Path;
 
 /**
