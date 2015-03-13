@@ -71,10 +71,7 @@ public class SinglePathChecker {
 			return null;
 		}
 
-		StringBuilder result = new StringBuilder("Missing intermmitent tables: ");
-		missing.forEach(t -> result.append(t.getName()).append(", "));
-		result.delete(result.length() - 2, result.length());
-		return result.toString();
+		return missing.stream().map(t -> t.getName()).collect(Collectors.joining(", ", "Missing intermittent tables: ", ""));
 	}
 
 	private String checkIntermittentOrder() {
