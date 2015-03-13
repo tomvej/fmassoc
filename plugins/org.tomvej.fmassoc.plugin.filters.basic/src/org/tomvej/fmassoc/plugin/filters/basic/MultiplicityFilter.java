@@ -3,6 +3,7 @@ package org.tomvej.fmassoc.plugin.filters.basic;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -49,12 +50,9 @@ public class MultiplicityFilter implements Filter<Multiplicity> {
 				if (multiplicities.isEmpty()) {
 					return " : none";
 				} else if (multiplicities.size() == 1) {
-					return " : " + format(multiplicities.iterator().next());
+					return " : " + format(multiplicities.stream().findAny().get());
 				} else {
-					StringBuilder result = new StringBuilder(" in (");
-					multiplicities.forEach(m -> result.append(format(m)).append(", "));
-					result.delete(result.length() - 2, result.length());
-					return result.append(")").toString();
+					return multiplicities.stream().map(m -> format(m)).collect(Collectors.joining(", ", " in (", ")"));
 				}
 			}
 		};
