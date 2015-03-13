@@ -3,6 +3,7 @@ package org.tomvej.fmassoc.filter.dialog.internal;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.Validate;
 
@@ -29,13 +30,7 @@ public class CompoundFilter<T> implements Predicate<T> {
 
 	@Override
 	public String toString() {
-		StringBuilder result = new StringBuilder();
-		filters.forEach(e -> result.append(e).append(", "));
-		int length = result.length();
-		if (length > 0) {
-			result.delete(length - 2, length);
-		}
-		return result.toString();
+		return filters.stream().map(Object::toString).collect(Collectors.joining(", "));
 	}
 
 }
