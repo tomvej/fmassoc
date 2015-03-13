@@ -1,6 +1,7 @@
 package org.tomvej.fmassoc.parts.paths.labelprovider;
 
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.tomvej.fmassoc.model.db.AssociationProperty;
@@ -25,12 +26,9 @@ public abstract class TextPathLabelProvider extends ColumnLabelProvider {
 		assert element instanceof Path;
 		Path target = (Path) element;
 
-		StringBuilder result = new StringBuilder(tableToString.apply(target.getSource()));
-		for (AssociationProperty assoc : target.getAssociations()) {
-			result.append(associationToString.apply(assoc));
-			result.append(tableToString.apply(assoc.getDestination()));
-		}
-		return result.toString();
+		return target.getAssociations().stream()
+				.map(a -> associationToString.apply(a) + tableToString.apply(a.getDestination()))
+				.collect(Collectors.joining("", tableToString.apply(target.getSource()), ""));
 	}
 
 	@Override
