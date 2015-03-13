@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -42,7 +43,6 @@ import org.tomvej.fmassoc.core.extension.ReferenceExtensionRegistry;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
 import org.tomvej.fmassoc.core.search.PathSearchTopic;
 import org.tomvej.fmassoc.core.search.SearchInput;
-import org.tomvej.fmassoc.model.db.AssociationProperty;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.parts.paths.filter.FilterTopic;
 import org.tomvej.fmassoc.parts.paths.labelprovider.CustomColumnLabelProvider;
@@ -198,11 +198,8 @@ public class Part {
 	}
 
 	private static String getDefaultLabel(Path target) {
-		StringBuilder result = new StringBuilder(target.getSource().getName());
-		for (AssociationProperty assoc : target.getAssociations()) {
-			result.append(" ").append(assoc.getName()).append(" ").append(assoc.getDestination().getName());
-		}
-		return result.toString();
+		return target.getAssociations().stream().map(a -> a.getName() + " " + a.getDestination().getName())
+				.collect(Collectors.joining(" ", target.getSource().getName(), ""));
 	}
 
 	/**
