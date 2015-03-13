@@ -2,6 +2,7 @@ package org.tomvej.fmassoc.parts.paths.multisort;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -75,15 +76,8 @@ public class MultisortHandler {
 	}
 
 	private String formatSort(List<SortEntry> sort) {
-		StringBuilder result = new StringBuilder();
-		for (SortEntry entry : sort) {
-			result.append(entry.getColumn().getText()).append(" ").
-					append(entry.isAscending() ? "/\\" : "V").append(", ");
-		}
-		if (!sort.isEmpty()) {
-			result.delete(result.length() - 2, result.length());
-		}
-		return result.toString();
+		return sort.stream().map(e -> e.getColumn().getText() + " " + (e.isAscending() ? "/\\" : "V"))
+				.collect(Collectors.joining(", "));
 	}
 
 	/**
