@@ -1,6 +1,7 @@
 package org.tomvej.fmassoc.core.search.internal;
 
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -129,12 +130,8 @@ public class SearchProgressDialog {
 			result.append(" -> ").append(dest.getImplName());
 		}
 		if (!input.getForbidden().isEmpty()) {
-			result.append(" (skipping ");
-			for (Table forbidden : input.getForbidden()) {
-				result.append(forbidden.getImplName()).append(", ");
-			}
-			result.delete(result.length() - 2, result.length());
-			result.append(")");
+			result.append(input.getForbidden().stream().map(t -> t.getImplName())
+					.collect(Collectors.joining(", ", "(skipping ", ")")));
 		}
 		return result.append(".").toString();
 	}

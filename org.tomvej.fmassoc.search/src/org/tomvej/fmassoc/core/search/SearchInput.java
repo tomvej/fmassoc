@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.Validate;
 import org.tomvej.fmassoc.model.db.Table;
@@ -73,16 +74,10 @@ public class SearchInput {
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder("Search Input [").append(getSource().getName());
-		for (Table destination : getDestinations()) {
-			result.append(" -> ").append(destination.getName());
-		}
+		getDestinations().forEach(t -> result.append(" -> ").append(t.getName()));
 		if (!getForbidden().isEmpty()) {
 			result.append(" x ");
-			for (Table forbidden : getForbidden()) {
-				result.append(forbidden.getName()).append(", ");
-			}
-			int length = result.length();
-			result.delete(length - 2, length);
+			result.append(getForbidden().stream().map(t -> t.getName()).collect(Collectors.joining(", ")));
 		}
 		return result.append("]").toString();
 	}
