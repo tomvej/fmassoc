@@ -2,7 +2,6 @@ package org.tomvej.fmassoc.transform.sql.formatters.internal;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
-import org.tomvej.fmassoc.model.db.AssociationProperty;
 import org.tomvej.fmassoc.model.db.Property;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.transform.sql.formatters.JoinFormatter;
@@ -38,7 +37,7 @@ public class SelectExpressionAppender {
 		TableHandle tableHandle = factory.getTableHandle(table);
 		switch (tableHandle.isDisplayed()) {
 			case ALL:
-				append(new StringBuilder(tableHandle.getReference()).append(".*").toString());
+				append(tableHandle.getReference() + ".*");
 				break;
 			case SELECTED:
 				appendAllColumns(table);
@@ -53,14 +52,8 @@ public class SelectExpressionAppender {
 
 	private void appendAllColumns(Table table) {
 		appendColumn(factory.getIDPropertyHandle(table));
-		for (AssociationProperty assoc : table.getAssociations()) {
-			if (!assoc.isReverse()) {
-				appendColumn(assoc);
-			}
-		}
-		for (Property prop : table.getProperties()) {
-			appendColumn(prop);
-		}
+		table.getAssociations().stream().filter(a -> !a.isReverse()).forEach(this::appendColumn);
+		table.getProperties().forEach(this::appendColumn);
 	}
 
 	private void appendColumn(Property property) {
