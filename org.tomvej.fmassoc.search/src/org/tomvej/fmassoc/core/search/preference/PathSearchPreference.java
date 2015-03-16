@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.core.search.internal;
+package org.tomvej.fmassoc.core.search.preference;
 
 /**
  * Constants for accessing path search preferences.

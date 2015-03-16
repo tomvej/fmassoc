@@ -11,7 +11,7 @@
    <extension
          point="org.tomvej.fmassoc.core.preferencePage">
       <client
-            class="org.tomvej.fmassoc.core.search.internal.PathSearchPreferencePage"
+            class="org.tomvej.fmassoc.core.search.preference.PathSearchPreferencePage"
             id="org.tomvej.fmassoc.search">
       </client>
    </extension>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ASCII"?>
 <fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_WyFhcMflEeSdd9EYpvWwUQ">
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_ZnoLMMflEeSdd9EYpvWwUQ" featurename="addons" parentElementId="org.tomvej.fmassoc.core.application">
-    <elements xsi:type="application:Addon" xmi:id="_ir8rYMflEeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.addon.pathnumberlimiter" contributionURI="bundleclass://org.tomvej.fmassoc.search/org.tomvej.fmassoc.core.search.internal.PathNumberLimiter"/>
+    <elements xsi:type="application:Addon" xmi:id="_ir8rYMflEeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.addon.pathnumberlimiter" contributionURI="bundleclass://org.tomvej.fmassoc.search/org.tomvej.fmassoc.core.search.limit.PathNumberLimiter"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_8FzPkMflEeSdd9EYpvWwUQ" featurename="commands" parentElementId="org.tomvej.fmassoc.core.application">
     <elements xsi:type="commands:Command" xmi:id="_AtbiAMfmEeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.command.searchpaths" commandName="Search Paths"/>
@@ -13,7 +13,7 @@
     <elements xsi:type="commands:Handler" xmi:id="_OCJT0Mf7EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.handler.stopsearch" contributionURI="bundleclass://org.tomvej.fmassoc.search/org.tomvej.fmassoc.core.search.internal.StopSearch" command="_UxE1gMfxEeSdd9EYpvWwUQ"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_aFvokMf7EeSdd9EYpvWwUQ" featurename="handlers" parentElementId="org.tomvej.fmassoc.core.window.main">
-    <elements xsi:type="commands:Handler" xmi:id="_fEW3oMf7EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.handler.pathlimitreached" contributionURI="bundleclass://org.tomvej.fmassoc.search/org.tomvej.fmassoc.core.search.internal.ShowPathLimitReached" command="_gAetMMfxEeSdd9EYpvWwUQ"/>
+    <elements xsi:type="commands:Handler" xmi:id="_fEW3oMf7EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.handler.pathlimitreached" contributionURI="bundleclass://org.tomvej.fmassoc.search/org.tomvej.fmassoc.core.search.limit.ShowPathLimitReached" command="_gAetMMfxEeSdd9EYpvWwUQ"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_sSg7AMf7EeSdd9EYpvWwUQ" featurename="children" parentElementId="org.tomvej.fmassoc.core.perspectivestack">
     <elements xsi:type="advanced:Perspective" xmi:id="_vkCWIMf7EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.perspective.search">

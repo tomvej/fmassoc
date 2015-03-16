@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.core.search.internal;
+package org.tomvej.fmassoc.core.search.limit;
 
 import java.util.List;
 
@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
+import org.tomvej.fmassoc.core.search.preference.PathSearchPreference;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 

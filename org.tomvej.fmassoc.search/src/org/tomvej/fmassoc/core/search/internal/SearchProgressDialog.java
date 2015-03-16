@@ -27,6 +27,7 @@ import org.osgi.service.prefs.BackingStoreException;
 import org.tomvej.fmassoc.core.search.PathFinderProvider;
 import org.tomvej.fmassoc.core.search.PathSearchTopic;
 import org.tomvej.fmassoc.core.search.SearchInput;
+import org.tomvej.fmassoc.core.search.preference.PathSearchPreference;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 

@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.core.search.internal;
+package org.tomvej.fmassoc.core.search.limit;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +15,8 @@ import org.eclipse.e4.core.di.extensions.Preference;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
 import org.tomvej.fmassoc.core.search.PathSearchTopic;
 import org.tomvej.fmassoc.core.search.SearchInput;
+import org.tomvej.fmassoc.core.search.internal.PathFinderJob;
+import org.tomvej.fmassoc.core.search.preference.PathSearchPreference;
 import org.tomvej.fmassoc.model.path.Path;
 
 /**

@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.core.search.internal;
+package org.tomvej.fmassoc.core.search.preference;
 
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
