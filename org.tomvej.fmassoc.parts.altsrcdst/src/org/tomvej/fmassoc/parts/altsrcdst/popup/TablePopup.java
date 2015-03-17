@@ -32,6 +32,7 @@ import org.tomvej.fmassoc.swt.wrappers.KeyReleasedWrapper;
 public class TablePopup {
 	private static final int SHELL_STYLE = SWT.MODELESS | SWT.NO_TRIM;
 
+	private final Point shellMinSize;
 	private final TablePopupTable tables;
 	private final Text input;
 
@@ -42,6 +43,8 @@ public class TablePopup {
 	 * Specify parent shell.
 	 */
 	public TablePopup(Shell parent, Point size) {
+		shellMinSize = size;
+
 		Shell popup = new Shell(parent, SHELL_STYLE);
 		popup.setLayout(getShellLayout());
 		popup.addShellListener(new ShellListener());
@@ -115,13 +118,15 @@ public class TablePopup {
 
 	private void setSize() {
 		Point targetSize = target.getSize();
+		getShell().setSize(Integer.max(targetSize.x, shellMinSize.x), shellMinSize.y);
+
 		input.setSize(targetSize);
 
 		Control control = tables.getControl();
 		int upper = input.getLocation().y + targetSize.y + 1;
 
 		control.setLocation(control.getLocation().x, upper);
-		control.setSize(control.getSize().x, getShell().getSize().y - upper);
+		control.setSize(control.getSize().x, shellMinSize.y - upper);
 	}
 
 	private void setupTransparency() {
