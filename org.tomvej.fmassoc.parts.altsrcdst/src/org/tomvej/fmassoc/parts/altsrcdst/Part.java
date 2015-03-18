@@ -58,9 +58,7 @@ public class Part {
 		forbiddenChooser.setLayoutData(layout.create());
 		forbiddenChooser.setTableListener(this::forbiddenChanged);
 
-		if (model != null) {
-			setTables(model);
-		}
+		setTables(model);
 	}
 
 	private void tablesChanged(List<Table> tables) {
