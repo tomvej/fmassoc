@@ -1,6 +1,7 @@
 package org.tomvej.fmassoc.parts.srcdst;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -83,10 +84,10 @@ public class Part {
 	}
 
 	private void setTables(DataModel model) {
-		Collection<Table> tables = model != null ? model.getTables() : null;
+		Collection<Table> tables = model != null ? model.getTables() : Collections.emptyList();
 		source.setTables(tables);
 		destination.setTables(tables);
-		forbidden.setTables(tables, model != null ? model.getForbiddenTables() : null);
+		forbidden.setTables(tables, model != null ? model.getForbiddenTables() : Collections.emptySet());
 	}
 
 	private void selectionChanged() {
