@@ -1,5 +1,7 @@
 package org.tomvej.fmassoc.parts.altsrcdst;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -100,9 +102,10 @@ public class Part {
 	}
 
 	private void setTables(DataModel model) {
-		srcDst.setTables(model.getTables());
-		forbiddenChooser.setTables(model.getTables(), model.getForbiddenTables());
-		forbidden = new HashSet<>(model.getForbiddenTables());
+		Collection<Table> tables = model != null ? model.getTables() : Collections.emptyList();
+		forbidden = model != null ? new HashSet<>(model.getForbiddenTables()) : Collections.emptySet();
+		srcDst.setTables(tables);
+		forbiddenChooser.setTables(tables, forbidden);
 	}
 
 	/**

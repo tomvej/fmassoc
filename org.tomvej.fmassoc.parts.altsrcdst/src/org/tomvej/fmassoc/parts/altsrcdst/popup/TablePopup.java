@@ -1,6 +1,7 @@
 package org.tomvej.fmassoc.parts.altsrcdst.popup;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -79,7 +80,7 @@ public class TablePopup {
 	 * Set tables displayed in this pop-up window.
 	 */
 	public void setTables(Collection<Table> tables) {
-		this.tables.setTables(tables);
+		this.tables.setTables(tables != null ? tables : Collections.emptyList());
 	}
 
 
