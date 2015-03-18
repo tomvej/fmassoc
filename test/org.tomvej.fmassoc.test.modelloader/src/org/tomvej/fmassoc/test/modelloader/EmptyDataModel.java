@@ -6,6 +6,11 @@ import java.util.Collections;
 import org.tomvej.fmassoc.model.db.DataModel;
 import org.tomvej.fmassoc.model.db.Table;
 
+/**
+ * Contains no tables.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class EmptyDataModel implements DataModel {
 
 	@Override

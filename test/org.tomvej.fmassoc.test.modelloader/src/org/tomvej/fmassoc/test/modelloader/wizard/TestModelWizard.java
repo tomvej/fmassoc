@@ -5,10 +5,18 @@ import org.eclipse.jface.wizard.Wizard;
 import org.osgi.service.prefs.BackingStoreException;
 import org.tomvej.fmassoc.test.modelloader.ModelStorage;
 
+/**
+ * Wizard for test model.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class TestModelWizard extends Wizard {
 	private final ModelStorage preference;
 	private SettingsPage page;
 
+	/**
+	 * Specify model id.
+	 */
 	public TestModelWizard(String id) {
 		preference = new ModelStorage(id);
 	}

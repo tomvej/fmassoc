@@ -14,11 +14,19 @@ import org.osgi.service.prefs.BackingStoreException;
 import org.tomvej.fmassoc.swt.wrappers.VerifyWrapper;
 import org.tomvej.fmassoc.test.modelloader.ModelStorage;
 
+/**
+ * Allows to specify settings for testing model -- see {@link ModelStorage}.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class SettingsPage extends WizardPage {
 	private final ModelStorage preference;
 	private Text time;
 	private Button fail;
 
+	/**
+	 * Specify preferences.
+	 */
 	public SettingsPage(ModelStorage preference) {
 		super("Testing Model Settings");
 		setTitle("Testing Model Settings");
@@ -59,6 +67,11 @@ public class SettingsPage extends WizardPage {
 		}
 	}
 
+	/**
+	 * Attempt to store preferences specified by this page.
+	 * 
+	 * @throws BackingStoreException
+	 */
 	public void store() throws BackingStoreException {
 		String timeText = time.getText();
 		preference.setDuration(timeText.isEmpty() ? 0 : Long.valueOf(time.getText()));

@@ -6,6 +6,12 @@ import org.tomvej.fmassoc.parts.model.ModelLoader;
 import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 import org.tomvej.fmassoc.test.modelloader.wizard.TestModelWizard;
 
+/**
+ * Model loading for testing purposes. Allows to specify whether loading should
+ * fail and how long it should take. Contains no tables.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class TestingModelLoader implements ModelLoader {
 
 	@Override
