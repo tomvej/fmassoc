@@ -13,6 +13,7 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Shell;
 import org.tomvej.fmassoc.core.communicate.DataModelTopic;
 import org.tomvej.fmassoc.model.db.DataModel;
@@ -37,6 +38,8 @@ public class LoadModel {
 	@Execute
 	public void execute(ModelEntry current, Shell shell) {
 		events.post(DataModelTopic.MODEL_LOADING, current.getLabel());
+
+		Thread currentThread = Thread.currentThread();
 		Job loader = new Job("Loading model " + current) {
 
 			@Override
@@ -46,23 +49,47 @@ public class LoadModel {
 					if (monitor.isCanceled()) {
 						return Status.CANCEL_STATUS;
 					}
+					currentThread.interrupt();
 					dataModelChanged(model);
 					logger.info("Model loaded: " + current);
 					return Status.OK_STATUS;
 				} catch (ModelLoadingException mle) {
 					if (!monitor.isCanceled()) {
+						currentThread.interrupt();
 						dataModelChanged(null);
+						context.set(ModelEntry.class, null);
+
 						String message = "Unable to load model " + current.getDescription() + ": "
 								+ mle.getLocalizedMessage();
 						shell.getDisplay().asyncExec(() -> MessageDialog.openError(shell, "Cannot load model", message));
-						context.set(ModelEntry.class, null);
 					}
 					return new Status(IStatus.ERROR, Constants.PLUGIN_ID, "Unable to load model: " + current, mle);
 				}
 			}
 		};
 		loader.schedule();
+		BusyIndicator.showWhile(shell.getDisplay(), () -> {
+			if (Thread.interrupted()) {
+				return;
+			}
+
+			try {
+				Thread.sleep(5000);
+				if (Thread.interrupted()) {
+					return;
+				}
+
+				loader.cancel();
+				dataModelChanged(null);
+				logger.error("Loader timeout on model " + current);
+				MessageDialog.openError(shell, "Cannot load model",
+						"Unable to load model " + current.getDescription() + ": Timeout.");
+			} catch (InterruptedException e) {
+				// This is supposed to happen
+			}
+		});
 	}
+
 
 	private void dataModelChanged(DataModel model) {
 		context.set(DataModel.class, model);
