@@ -2,6 +2,10 @@ package org.tomvej.fmassoc.parts.model.core;
 
 import javax.inject.Inject;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
@@ -32,18 +36,32 @@ public class LoadModel {
 	 */
 	@Execute
 	public void execute(ModelEntry current, Shell shell) {
-		try {
-			events.post(DataModelTopic.MODEL_LOADING, current.getLabel());
-			DataModel model = current.load();
-			dataModelChanged(model);
-			logger.info("Model loaded: " + current);
-		} catch (ModelLoadingException mle) {
-			dataModelChanged(null);
-			logger.error(mle, "Unable to load model: " + current);
-			MessageDialog.openError(shell, "Cannot load model",
-					"Unable to load model " + current.getDescription() + ":" + mle.getLocalizedMessage());
-			context.set(ModelEntry.class, null);
-		}
+		events.post(DataModelTopic.MODEL_LOADING, current.getLabel());
+		Job loader = new Job("Loading model " + current) {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					DataModel model = current.load();
+					if (monitor.isCanceled()) {
+						return Status.CANCEL_STATUS;
+					}
+					dataModelChanged(model);
+					logger.info("Model loaded: " + current);
+					return Status.OK_STATUS;
+				} catch (ModelLoadingException mle) {
+					if (!monitor.isCanceled()) {
+						dataModelChanged(null);
+						String message = "Unable to load model " + current.getDescription() + ": "
+								+ mle.getLocalizedMessage();
+						shell.getDisplay().asyncExec(() -> MessageDialog.openError(shell, "Cannot load model", message));
+						context.set(ModelEntry.class, null);
+					}
+					return new Status(IStatus.ERROR, Constants.PLUGIN_ID, "Unable to load model: " + current, mle);
+				}
+			}
+		};
+		loader.schedule();
 	}
 
 	private void dataModelChanged(DataModel model) {
