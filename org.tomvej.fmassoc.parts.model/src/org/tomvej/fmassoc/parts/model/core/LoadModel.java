@@ -41,25 +41,27 @@ public class LoadModel {
 			@Preference(nodePath = Constants.PLUGIN_ID, value = Constants.LOADING_TIMEOUT) Long timeout) {
 		events.send(DataModelTopic.MODEL_LOADING, current.getLabel());
 
-		Thread currentThread = Thread.currentThread();
+		Thread uiThread = Thread.currentThread(); // runs timeout process
+		/* model loading job */
 		Job loader = new Job("Loading model " + current) {
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
 					long time = System.currentTimeMillis();
-					DataModel model = current.load();
+					DataModel model = current.load(); // load model
 					time = System.currentTimeMillis() - time;
-					if (monitor.isCanceled()) {
+
+					if (monitor.isCanceled()) // timeout has happened
 						return Status.CANCEL_STATUS;
-					}
-					currentThread.interrupt();
+
+					uiThread.interrupt(); // interrupt timeout process
 					dataModelChanged(model);
 					logger.info("Model loaded in " + time + " ms: " + current);
 					return Status.OK_STATUS;
 				} catch (ModelLoadingException mle) {
-					if (!monitor.isCanceled()) {
-						currentThread.interrupt();
+					if (!monitor.isCanceled()) { // timeout has not happened
+						uiThread.interrupt(); // interrupt timeout process
 						dataModelChanged(null);
 						context.set(ModelEntry.class, null);
 
@@ -67,29 +69,30 @@ public class LoadModel {
 								+ mle.getLocalizedMessage();
 						shell.getDisplay().asyncExec(() -> MessageDialog.openError(shell, "Cannot load model", message));
 					}
+					// return error status which is logged (automatically)
 					return new Status(IStatus.ERROR, Constants.PLUGIN_ID, "Unable to load model: " + current, mle);
 				}
 			}
 		};
 		loader.schedule();
+
+		/* timeout process */
 		BusyIndicator.showWhile(shell.getDisplay(), () -> {
-			if (Thread.interrupted()) {
-				return;
-			}
+			if (Thread.interrupted())
+				return; // loaded before timeout start
 
 			try {
 				Thread.sleep(timeout);
-				if (Thread.interrupted()) {
+				if (Thread.interrupted()) // loaded just after timeout
 					return;
-				}
 
-				loader.cancel();
+				loader.cancel(); // cancel loading job
 				dataModelChanged(null);
 				logger.error("Loader timeout on model " + current);
 				MessageDialog.openError(shell, "Cannot load model",
 						"Unable to load model " + current.getDescription() + ": Timeout.");
 			} catch (InterruptedException e) {
-				// This is supposed to happen
+				// This is supposed to happen -- do nothing
 			}
 		});
 	}
