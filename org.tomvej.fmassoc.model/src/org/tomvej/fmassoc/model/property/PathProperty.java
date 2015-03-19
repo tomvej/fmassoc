@@ -1,6 +1,5 @@
 package org.tomvej.fmassoc.model.property;
 
-import org.tomvej.fmassoc.model.db.AssociationProperty;
 import org.tomvej.fmassoc.model.path.Path;
 
 
@@ -21,9 +20,7 @@ public interface PathProperty<T> {
 		T result = target.getProperty(this);
 		if (result == null) {
 			PathPropertyBuilder<T> builder = getBuilder();
-			for (AssociationProperty association : target.getAssociations()) {
-				builder.push(association);
-			}
+			target.getAssociations().forEach(a -> builder.push(a));
 			result = builder.getValue();
 		}
 		return result;
