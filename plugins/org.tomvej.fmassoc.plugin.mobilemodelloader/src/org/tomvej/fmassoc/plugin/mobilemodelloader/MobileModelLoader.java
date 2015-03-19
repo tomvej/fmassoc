@@ -11,7 +11,6 @@ import org.eclipse.jface.wizard.IWizard;
 import org.osgi.service.prefs.BackingStoreException;
 import org.tomvej.fmassoc.model.builder.simple.DataModelBuilder;
 import org.tomvej.fmassoc.model.builder.simple.TableCache;
-import org.tomvej.fmassoc.model.builder.simple.TableImpl;
 import org.tomvej.fmassoc.model.db.DataModel;
 import org.tomvej.fmassoc.parts.model.ModelLoader;
 import org.tomvej.fmassoc.parts.model.ModelLoadingException;
@@ -33,12 +32,8 @@ public class MobileModelLoader implements ModelLoader {
 			DataModelBuilder builder = result.getLeft();
 			TableCache<String> byName = result.getRight();
 
-			for (String forbiddenName : pref.getForbidden()) {
-				TableImpl forbidden = byName.get(forbiddenName);
-				if (forbidden != null) {
-					builder.addForbidden(forbidden);
-				}
-			}
+			pref.getForbidden().stream().map(n -> byName.get(n)).filter(t -> t != null)
+					.forEach(t -> builder.addForbidden(t));
 
 			return builder.create();
 		} catch (JAXBException jaxbe) {
