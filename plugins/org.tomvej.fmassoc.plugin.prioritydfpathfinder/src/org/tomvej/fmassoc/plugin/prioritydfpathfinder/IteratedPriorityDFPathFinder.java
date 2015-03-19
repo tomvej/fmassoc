@@ -64,9 +64,7 @@ class IteratedPriorityDFPathFinder implements PathFinder {
 	@Override
 	public IStatus run(Consumer<Path> publisher, IProgressMonitor monitor) {
 		Consumer<Path> setPublisher = new SetConsumer(publisher);
-		for (Pruning pruning : prune) {
-			new PriorityDFPathFinder(pruning, source, destinations, forbidden).run(setPublisher, monitor);
-		}
+		prune.forEach(p -> new PriorityDFPathFinder(p, source, destinations, forbidden).run(setPublisher, monitor));
 		return Status.OK_STATUS;
 	}
 
