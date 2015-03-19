@@ -45,13 +45,15 @@ public class LoadModel {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
+					long time = System.currentTimeMillis();
 					DataModel model = current.load();
+					time = System.currentTimeMillis() - time;
 					if (monitor.isCanceled()) {
 						return Status.CANCEL_STATUS;
 					}
 					currentThread.interrupt();
 					dataModelChanged(model);
-					logger.info("Model loaded: " + current);
+					logger.info("Model loaded in " + time + " ms: " + current);
 					return Status.OK_STATUS;
 				} catch (ModelLoadingException mle) {
 					if (!monitor.isCanceled()) {
