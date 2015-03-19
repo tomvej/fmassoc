@@ -28,7 +28,6 @@ import org.tomvej.fmassoc.core.search.PathFinderProvider;
 import org.tomvej.fmassoc.core.search.PathSearchTopic;
 import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.core.search.preference.PathSearchPreference;
-import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 
 /**
@@ -127,9 +126,7 @@ public class SearchProgressDialog {
 
 	private String formatInput(SearchInput input) {
 		StringBuilder result = new StringBuilder(input.getSource().getImplName());
-		for (Table dest : input.getDestinations()) {
-			result.append(" -> ").append(dest.getImplName());
-		}
+		input.getDestinations().forEach(d -> result.append(" -> ").append(d.getImplName()));
 		if (!input.getForbidden().isEmpty()) {
 			result.append(input.getForbidden().stream().map(t -> t.getImplName())
 					.collect(Collectors.joining(", ", "(skipping ", ")")));
