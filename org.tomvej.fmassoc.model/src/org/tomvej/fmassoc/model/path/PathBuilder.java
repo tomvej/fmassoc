@@ -2,12 +2,13 @@ package org.tomvej.fmassoc.model.path;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.Validate;
 import org.tomvej.fmassoc.model.db.AssociationProperty;
@@ -26,7 +27,7 @@ import org.tomvej.fmassoc.model.property.PathPropertyBuilder;
 public class PathBuilder extends AbstractPath {
 	private final Set<Table> tables = new HashSet<>();
 	private final Stack<AssociationProperty> associations = new Stack<>();
-	private final Map<PathProperty<?>, PathPropertyBuilder<?>> properties = new HashMap<>();
+	private final Map<PathProperty<?>, PathPropertyBuilder<?>> properties;
 
 	/**
 	 * Creates an empty path. Note: until it is filled, most methods (
@@ -37,9 +38,7 @@ public class PathBuilder extends AbstractPath {
 	 */
 	public PathBuilder(Collection<? extends PathProperty<?>> properties) {
 		Validate.notNull(properties);
-		for (PathProperty<?> property : properties) {
-			this.properties.put(property, property.getBuilder());
-		}
+		this.properties = properties.stream().collect(Collectors.toMap(Function.identity(), p -> p.getBuilder()));
 	}
 
 	/**
@@ -65,9 +64,7 @@ public class PathBuilder extends AbstractPath {
 		}
 		tables.add(target.getDestination());
 		associations.push(target);
-		for (PathPropertyBuilder<?> builder : properties.values()) {
-			builder.push(target);
-		}
+		properties.values().forEach(b -> b.push(target));
 		return true;
 	}
 
@@ -86,9 +83,7 @@ public class PathBuilder extends AbstractPath {
 	public AssociationProperty pop() {
 		AssociationProperty last = associations.pop();
 		tables.remove(last.getDestination());
-		for (PathPropertyBuilder<?> builder : properties.values()) {
-			builder.pop(last);
-		}
+		properties.values().forEach(b -> b.pop(last));
 		return last;
 	}
 
