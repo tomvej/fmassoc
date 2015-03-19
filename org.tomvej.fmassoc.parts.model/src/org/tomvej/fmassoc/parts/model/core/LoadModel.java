@@ -39,7 +39,7 @@ public class LoadModel {
 	@Execute
 	public void execute(ModelEntry current, Shell shell,
 			@Preference(nodePath = Constants.PLUGIN_ID, value = Constants.LOADING_TIMEOUT) Long timeout) {
-		events.post(DataModelTopic.MODEL_LOADING, current.getLabel());
+		events.send(DataModelTopic.MODEL_LOADING, current.getLabel());
 
 		Thread currentThread = Thread.currentThread();
 		Job loader = new Job("Loading model " + current) {
