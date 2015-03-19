@@ -7,9 +7,17 @@ import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Text;
 
+/**
+ * Wrapper of verify listener. Verifies wrt new text.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class VerifyWrapper implements VerifyListener {
 	private final Predicate<String> checker;
 
+	/**
+	 * Specify verifier of the new text.
+	 */
 	public VerifyWrapper(Predicate<String> checker) {
 		this.checker = Validate.notNull(checker);
 	}
