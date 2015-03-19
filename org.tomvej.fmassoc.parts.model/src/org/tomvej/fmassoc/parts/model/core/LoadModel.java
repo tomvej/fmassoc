@@ -10,6 +10,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -36,7 +37,8 @@ public class LoadModel {
 	 * Loads model the currently selected model.
 	 */
 	@Execute
-	public void execute(ModelEntry current, Shell shell) {
+	public void execute(ModelEntry current, Shell shell,
+			@Preference(nodePath = Constants.PLUGIN_ID, value = Constants.LOADING_TIMEOUT) Long timeout) {
 		events.post(DataModelTopic.MODEL_LOADING, current.getLabel());
 
 		Thread currentThread = Thread.currentThread();
@@ -76,7 +78,7 @@ public class LoadModel {
 			}
 
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(timeout);
 				if (Thread.interrupted()) {
 					return;
 				}

@@ -18,4 +18,10 @@ public interface Constants {
 	 * Relates to {@code List<ModelLoaderEntry>}.
 	 */
 	public static final String MODEL_LOADER_REGISTRY = PLUGIN_ID + ".ModelLoaderRegistry";
+
+	/**
+	 * Property key for model loading timeout preference (in ms, stored as
+	 * long).
+	 */
+	public static final String LOADING_TIMEOUT = "timeout";
 }
