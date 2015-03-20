@@ -16,7 +16,7 @@ import org.eclipse.swt.events.SelectionListener;
  *
  */
 public class DefaultSelectionWrapper extends SelectionAdapter implements SelectionListener {
-	private final Consumer<SelectionEvent> listener;
+	private final Consumer<? super SelectionEvent> listener;
 
 	/**
 	 * Specify action for
@@ -26,7 +26,7 @@ public class DefaultSelectionWrapper extends SelectionAdapter implements Selecti
 	 *            Performed for
 	 *            {@link SelectionListener#widgetDefaultSelected(SelectionEvent)}
 	 */
-	public DefaultSelectionWrapper(Consumer<SelectionEvent> listener) {
+	public DefaultSelectionWrapper(Consumer<? super SelectionEvent> listener) {
 		this.listener = Validate.notNull(listener);
 	}
 

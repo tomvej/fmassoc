@@ -14,12 +14,12 @@ import org.eclipse.swt.events.FocusListener;
  * @author Tomáš Vejpustek
  */
 public class FocusGainedWrapper extends FocusAdapter implements FocusListener {
-	private final Consumer<FocusEvent> listener;
+	private final Consumer<? super FocusEvent> listener;
 
 	/**
 	 * Specify action for {@link FocusListener#focusGained(FocusEvent)}.
 	 */
-	public FocusGainedWrapper(Consumer<FocusEvent> listener) {
+	public FocusGainedWrapper(Consumer<? super FocusEvent> listener) {
 		this.listener = Validate.notNull(listener);
 	}
 

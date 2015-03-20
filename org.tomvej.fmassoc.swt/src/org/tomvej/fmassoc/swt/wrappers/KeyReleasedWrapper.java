@@ -16,13 +16,13 @@ import org.eclipse.swt.events.KeyListener;
 public class KeyReleasedWrapper extends KeyAdapter {
 	private final int keycode;
 	private final int mask;
-	private final Consumer<KeyEvent> listener;
+	private final Consumer<? super KeyEvent> listener;
 
 	/**
 	 * Specify key code, mask and action for
 	 * {@link KeyListener#keyReleased(KeyEvent)}.
 	 */
-	public KeyReleasedWrapper(int keyCode, int mask, Consumer<KeyEvent> listener) {
+	public KeyReleasedWrapper(int keyCode, int mask, Consumer<? super KeyEvent> listener) {
 		this.keycode = keyCode;
 		this.mask = mask;
 		this.listener = Validate.notNull(listener);
