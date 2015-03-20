@@ -20,9 +20,9 @@ import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.model.db.Table;
-import org.tomvej.fmassoc.swt.wrappers.FocusGainedWrapper;
 import org.tomvej.fmassoc.swt.wrappers.KeyEventBlocker;
 import org.tomvej.fmassoc.swt.wrappers.KeyReleasedWrapper;
+import org.tomvej.fmassoc.swt.wrappers.MouseUpWrapper;
 
 /**
  * Pop-up window used to select a table. Contains a table list and a text which
@@ -54,7 +54,7 @@ public class TablePopup {
 		input = new Text(popup, SWT.SINGLE | SWT.BORDER);
 		input.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 
-		tables = new TablePopupTable(popup, t -> focusOut());
+		tables = new TablePopupTable(popup, t -> {});
 
 		/* input */
 		input.addModifyListener(e -> tables.setFilter(input.getText()));
@@ -142,7 +142,7 @@ public class TablePopup {
 		tables.clearSelection();
 		input.setText(target.getText());
 		input.setFocus();
-		input.selectAll();
+		input.setSelection(target.getSelection());
 	}
 
 	private void traverse(TraverseEvent event) {
@@ -156,38 +156,17 @@ public class TablePopup {
 			case SWT.TRAVERSE_TAB_NEXT:
 			case SWT.TRAVERSE_TAB_PREVIOUS:
 			case SWT.TRAVERSE_RETURN:
-				Table selected = tables.getSelecedTable();
-				if (selected == null) {
-					event.doit = false;
-				} else {
-					if (event.detail == SWT.TRAVERSE_RETURN) {
-						focusOut();
-					} else {
-						target.traverse(event.detail, event);
-					}
-				}
 				break;
 			case SWT.TRAVERSE_ESCAPE:
-				tables.clearSelection();
-				focusOut();
 				break;
 		}
-	}
-
-	private void focusOut() {
-		target.setFocus();
-	}
-
-	private void cleanUp() {
-		target = null;
-		tableListener = null;
 	}
 
 	private class ShellListener extends ShellAdapter {
 
 		@Override
 		public void shellClosed(ShellEvent e) {
-			/* prevent shell from being closed by pressing ESCAPE.
+			/* prevent shell from being disposed by pressing ESCAPE.
 			 * Not sure if good idea, seems to work. */
 			e.doit = false;
 		}
@@ -195,14 +174,6 @@ public class TablePopup {
 		@Override
 		public void shellDeactivated(ShellEvent e) {
 			deactivated = formatTime(e);
-			// for some reason, this event is called twice
-			getShell().setVisible(false);
-			Table selected = tables.getSelecedTable();
-			if (selected != null && tableListener != null) {
-				tableListener.accept(selected);
-			}
-			cleanUp();
-
 		}
 	}
 
@@ -228,13 +199,22 @@ public class TablePopup {
 	 *            Notified when table is selected.
 	 */
 	public void attach(Text target, Supplier<Table> tableSupplier, Consumer<Table> tableListener) {
-		target.addFocusListener(new FocusGainedWrapper(e -> {
-			if (formatTime(e) - deactivated < TIMEOUT) {
-				// if focus is gained too early, relegate it to the parent
-				target.getParent().forceFocus();
-			} else {
+		Consumer<TypedEvent> opener = e -> {
+			if (formatTime(e) - deactivated > TIMEOUT) {
 				open(target, tableSupplier.get(), tableListener);
 			}
-		}));
+		};
+		target.addModifyListener(opener::accept);
+		target.addMouseListener(new MouseUpWrapper(opener));
+		target.addTraverseListener(e -> {
+			switch (e.detail) {
+				case SWT.TRAVERSE_RETURN:
+				case SWT.TRAVERSE_ARROW_NEXT: // will have to move
+				case SWT.TRAVERSE_ARROW_PREVIOUS: // will have to move
+					opener.accept(e);
+					break;
+			}
+		});
 	}
+
 }
