@@ -39,6 +39,7 @@ public class TablePopup {
 
 	private Consumer<Table> tableListener;
 	private Text target;
+	private boolean closing;
 
 	/**
 	 * Specify parent shell.
@@ -54,7 +55,7 @@ public class TablePopup {
 		input = new Text(popup, SWT.SINGLE | SWT.BORDER);
 		input.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 
-		tables = new TablePopupTable(popup, t -> {});
+		tables = new TablePopupTable(popup, t -> accept(null));
 
 		/* input */
 		input.addModifyListener(e -> tables.setFilter(input.getText()));
@@ -156,10 +157,32 @@ public class TablePopup {
 			case SWT.TRAVERSE_TAB_NEXT:
 			case SWT.TRAVERSE_TAB_PREVIOUS:
 			case SWT.TRAVERSE_RETURN:
+				accept(event.detail);
 				break;
 			case SWT.TRAVERSE_ESCAPE:
+				focusOut(null);
 				break;
 		}
+	}
+
+	private void accept(Integer traversal) {
+		Table table = tables.getSelecedTable();
+		if (table != null) {
+			tableListener.accept(table);
+			focusOut(traversal);
+		}
+	}
+
+
+	private void focusOut(Integer traversal) {
+		closing = true;
+		if (traversal != null) {
+			target.traverse(traversal);
+		} else {
+			target.setFocus();
+		}
+		getShell().setVisible(false);
+		closing = false;
 	}
 
 	private class ShellListener extends ShellAdapter {
@@ -173,6 +196,13 @@ public class TablePopup {
 
 		@Override
 		public void shellDeactivated(ShellEvent e) {
+			if (!closing) {
+				Table selected = tables.getSelecedTable();
+				if (selected != null) {
+					tableListener.accept(selected);
+				}
+				getShell().setVisible(false);
+			}
 			deactivated = formatTime(e);
 		}
 	}
