@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import org.apache.commons.lang3.Validate;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.TraverseEvent;
@@ -21,6 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.swt.wrappers.KeyEventBlocker;
+import org.tomvej.fmassoc.swt.wrappers.KeyReleasedSimpleWrapper;
 import org.tomvej.fmassoc.swt.wrappers.KeyReleasedWrapper;
 import org.tomvej.fmassoc.swt.wrappers.MouseUpWrapper;
 
@@ -61,10 +63,7 @@ public class TablePopup {
 		input.addModifyListener(e -> tables.setFilter(input.getText()));
 		input.addKeyListener(new KeyEventBlocker(SWT.ARROW_UP, SWT.ARROW_DOWN));
 		input.addTraverseListener(this::traverse);
-		input.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_DOWN, SWT.NONE, e -> tables.move(1)));
-		input.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_UP, SWT.NONE, e -> tables.move(-1)));
-		input.addKeyListener(new KeyReleasedWrapper(SWT.PAGE_DOWN, SWT.NONE, e -> tables.move(10)));
-		input.addKeyListener(new KeyReleasedWrapper(SWT.PAGE_UP, SWT.NONE, e -> tables.move(-10)));
+		input.addKeyListener(new KeyReleasedSimpleWrapper(this::keyReleased));
 	}
 
 	private Layout getShellLayout() {
@@ -146,6 +145,23 @@ public class TablePopup {
 		input.setText(target.getText());
 		input.setFocus();
 		input.setSelection(target.getSelection());
+	}
+
+	private void keyReleased(KeyEvent event) {
+		switch (event.keyCode) {
+			case SWT.ARROW_DOWN:
+				tables.move(1);
+				break;
+			case SWT.ARROW_UP:
+				tables.move(-1);
+				break;
+			case SWT.PAGE_DOWN:
+				tables.move(10);
+				break;
+			case SWT.PAGE_UP:
+				tables.move(-10);
+				break;
+		}
 	}
 
 	private void traverse(TraverseEvent event) {
