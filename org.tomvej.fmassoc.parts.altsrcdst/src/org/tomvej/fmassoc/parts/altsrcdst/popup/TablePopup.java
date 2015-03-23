@@ -247,7 +247,7 @@ public class TablePopup {
 	public void attach(Text target, Supplier<Table> tableSupplier, Consumer<Table> tableListener) {
 		target.addVerifyListener(e -> {
 			if (!accepting) {
-				int selection = e.end + e.text.length();
+				int selection = e.start + e.text.length();
 				open(target, tableSupplier.get(), tableListener,
 						target.getText().substring(0, e.start) + e.text + target.getText().substring(e.end),
 						new Point(selection, selection), 0);
