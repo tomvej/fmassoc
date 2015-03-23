@@ -41,7 +41,7 @@ public class TablePopup {
 
 	private Consumer<Table> tableListener;
 	private Text target;
-	private boolean closing;
+	private boolean closing, accepting;
 
 	/**
 	 * Specify parent shell.
@@ -104,7 +104,7 @@ public class TablePopup {
 	 * @param listener
 	 *            Notified when table is selected.
 	 */
-	private void open(Text target, Table table, Consumer<Table> listener) {
+	private void open(Text target, Table table, Consumer<Table> listener, String text, Point selection) {
 		this.target = target;
 		tableListener = Validate.notNull(listener);
 		tables.setNonFilteredTable(table);
@@ -116,7 +116,7 @@ public class TablePopup {
 		setupTransparency();
 
 		// synchronous exec would deactivate the shell right away
-		getShell().getDisplay().asyncExec(this::setupInput);
+		getShell().getDisplay().asyncExec(() -> setupInput(text, selection));
 	}
 
 	private void setSize() {
@@ -140,11 +140,11 @@ public class TablePopup {
 		r.dispose();
 	}
 
-	private void setupInput() {
+	private void setupInput(String text, Point selection) {
 		tables.clearSelection();
-		input.setText(target.getText());
+		input.setText(text);
 		input.setFocus();
-		input.setSelection(target.getSelection());
+		input.setSelection(selection);
 	}
 
 	private void keyReleased(KeyEvent event) {
@@ -180,7 +180,7 @@ public class TablePopup {
 	private void accept(Integer traversal) {
 		Table table = tables.getSelecedTable();
 		if (table != null) {
-			tableListener.accept(table);
+			fireTableChanged(table);
 			focusOut(traversal);
 		}
 	}
@@ -197,6 +197,12 @@ public class TablePopup {
 		closing = false;
 	}
 
+	private void fireTableChanged(Table table) {
+		accepting = true;
+		tableListener.accept(table);
+		accepting = false;
+	}
+
 	private class ShellListener extends ShellAdapter {
 
 		@Override
@@ -211,7 +217,7 @@ public class TablePopup {
 			if (!closing) {
 				Table selected = tables.getSelecedTable();
 				if (selected != null) {
-					tableListener.accept(selected);
+					fireTableChanged(selected);
 				}
 				getShell().setVisible(false);
 			}
@@ -241,14 +247,23 @@ public class TablePopup {
 	 *            Notified when table is selected.
 	 */
 	public void attach(Text target, Supplier<Table> tableSupplier, Consumer<Table> tableListener) {
+		target.addVerifyListener(e -> {
+			if (!accepting) {
+				int selection = e.end + e.text.length();
+				open(target, tableSupplier.get(), tableListener,
+						target.getText().substring(0, e.start) + e.text + target.getText().substring(e.end),
+						new Point(selection, selection));
+				e.doit = false;
+			}
+		});
+
 		Consumer<TypedEvent> opener = e -> {
 			if (formatTime(e) - deactivated > TIMEOUT) {
-				open(target, tableSupplier.get(), tableListener);
+				open(target, tableSupplier.get(), tableListener, target.getText(), target.getSelection());
 			}
 		};
-		target.addKeyListener(new KeyEventBlocker(SWT.ARROW_DOWN, SWT.ARROW_UP));
-		target.addModifyListener(opener::accept);
 		target.addMouseListener(new MouseUpWrapper(opener));
+		target.addKeyListener(new KeyEventBlocker(SWT.ARROW_DOWN, SWT.ARROW_UP));
 		target.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_DOWN, SWT.NONE, opener));
 		target.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_UP, SWT.NONE, opener));
 		target.addTraverseListener(e -> {
@@ -259,5 +274,4 @@ public class TablePopup {
 			}
 		});
 	}
-
 }
