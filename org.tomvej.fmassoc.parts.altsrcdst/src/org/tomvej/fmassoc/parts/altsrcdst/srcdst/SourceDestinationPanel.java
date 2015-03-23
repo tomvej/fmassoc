@@ -58,7 +58,7 @@ public class SourceDestinationPanel extends Composite {
 		clearBtn.setText("Clear");
 		clearBtn.addSelectionListener(new SelectionWrapper(e -> clearChoosers()));
 
-		popup = new TablePopup(getShell(), new Point(250, 350));
+		popup = new TablePopup(getShell(), new Point(300, 350));
 	}
 
 	private void addChooser() {

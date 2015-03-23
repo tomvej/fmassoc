@@ -75,7 +75,7 @@ public class ForbiddenChooser extends Group {
 
 		input = new Text(this, SWT.BORDER);
 		input.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
-		popup = new TablePopup(getShell(), new Point(250, 350));
+		popup = new TablePopup(getShell(), new Point(300, 350));
 		popup.attach(input, () -> inputTable, this::tableChosen);
 
 		addBtn = createButton("Add");
