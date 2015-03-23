@@ -25,6 +25,7 @@ import org.tomvej.fmassoc.swt.wrappers.KeyEventBlocker;
 import org.tomvej.fmassoc.swt.wrappers.KeyReleasedSimpleWrapper;
 import org.tomvej.fmassoc.swt.wrappers.KeyReleasedWrapper;
 import org.tomvej.fmassoc.swt.wrappers.MouseClickWrapper;
+import org.tomvej.fmassoc.swt.wrappers.TraverseWrapper;
 
 /**
  * Pop-up window used to select a table. Contains a table list and a text which
@@ -255,12 +256,6 @@ public class TablePopup {
 				e -> open(target, tableSupplier.get(), tableListener, target.getText(), target.getSelection(), 1)));
 		target.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_UP, SWT.NONE,
 				e -> open(target, tableSupplier.get(), tableListener, target.getText(), target.getSelection(), -1)));
-		target.addTraverseListener(e -> {
-			switch (e.detail) {
-				case SWT.TRAVERSE_RETURN:
-					opener.accept(e);
-					break;
-			}
-		});
+		target.addTraverseListener(new TraverseWrapper(SWT.TRAVERSE_RETURN, opener));
 	}
 }
