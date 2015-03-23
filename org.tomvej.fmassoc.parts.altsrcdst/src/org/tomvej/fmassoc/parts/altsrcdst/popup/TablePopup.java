@@ -24,7 +24,7 @@ import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.swt.wrappers.KeyEventBlocker;
 import org.tomvej.fmassoc.swt.wrappers.KeyReleasedSimpleWrapper;
 import org.tomvej.fmassoc.swt.wrappers.KeyReleasedWrapper;
-import org.tomvej.fmassoc.swt.wrappers.MouseUpWrapper;
+import org.tomvej.fmassoc.swt.wrappers.MouseClickWrapper;
 
 /**
  * Pop-up window used to select a table. Contains a table list and a text which
@@ -248,7 +248,7 @@ public class TablePopup {
 		Consumer<TypedEvent> opener = e -> {
 			open(target, tableSupplier.get(), tableListener, target.getText(), target.getSelection());
 		};
-		target.addMouseListener(new MouseUpWrapper(opener));
+		target.addMouseListener(new MouseClickWrapper(opener));
 		target.addKeyListener(new KeyEventBlocker(SWT.ARROW_DOWN, SWT.ARROW_UP));
 		target.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_DOWN, SWT.NONE, opener));
 		target.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_UP, SWT.NONE, opener));
