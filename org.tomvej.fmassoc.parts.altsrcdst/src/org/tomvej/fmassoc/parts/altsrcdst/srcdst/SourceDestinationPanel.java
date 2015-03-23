@@ -15,8 +15,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.tomvej.fmassoc.model.db.Table;
-import org.tomvej.fmassoc.parts.altsrcdst.popup.TablePopup;
 import org.tomvej.fmassoc.swt.dnd.CompositeDnDSupport;
+import org.tomvej.fmassoc.swt.tablepopup.TablePopup;
 import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 
 /**
