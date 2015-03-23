@@ -104,7 +104,7 @@ public class TablePopup {
 	 * @param listener
 	 *            Notified when table is selected.
 	 */
-	private void open(Text target, Table table, Consumer<Table> listener, String text, Point selection) {
+	private void open(Text target, Table table, Consumer<Table> listener, String text, Point selection, int move) {
 		this.target = target;
 		tableListener = Validate.notNull(listener);
 		tables.setNonFilteredTable(table);
@@ -116,7 +116,7 @@ public class TablePopup {
 		setupTransparency();
 
 		// synchronous exec would deactivate the shell right away
-		getShell().getDisplay().asyncExec(() -> setupInput(text, selection));
+		getShell().getDisplay().asyncExec(() -> setupInput(text, selection, move));
 	}
 
 	private void setSize() {
@@ -140,11 +140,12 @@ public class TablePopup {
 		r.dispose();
 	}
 
-	private void setupInput(String text, Point selection) {
+	private void setupInput(String text, Point selection, int move) {
 		tables.clearSelection();
 		input.setText(text);
 		input.setFocus();
 		input.setSelection(selection);
+		tables.move(move);
 	}
 
 	private void keyReleased(KeyEvent event) {
@@ -240,18 +241,20 @@ public class TablePopup {
 				int selection = e.end + e.text.length();
 				open(target, tableSupplier.get(), tableListener,
 						target.getText().substring(0, e.start) + e.text + target.getText().substring(e.end),
-						new Point(selection, selection));
+						new Point(selection, selection), 0);
 				e.doit = false;
 			}
 		});
 
 		Consumer<TypedEvent> opener = e -> {
-			open(target, tableSupplier.get(), tableListener, target.getText(), target.getSelection());
+			open(target, tableSupplier.get(), tableListener, target.getText(), target.getSelection(), 0);
 		};
 		target.addMouseListener(new MouseClickWrapper(opener));
 		target.addKeyListener(new KeyEventBlocker(SWT.ARROW_DOWN, SWT.ARROW_UP));
-		target.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_DOWN, SWT.NONE, opener));
-		target.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_UP, SWT.NONE, opener));
+		target.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_DOWN, SWT.NONE,
+				e -> open(target, tableSupplier.get(), tableListener, target.getText(), target.getSelection(), 1)));
+		target.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_UP, SWT.NONE,
+				e -> open(target, tableSupplier.get(), tableListener, target.getText(), target.getSelection(), -1)));
 		target.addTraverseListener(e -> {
 			switch (e.detail) {
 				case SWT.TRAVERSE_RETURN:
