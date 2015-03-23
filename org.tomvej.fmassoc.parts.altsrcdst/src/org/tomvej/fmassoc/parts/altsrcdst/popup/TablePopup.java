@@ -247,15 +247,14 @@ public class TablePopup {
 			}
 		});
 
-		Consumer<TypedEvent> opener = e -> {
-			open(target, tableSupplier.get(), tableListener, target.getText(), target.getSelection(), 0);
-		};
+		Consumer<Integer> moveOpener =
+				i -> open(target, tableSupplier.get(), tableListener, target.getText(), target.getSelection(), i);
+		Consumer<TypedEvent> opener = e -> moveOpener.accept(0);
+
 		target.addMouseListener(new MouseClickWrapper(opener));
 		target.addKeyListener(new KeyEventBlocker(SWT.ARROW_DOWN, SWT.ARROW_UP));
-		target.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_DOWN, SWT.NONE,
-				e -> open(target, tableSupplier.get(), tableListener, target.getText(), target.getSelection(), 1)));
-		target.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_UP, SWT.NONE,
-				e -> open(target, tableSupplier.get(), tableListener, target.getText(), target.getSelection(), -1)));
+		target.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_DOWN, SWT.NONE, e -> moveOpener.accept(1)));
+		target.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_UP, SWT.NONE, e -> moveOpener.accept(-1)));
 		target.addTraverseListener(new TraverseWrapper(SWT.TRAVERSE_RETURN, opener));
 	}
 }
