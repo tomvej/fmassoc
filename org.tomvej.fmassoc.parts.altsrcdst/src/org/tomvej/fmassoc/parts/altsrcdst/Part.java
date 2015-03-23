@@ -11,11 +11,13 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -45,16 +47,19 @@ public class Part {
 	 * Initiate visual components.
 	 */
 	@PostConstruct
-	public void createComponents(Composite parent, Shell shell, @Optional DataModel model, MApplication application) {
+	public void createComponents(Composite parent, Shell shell, @Optional DataModel model, MApplication application,
+			@Preference(value = "popup-width") Integer popupWidth, @Preference(value = "popup-height") Integer popupHeight) {
 		context = application.getContext();
 		parent.setLayout(new GridLayout(2, true));
 		GridDataFactory layout = GridDataFactory.fillDefaults().grab(true, true);
 
-		srcDst = new SourceDestinationPanel(parent);
+		Point popupSize = new Point(popupWidth, popupHeight);
+
+		srcDst = new SourceDestinationPanel(parent, popupSize);
 		srcDst.setLayoutData(layout.create());
 		srcDst.setTableListener(this::tablesChanged);
 
-		forbiddenChooser = new ForbiddenChooser(parent);
+		forbiddenChooser = new ForbiddenChooser(parent, popupSize);
 		forbiddenChooser.setLayoutData(layout.create());
 		forbiddenChooser.setTableListener(this::forbiddenChanged);
 

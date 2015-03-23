@@ -19,5 +19,6 @@ Require-Bundle: org.tomvej.fmassoc.core;bundle-version="2.0.0",
  org.eclipse.jface.databinding;bundle-version="1.6.200",
  org.tomvej.fmassoc.swt,
  org.tomvej.fmassoc.search;bundle-version="2.0.0",
- org.tomvej.fmassoc.swt.tablepopup;bundle-version="2.0.0"
+ org.tomvej.fmassoc.swt.tablepopup;bundle-version="2.0.0",
+ org.eclipse.e4.core.di.extensions;bundle-version="0.12.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

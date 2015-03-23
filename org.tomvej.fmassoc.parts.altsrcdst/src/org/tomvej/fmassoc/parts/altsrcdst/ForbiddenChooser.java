@@ -56,7 +56,7 @@ public class ForbiddenChooser extends Group {
 	/**
 	 * Specify parent component.
 	 */
-	public ForbiddenChooser(Composite parent) {
+	public ForbiddenChooser(Composite parent, Point popupSize) {
 		super(parent, SWT.SHADOW_ETCHED_IN);
 		setText("Forbidden Tables");
 		setLayout(new GridLayout(3, false));
@@ -75,7 +75,7 @@ public class ForbiddenChooser extends Group {
 
 		input = new Text(this, SWT.BORDER);
 		input.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
-		popup = new TablePopup(getShell(), new Point(300, 350));
+		popup = new TablePopup(getShell(), popupSize);
 		popup.attach(input, () -> inputTable, this::tableChosen);
 
 		addBtn = createButton("Add");
