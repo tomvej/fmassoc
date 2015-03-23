@@ -64,6 +64,7 @@ public class TableChooser extends Composite {
 	private void tableSet(Table table) {
 		this.table = table;
 		input.setText(table.getName());
+		input.setSelection(input.getText().length());
 		if (listener != null) {
 			listener.accept(table);
 		}
