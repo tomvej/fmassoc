@@ -104,6 +104,14 @@ public class TablePopup {
 	 *            Table which was previously selected.
 	 * @param listener
 	 *            Notified when table is selected.
+	 * @param text
+	 *            Text of filter field (most often {@code target} text).
+	 * @param selection
+	 *            Selection of filter field (most often {@code target}
+	 *            selection).
+	 * @param move
+	 *            Amount of lines selection is moved after pop-up is open
+	 *            (most often 0).
 	 */
 	private void open(Text target, Table table, Consumer<Table> listener, String text, Point selection, int move) {
 		this.target = target;
