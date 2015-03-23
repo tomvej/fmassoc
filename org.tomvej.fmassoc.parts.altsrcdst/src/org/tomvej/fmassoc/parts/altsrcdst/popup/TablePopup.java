@@ -221,19 +221,7 @@ public class TablePopup {
 				}
 				getShell().setVisible(false);
 			}
-			deactivated = formatTime(e);
 		}
-	}
-
-	private static final int TIMEOUT = 500;
-	private long deactivated;
-
-	long getLastDeactivatedTime() {
-		return deactivated;
-	}
-
-	private long formatTime(TypedEvent event) {
-		return event.time & 0xFFFFFFFFL;
 	}
 
 	/**
@@ -258,9 +246,7 @@ public class TablePopup {
 		});
 
 		Consumer<TypedEvent> opener = e -> {
-			if (formatTime(e) - deactivated > TIMEOUT) {
-				open(target, tableSupplier.get(), tableListener, target.getText(), target.getSelection());
-			}
+			open(target, tableSupplier.get(), tableListener, target.getText(), target.getSelection());
 		};
 		target.addMouseListener(new MouseUpWrapper(opener));
 		target.addKeyListener(new KeyEventBlocker(SWT.ARROW_DOWN, SWT.ARROW_UP));
