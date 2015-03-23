@@ -61,8 +61,10 @@ public class TablePopup {
 		input.addModifyListener(e -> tables.setFilter(input.getText()));
 		input.addKeyListener(new KeyEventBlocker(SWT.ARROW_UP, SWT.ARROW_DOWN));
 		input.addTraverseListener(this::traverse);
+		input.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_DOWN, SWT.NONE, e -> tables.move(1)));
+		input.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_UP, SWT.NONE, e -> tables.move(-1)));
 		input.addKeyListener(new KeyReleasedWrapper(SWT.PAGE_DOWN, SWT.NONE, e -> tables.move(10)));
-		input.addKeyListener(new KeyReleasedWrapper(SWT.PAGE_DOWN, SWT.NONE, e -> tables.move(-10)));
+		input.addKeyListener(new KeyReleasedWrapper(SWT.PAGE_UP, SWT.NONE, e -> tables.move(-10)));
 	}
 
 	private Layout getShellLayout() {
@@ -148,12 +150,6 @@ public class TablePopup {
 
 	private void traverse(TraverseEvent event) {
 		switch (event.detail) {
-			case SWT.TRAVERSE_ARROW_NEXT:
-				tables.move(1);
-				break;
-			case SWT.TRAVERSE_ARROW_PREVIOUS:
-				tables.move(-1);
-				break;
 			case SWT.TRAVERSE_TAB_NEXT:
 			case SWT.TRAVERSE_TAB_PREVIOUS:
 			case SWT.TRAVERSE_RETURN:
@@ -234,13 +230,14 @@ public class TablePopup {
 				open(target, tableSupplier.get(), tableListener);
 			}
 		};
+		target.addKeyListener(new KeyEventBlocker(SWT.ARROW_DOWN, SWT.ARROW_UP));
 		target.addModifyListener(opener::accept);
 		target.addMouseListener(new MouseUpWrapper(opener));
+		target.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_DOWN, SWT.NONE, opener));
+		target.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_UP, SWT.NONE, opener));
 		target.addTraverseListener(e -> {
 			switch (e.detail) {
 				case SWT.TRAVERSE_RETURN:
-				case SWT.TRAVERSE_ARROW_NEXT: // will have to move
-				case SWT.TRAVERSE_ARROW_PREVIOUS: // will have to move
 					opener.accept(e);
 					break;
 			}
