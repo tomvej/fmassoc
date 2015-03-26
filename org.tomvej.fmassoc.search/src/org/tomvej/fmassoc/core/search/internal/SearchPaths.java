@@ -3,12 +3,12 @@ package org.tomvej.fmassoc.core.search.internal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.di.extensions.EventTopic;
@@ -47,7 +47,26 @@ public class SearchPaths {
 	 * Start a path search.
 	 */
 	@Execute
-	public void execute(SearchInput input, PathFinderProvider provider, IEventBroker broker, Logger logger) {
+	public void execute(@Optional SearchInput input, @Optional PathFinderProvider provider, IEventBroker broker,
+			Logger logger, @Optional PathFinderJob currentJob) {
+		/* check objects */
+		List<String> warnings = new ArrayList<>();
+		if (currentJob != null) {
+			warnings.add("search job already running");
+		}
+		if (input == null) {
+			warnings.add("no search input");
+		}
+		if (provider == null) {
+			warnings.add("no path finder");
+		}
+
+		if (!warnings.isEmpty()) {
+			logger.warn(warnings.stream().collect(Collectors.joining(", ", "Cannot start path search: ", "")));
+			return;
+		}
+
+		/* actual handler */
 		PathFinderJob job = new PathFinderJob(provider.createPathFinder(input), broker, foundPaths, logger);
 		context.set(PathFinderJob.class, job);
 		foundPaths.clear();
@@ -55,15 +74,6 @@ public class SearchPaths {
 		// TODO probably will need to put current search
 		// input into context (named)
 		job.schedule();
-	}
-
-	/**
-	 * Check for path search necessary parameters.
-	 */
-	@Optional
-	@CanExecute
-	public boolean canExecute(SearchInput input, PathFinderProvider provider, PathFinderJob job) {
-		return input != null && provider != null && job == null;
 	}
 
 	/**
