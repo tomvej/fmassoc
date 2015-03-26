@@ -97,7 +97,7 @@ public class ModelChooser {
 		switcher.setInput(models);
 		switcher.addSelectionChangedListener(event -> modelSelected());
 
-		loadSelectedModel();
+		parentShell.getDisplay().asyncExec(this::loadSelectedModel);
 	}
 
 	private List<ModelLoaderEntry> loadModelLoaders(IExtensionRegistry registry, Shell parent) {
