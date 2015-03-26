@@ -10,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.tomvej.fmassoc.core.search.PathSearchTopic;
 import org.tomvej.fmassoc.core.search.SearchInput;
+import org.tomvej.fmassoc.swt.widgets.CompoundProgressBar;
 
 /**
  * Progress bar for status bar.

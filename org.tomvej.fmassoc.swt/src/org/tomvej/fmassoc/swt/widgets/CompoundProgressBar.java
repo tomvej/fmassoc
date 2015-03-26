@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.parts.status;
+package org.tomvej.fmassoc.swt.widgets;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;

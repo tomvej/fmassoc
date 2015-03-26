@@ -13,4 +13,5 @@ Require-Bundle: org.apache.commons.lang3;bundle-version="3.1.0",
 Export-Package: org.tomvej.fmassoc.swt.dnd,
  org.tomvej.fmassoc.swt.multisort,
  org.tomvej.fmassoc.swt.tables,
+ org.tomvej.fmassoc.swt.widgets,
  org.tomvej.fmassoc.swt.wrappers
