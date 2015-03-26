@@ -26,6 +26,7 @@ public class Progress {
 	public void createComponents(Composite parent) {
 		bar = new CompoundProgressBar(parent, SWT.HORIZONTAL | SWT.SMOOTH);
 		bar.setDeterminate(true);
+		bar.setValues(0, 2, 0);
 	}
 
 	/**
@@ -35,6 +36,7 @@ public class Progress {
 	@Optional
 	public void searchStarted(@UIEventTopic(PathSearchTopic.START) SearchInput input) {
 		bar.setDeterminate(false);
+		bar.setSelection(0);
 	}
 
 	/**
@@ -44,6 +46,7 @@ public class Progress {
 	@Optional
 	public void searchCancelled(@UIEventTopic(PathSearchTopic.CANCEL) IStatus status) {
 		bar.setDeterminate(true);
+		bar.setSelection(1);
 	}
 
 	/**
@@ -53,6 +56,7 @@ public class Progress {
 	@Optional
 	public void searchFinished(@UIEventTopic(PathSearchTopic.FINISH) IStatus status) {
 		bar.setDeterminate(true);
+		bar.setSelection(2);
 	}
 
 }
