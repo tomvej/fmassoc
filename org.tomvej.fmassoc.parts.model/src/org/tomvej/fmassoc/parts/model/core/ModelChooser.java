@@ -69,7 +69,7 @@ public class ModelChooser {
 		appContext = app.getContext();
 
 		Composite parent = new Composite(container, SWT.NONE);
-		parent.setLayout(new GridLayout(3, false));
+		parent.setLayout(new GridLayout(2, false));
 
 		// load model loaders and put them into context
 		List<ModelLoaderEntry> loaders = loadModelLoaders(registry, parentShell);
@@ -90,7 +90,7 @@ public class ModelChooser {
 		lbl.setLayoutData(GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER).create());
 
 		switcher = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
-		switcher.getCombo().setLayoutData(GridDataFactory.fillDefaults().hint(120, 0).create());
+		switcher.getCombo().setLayoutData(GridDataFactory.fillDefaults().hint(120, SWT.DEFAULT).create());
 
 		switcher.setContentProvider(new ObservableListContentProvider());
 		switcher.setLabelProvider(new TextLabelProvider<ModelEntry>(entry -> entry.getLabel()));
