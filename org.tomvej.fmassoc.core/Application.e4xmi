@@ -4,10 +4,10 @@
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_oK5eUB4mEeS4_pQWRSwXHA" elementId="org.tomvej.fmassoc.core.perspectivestack"/>
     <mainMenu xmi:id="_M6VlEMGWEeSQHqBnOEk0aQ" elementId="org.eclipse.ui.main.menu">
       <children xsi:type="menu:Menu" xmi:id="_puROAMGXEeSQHqBnOEk0aQ" elementId="org.eclipse.ui.file.menu" label="File">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_yfd5sMGeEeSQHqBnOEk0aQ" elementId="org.tomvej.fmassoc.core.handledmenuitem.preference" label="Preferences" command="_MtRb0CMZEeSLr8eP527IEg"/>
         <children xsi:type="menu:MenuSeparator" xmi:id="_zUcdEMGiEeSQHqBnOEk0aQ" elementId="org.tomvej.fmassoc.core.menuseparator.0"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_hD4-MMGfEeSQHqBnOEk0aQ" elementId="org.tomvej.fmassoc.core.handledmenuitem.exit" label="Exit" command="_3k4CYMGgEeSQHqBnOEk0aQ"/>
       </children>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_yfd5sMGeEeSQHqBnOEk0aQ" elementId="org.tomvej.fmassoc.core.handledmenuitem.preference" label="Preferences" command="_MtRb0CMZEeSLr8eP527IEg"/>
     </mainMenu>
     <trimBars xmi:id="_c85GoCN9EeSIYYTJAOONGw" elementId="org.tomvej.fmassoc.core.trimbar.top"/>
   </children>
