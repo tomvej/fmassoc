@@ -31,6 +31,8 @@ public class CompoundProgressBar extends Composite {
 		super(parent, SWT.NONE);
 
 		GridLayout layout = new GridLayout();
+		layout.marginHeight = 2;
+		layout.marginWidth = 2;
 		super.setLayout(layout);
 
 		deterBar = new ProgressBar(this, style);
