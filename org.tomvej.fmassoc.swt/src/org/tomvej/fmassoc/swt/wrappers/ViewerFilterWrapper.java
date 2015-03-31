@@ -14,7 +14,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
  * 
  * <code>
  *   viewer.addFilter(new ViewerFilterWrapper&lt;AssociationInfo&gt;(assoc -&gt; assoc.isMandatory()));
- *  </pre>
+ * </code>
  * 
  * <p>
  * <b>Warning:</b> Contains potentially unsafe type-casting. Make sure the
