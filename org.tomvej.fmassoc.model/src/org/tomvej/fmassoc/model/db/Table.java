@@ -11,9 +11,7 @@ import java.util.Collection;
 public interface Table extends Named {
 
 	/**
-	 * Table number ({@code TFT###...}).
-	 * 
-	 * Specific to field manager.
+	 * Table number. It is assumed each table has a unique number.
 	 */
 	int getNumber();
 
@@ -23,7 +21,7 @@ public interface Table extends Named {
 	Collection<AssociationProperty> getAssociations();
 
 	/**
-	 * Properties other than associations and {@code ID_OBJECT}.
+	 * Properties other than associations and id property.
 	 */
 	Collection<Property> getProperties();
 
