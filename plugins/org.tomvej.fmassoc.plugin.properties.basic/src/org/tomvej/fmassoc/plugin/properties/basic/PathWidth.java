@@ -16,9 +16,8 @@ import org.tomvej.fmassoc.model.property.StackPathPropertyBuilder;
  * 
  * <p>
  * Such tables usually comprise "central" types in the model, to which many
- * different objects are attached (e.g. Work Request, ...). The user will
- * usually want to find paths going through at most one of these "central"
- * types.
+ * different objects are attached. The user will usually want to find paths
+ * going through at most one of these "central" types.
  * </p>
  * 
  * @author Tomáš Vejpustek
