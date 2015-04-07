@@ -6,8 +6,8 @@ package org.tomvej.fmassoc.parts.sql.independent;
  * @author Tomáš Vejpustek
  */
 public enum Options {
-	/** Print ID_OBJECT columns */
-	PRINT_OIDS("Print ID_OBJECTs", true),
+	/** Print id properties columns */
+	PRINT_OIDS("Print id propertiess", true),
 	/** Print association properties columns */
 	PRINT_ASSOC("Print associations", true),
 	/** Abbreviate table names to T + number */
@@ -15,9 +15,7 @@ public enum Options {
 	/** Print only columns of source and destination tables */
 	SRC_DST_ONLY("Print only source and destination"),
 	/** Prefix column names with table names */
-	PREFIX_COLUMNS("Prefix column names with table names"),
-	/** Print internal ARM properties such as */
-	PRINT_VERSIONS("Print table versions properties", true);
+	PREFIX_COLUMNS("Prefix column names with table names");
 
 
 	private final String msg;

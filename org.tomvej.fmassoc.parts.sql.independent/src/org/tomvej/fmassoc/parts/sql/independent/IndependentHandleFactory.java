@@ -1,9 +1,6 @@
 package org.tomvej.fmassoc.parts.sql.independent;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.Validate;
 import org.tomvej.fmassoc.model.db.AssociationProperty;
@@ -20,10 +17,6 @@ import org.tomvej.fmassoc.transform.sql.handles.TableHandle.DisplayState;
  * @author Tomáš Vejpustek
  */
 public class IndependentHandleFactory implements HandleFactory {
-	private final Set<String> VERSIONS = Collections.unmodifiableSet(Arrays
-			.asList("ID_VERSION", "ID_BRANCH", "ID_PREV_VERSION1", "ID_PREV_VERSION2", "FG_OBJ_DELETED", "ID_USER",
-					"TS_USER", "TS_SERVER", "id_msg_rcvd", "ind_sync", "ind_comms_priority")
-			.stream().collect(Collectors.toSet()));
 	private final Set<Options> options;
 	private final Table src, dst;
 
@@ -48,8 +41,7 @@ public class IndependentHandleFactory implements HandleFactory {
 	}
 
 	private boolean displayWholeTables() {
-		return isSet(Options.PRINT_OIDS) && isSet(Options.PRINT_ASSOC) && isSet(Options.PRINT_VERSIONS)
-				&& !isSet(Options.PREFIX_COLUMNS);
+		return isSet(Options.PRINT_OIDS) && isSet(Options.PRINT_ASSOC) && !isSet(Options.PREFIX_COLUMNS);
 	}
 
 	@Override
@@ -69,7 +61,7 @@ public class IndependentHandleFactory implements HandleFactory {
 
 			@Override
 			public boolean isDisplayed() {
-				return isSet(Options.PRINT_VERSIONS) || !VERSIONS.contains(property.getImplName());
+				return true;
 			}
 		};
 	}
