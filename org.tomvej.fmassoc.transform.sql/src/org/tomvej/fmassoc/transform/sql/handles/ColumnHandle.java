@@ -16,8 +16,8 @@ package org.tomvej.fmassoc.transform.sql.handles;
  * 
  * Examples (declaration -> reference):
  * <ul>
- * <li>TFT170WORK.ID_OBJECT -> TFT170WORK.ID_OBJECT</li>
- * <li>TFT170WORK.ID_OBJECT AS ido_work -> ido_work</li>
+ * <li>WORK_REQUEST.ID_OBJECT -> WORK_REQUEST.ID_OBJECT</li>
+ * <li>WORK_REQUEST.ID_OBJECT AS ido_wr -> ido_wr</li>
  * </ul>
  * 
  * @author Tomáš Vejpustek

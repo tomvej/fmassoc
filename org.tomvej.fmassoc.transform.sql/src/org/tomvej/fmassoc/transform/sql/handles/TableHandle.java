@@ -11,8 +11,8 @@ package org.tomvej.fmassoc.transform.sql.handles;
  * 
  * Examples (declaration -> reference):
  * <ul>
- * <li>TFT170WORK -> TFT170WORK</li>
- * <li>TFT170WORK as work -> work</li>
+ * <li>WORK_REQUEST -> WORK_REQUEST</li>
+ * <li>WORK_REQUEST as wr -> wr</li>
  * </ul>
  * 
  * @author Tomáš Vejpustek
