@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_WyFhcMflEeSdd9EYpvWwUQ">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_ZnoLMMflEeSdd9EYpvWwUQ" featurename="addons" parentElementId="org.tomvej.fmassoc.core.application">
+    <elements xsi:type="application:Addon" xmi:id="_ir8rYMflEeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.addon.pathnumberlimiter" contributionURI="bundleclass://org.tomvej.fmassoc.search/org.tomvej.fmassoc.core.search.limit.PathNumberLimiter"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_8FzPkMflEeSdd9EYpvWwUQ" featurename="commands" parentElementId="org.tomvej.fmassoc.core.application">
+    <elements xsi:type="commands:Command" xmi:id="_AtbiAMfmEeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.command.searchpaths" commandName="Search Paths"/>
+    <elements xsi:type="commands:Command" xmi:id="_UxE1gMfxEeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.command.stopsearch" commandName="Stop Search"/>
+    <elements xsi:type="commands:Command" xmi:id="_gAetMMfxEeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.command.pathlimitreached" commandName="Show Path Limit Reached Dialog"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_wmzQIMf6EeSdd9EYpvWwUQ" featurename="handlers" parentElementId="org.tomvej.fmassoc.core.application">
+    <elements xsi:type="commands:Handler" xmi:id="_4JygcMf6EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.handler.searchpaths" contributionURI="bundleclass://org.tomvej.fmassoc.search/org.tomvej.fmassoc.core.search.internal.SearchPaths" command="_AtbiAMfmEeSdd9EYpvWwUQ"/>
+    <elements xsi:type="commands:Handler" xmi:id="_OCJT0Mf7EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.handler.stopsearch" contributionURI="bundleclass://org.tomvej.fmassoc.search/org.tomvej.fmassoc.core.search.internal.StopSearch" command="_UxE1gMfxEeSdd9EYpvWwUQ"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_aFvokMf7EeSdd9EYpvWwUQ" featurename="handlers" parentElementId="org.tomvej.fmassoc.core.window.main">
+    <elements xsi:type="commands:Handler" xmi:id="_fEW3oMf7EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.handler.pathlimitreached" contributionURI="bundleclass://org.tomvej.fmassoc.search/org.tomvej.fmassoc.core.search.limit.ShowPathLimitReached" command="_gAetMMfxEeSdd9EYpvWwUQ"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_sSg7AMf7EeSdd9EYpvWwUQ" featurename="children" parentElementId="org.tomvej.fmassoc.core.perspectivestack">
+    <elements xsi:type="advanced:Perspective" xmi:id="_vkCWIMf7EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.perspective.search">
+      <children xsi:type="basic:PartSashContainer" xmi:id="_fkA_UMjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partsashcontainer.top">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_hTLP0MjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partsashcontainer.tables" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_uYqfYMjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partstack.tables" containerData="700"/>
+          <children xsi:type="basic:PartStack" xmi:id="_xnt1UMjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partstack.tablesettings" containerData="300"/>
+        </children>
+        <children xsi:type="basic:PartSashContainer" xmi:id="_iC7RwMjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partsashcontainer.paths" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_1o4ksMjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partstack.paths" containerData="700"/>
+          <children xsi:type="basic:PartStack" xmi:id="_44AzIMjQEeSzFJ_T0ayWog" elementId="org.tomvej.fmassoc.search.partstack.pathsettings" containerData="300"/>
+        </children>
+      </children>
+      <windows xsi:type="basic:Dialog" xmi:id="_63oKQMf7EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.dialog.search" visible="false" label="Search in Progress" width="500" height="220">
+        <children xsi:type="basic:Part" xmi:id="__V1a8Mf7EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.dialog.search.part" visible="false" contributionURI="bundleclass://org.tomvej.fmassoc.search/org.tomvej.fmassoc.core.search.internal.SearchProgressDialog"/>
+      </windows>
+    </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_Px49sMf8EeSdd9EYpvWwUQ" featurename="children" parentElementId="org.eclipse.ui.main.menu" positionInList="index:1">
+    <elements xsi:type="menu:Menu" xmi:id="_WBwZQMf8EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.menu" label="Search">
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_YDNToMf8EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.handledmenuitem.start" label="Start" command="_AtbiAMfmEeSdd9EYpvWwUQ"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_bpSCcMf8EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.handledmenuitem.cancel" label="Stop" command="_UxE1gMfxEeSdd9EYpvWwUQ"/>
+    </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_xou8UMf8EeSdd9EYpvWwUQ" featurename="children" parentElementId="org.tomvej.fmassoc.core.trimbar.top">
+    <elements xsi:type="menu:ToolBar" xmi:id="_2_080Mf8EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.toolbar">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_3ssp4Mf8EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.handledtoolitem.searchpaths" label="Search" command="_AtbiAMfmEeSdd9EYpvWwUQ"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_7IjFsMf8EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.handledtoolitem.stopsearch" label="Stop" command="_UxE1gMfxEeSdd9EYpvWwUQ"/>
+    </elements>
+  </fragments>
+</fragment:ModelFragments>

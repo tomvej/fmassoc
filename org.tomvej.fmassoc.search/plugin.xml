@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+
+   <extension
+         id="org.tomvej.fmassoc.search.fragment"
+         point="org.eclipse.e4.workbench.model">
+      <fragment
+            uri="fragment.e4xmi">
+      </fragment>
+   </extension>
+   <extension
+         point="org.tomvej.fmassoc.core.preferencePage">
+      <client
+            class="org.tomvej.fmassoc.core.search.preference.PathSearchPreferencePage"
+            id="org.tomvej.fmassoc.search">
+      </client>
+   </extension>
+
+</plugin>

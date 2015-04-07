@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.tomvej.fmassoc.parts.paths.pathlabelprovider">
+      <client
+            class="org.tomvej.fmassoc.plugin.pathlabelprovider.PathLabelProvider"
+            description="Displays path as list of comprising tables separated by =, &lt;, &gt; according to association multiplicity."
+            name="Basic">
+      </client>
+   </extension>
+   <extension
+         point="org.tomvej.fmassoc.parts.paths.typelabelprovider">
+      <client
+            class="org.tomvej.fmassoc.plugin.pathlabelprovider.MultiplicityLabelProvider"
+            date="2014-01-05"
+            reference="org.tomvej.fmassoc.model.db.Multiplicity">
+      </client>
+      <client
+            class="org.tomvej.fmassoc.plugin.pathlabelprovider.BooleanLabelProvider"
+            date="2014-01-05"
+            reference="java.lang.Boolean">
+      </client>
+   </extension>
+
+</plugin>

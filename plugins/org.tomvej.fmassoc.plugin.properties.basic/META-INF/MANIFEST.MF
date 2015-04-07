@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Basic Path Property Plugin
+Bundle-SymbolicName: org.tomvej.fmassoc.plugin.properties.basic;singleton:=true
+Bundle-Version: 2.0.0.SNAPSHOT
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.tomvej.fmassoc.model;bundle-version="2.0.0",
+ org.apache.commons.lang3;bundle-version="3.1.0"
+Export-Package: org.tomvej.fmassoc.plugin.properties.basic

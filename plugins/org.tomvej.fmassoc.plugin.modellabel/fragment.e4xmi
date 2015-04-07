@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmi:id="_AwhWQIXPEeSpytsv_s9G_Q">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_bqbX8IXPEeSpytsv_s9G_Q" featurename="addons" parentElementId="org.tomvej.fmassoc.core.application">
+    <elements xsi:type="application:Addon" xmi:id="_fc8nUIXPEeSpytsv_s9G_Q" elementId="org.tomvej.fmassoc.plugin.modellabel.addon" contributionURI="bundleclass://org.tomvej.fmassoc.plugin.modellabel/org.tomvej.fmassoc.plugin.modellabel.ModelLabelChanger"/>
+  </fragments>
+</fragment:ModelFragments>

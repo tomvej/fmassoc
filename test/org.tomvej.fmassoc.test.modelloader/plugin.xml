@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.tomvej.fmassoc.parts.model.modelLoader">
+      <client
+            class="org.tomvej.fmassoc.test.modelloader.TestingModelLoader"
+            description="Used to test model loading functionality"
+            name="Testing Model Loader">
+      </client>
+   </extension>
+
+</plugin>

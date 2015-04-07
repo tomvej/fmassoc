@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+   <extension-point id="filterprovider" name="Filter Provider" schema="schema/filterprovider.exsd"/>
+
+   <extension
+         id="org.tomvej.fmassoc.filter.fragment"
+         point="org.eclipse.e4.workbench.model">
+      <fragment
+            uri="fragment.e4xmi">
+      </fragment>
+   </extension>
+
+</plugin>

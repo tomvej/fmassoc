@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.tomvej.fmassoc.core.pathProperty">
+      <client
+            class="org.tomvej.fmassoc.plugin.properties.basic.PathLength"
+            description="Number of associations."
+            name="Length">
+      </client>
+      <client
+            class="org.tomvej.fmassoc.plugin.properties.basic.PathMultiplicity"
+            description="Aggregate multiplicity (one to one, one to many, many to one, many to many)."
+            name="Multiplicity">
+      </client>
+      <client
+            class="org.tomvej.fmassoc.plugin.properties.basic.PathOptionality"
+            description="Whether path is entirely made up of mandatory association."
+            name="Mandatory">
+      </client>
+      <client
+            class="org.tomvej.fmassoc.plugin.properties.basic.PathOptionalLength"
+            description="Number of optional associations."
+            name="Optional Length">
+      </client>
+      <client
+            class="org.tomvej.fmassoc.plugin.properties.basic.PathWidth"
+            description="Number of switches between one to many and many to one subpaths."
+            name="Width">
+      </client>
+   </extension>
+
+</plugin>

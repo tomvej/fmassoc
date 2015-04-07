@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmi:id="_cP1IILEeEeSzb5hF7zR6TQ">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_dvN3QLEeEeSzb5hF7zR6TQ" featurename="children" parentElementId="org.tomvej.fmassoc.search.partstack.tablesettings">
+    <elements xsi:type="basic:Part" xmi:id="_35S-gLEeEeSzb5hF7zR6TQ" elementId="org.tomvej.fmassoc.plugin.filterpruningfinder.part" contributionURI="bundleclass://org.tomvej.fmassoc.plugin.filterpruningfinder/org.tomvej.fmassoc.plugin.filterpruningfinder.Part" label="Custom Search"/>
+  </fragments>
+</fragment:ModelFragments>
