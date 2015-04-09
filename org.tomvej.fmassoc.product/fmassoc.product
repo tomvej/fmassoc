@@ -14,8 +14,10 @@
    </launcherArgs>
 
    <launcher>
+      <linux icon="/org.tomvej.fmassoc.product/icon.xpm"/>
       <solaris/>
-      <win useIco="false">
+      <win useIco="true">
+         <ico path="/org.tomvej.fmassoc.product/fmassoc.ico"/>
          <bmp/>
       </win>
    </launcher>
