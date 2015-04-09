@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ASCII"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_TnMFwBPKEeSoD5WQk9Aqhg" elementId="org.tomvej.fmassoc.core.application">
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_08pOkBPKEeSoD5WQk9Aqhg" elementId="org.tomvej.fmassoc.core.window.main" label="Field Manager Association Search" x="100" y="100" width="800" height="650">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_08pOkBPKEeSoD5WQk9Aqhg" elementId="org.tomvej.fmassoc.core.window.main" label="Field Manager Association Search" iconURI="platform:/plugin/org.tomvej.fmassoc.core/icons/fmassoc-32.png" x="100" y="100" width="800" height="650">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_oK5eUB4mEeS4_pQWRSwXHA" elementId="org.tomvej.fmassoc.core.perspectivestack"/>
     <mainMenu xmi:id="_M6VlEMGWEeSQHqBnOEk0aQ" elementId="org.eclipse.ui.main.menu">
       <children xsi:type="menu:Menu" xmi:id="_puROAMGXEeSQHqBnOEk0aQ" elementId="org.eclipse.ui.file.menu" label="File">
