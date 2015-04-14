@@ -13,6 +13,10 @@
   </children>
   <handlers xmi:id="_WzQ0YCMZEeSLr8eP527IEg" elementId="org.tomvej.fmassoc.core.handler.preferences" contributionURI="bundleclass://org.tomvej.fmassoc.core/org.tomvej.fmassoc.core.preference.PreferenceHandler" command="_MtRb0CMZEeSLr8eP527IEg"/>
   <handlers xmi:id="_LW1UgMGiEeSQHqBnOEk0aQ" elementId="org.tomvej.fmassoc.core.handler.exit" contributionURI="bundleclass://org.tomvej.fmassoc.core/org.tomvej.fmassoc.core.ExitHandler" command="_3k4CYMGgEeSQHqBnOEk0aQ"/>
+  <bindingTables xmi:id="_dtoxYOKLEeSNg9vZSf7usg" elementId="org.tomvej.fmassoc.core.bindingtable.dialogAndWindow" bindingContext="_QW4ysOKLEeSNg9vZSf7usg">
+    <bindings xmi:id="_i96YMOKLEeSNg9vZSf7usg" elementId="org.tomvej.fmassoc.core.keybinding.quit" keySequence="M1+Q" command="_3k4CYMGgEeSQHqBnOEk0aQ"/>
+  </bindingTables>
+  <rootContext xmi:id="_QW4ysOKLEeSNg9vZSf7usg" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="Dialogs and Windows" description="Key bindings valid for dialogs and windows "/>
   <commands xmi:id="_MtRb0CMZEeSLr8eP527IEg" elementId="org.eclipse.ui.window.preferences" commandName="Preferences">
     <parameters xmi:id="_UOkzACN6EeSIYYTJAOONGw" elementId="org.eclipse.ui.window.preferences.pageid" name="Page ID"/>
   </commands>
