@@ -51,7 +51,6 @@ import org.tomvej.fmassoc.parts.paths.preference.PathPreferenceManager;
 import org.tomvej.fmassoc.parts.paths.preference.PathTablePreferenceTopic;
 import org.tomvej.fmassoc.swt.tables.ColumnSortSupport;
 import org.tomvej.fmassoc.swt.tables.SortEntry;
-import org.tomvej.fmassoc.swt.wrappers.KeyReleasedWrapper;
 import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.swt.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.swt.wrappers.ViewerFilterWrapper;
@@ -125,7 +124,8 @@ public class Part {
 				}
 			};
 		});
-		pathTable.getTable().addKeyListener(new KeyReleasedWrapper('c', SWT.CTRL, e -> copyTransformedPath()));
+		// pathTable.getTable().addKeyListener(new KeyReleasedWrapper('c',
+		// SWT.CTRL, e -> copyTransformedPath()));
 		pathTable.addFilter(new ViewerFilterWrapper<Path>(p -> filter.test(p)));
 		// cannot be `filter' or `filter::test' since that would disregard
 		// filter change
