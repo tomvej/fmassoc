@@ -2,7 +2,9 @@ package org.tomvej.fmassoc.parts.paths.preference;
 
 import java.util.List;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.PreferencePage;
@@ -19,7 +21,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
-import org.tomvej.fmassoc.core.preference.ContextPreferencePage;
 import org.tomvej.fmassoc.core.properties.PathPropertyEntry;
 import org.tomvej.fmassoc.swt.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.swt.wrappers.TextLabelProvider;
@@ -30,8 +31,11 @@ import org.tomvej.fmassoc.swt.wrappers.TextLabelProvider;
  * 
  * @author Tomáš Vejpustek
  */
-public class PathPreferencePage extends PreferencePage implements ContextPreferencePage {
+public class PathPreferencePage extends PreferencePage {
+	@Inject
 	private PathPreferenceManager manager;
+	@Inject
+	@Named(ContextObjects.PATH_PROPERTIES)
 	private List<PathPropertyEntry<?>> properties;
 	private ComboViewer provider;
 	private Text providerDescription;
@@ -42,13 +46,6 @@ public class PathPreferencePage extends PreferencePage implements ContextPrefere
 	 */
 	public PathPreferencePage() {
 		super("Found paths table");
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public void init(IEclipseContext context) {
-		manager = context.get(PathPreferenceManager.class);
-		properties = (List<PathPropertyEntry<?>>) context.get(ContextObjects.PATH_PROPERTIES);
 		noDefaultAndApplyButton();
 	}
 

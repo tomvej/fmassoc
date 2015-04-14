@@ -9,10 +9,12 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.log.Logger;
+import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
@@ -38,8 +40,8 @@ class PreferenceHandler {
 		for (IConfigurationElement elem : config) {
 			String id = elem.getAttribute("id");
 			try {
-				ContextPreferencePage preference = (ContextPreferencePage) elem.createExecutableExtension("class");
-				preference.init(context);
+				IPreferencePage preference = (IPreferencePage) elem.createExecutableExtension("class");
+				ContextInjectionFactory.inject(preference, context);
 				PreferenceNode node = new PreferenceNode(id, preference);
 				nodes.put(id, Pair.of(node, elem.getAttribute("parent")));
 			} catch (CoreException ce) {
