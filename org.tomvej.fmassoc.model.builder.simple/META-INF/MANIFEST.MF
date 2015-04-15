@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Simple Data Model Builders
 Bundle-SymbolicName: org.tomvej.fmassoc.model.builder.simple
-Bundle-Version: 2.0.0.SNAPSHOT
+Bundle-Version: 2.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.apache.commons.lang3;bundle-version="3.1.0",
  org.tomvej.fmassoc.model;bundle-version="2.0.0"

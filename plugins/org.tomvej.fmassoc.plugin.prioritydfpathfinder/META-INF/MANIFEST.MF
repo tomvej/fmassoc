@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Priority Depth-First Path Finder
 Bundle-SymbolicName: org.tomvej.fmassoc.plugin.prioritydfpathfinder
-Bundle-Version: 2.0.0.SNAPSHOT
+Bundle-Version: 2.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.tomvej.fmassoc.core;bundle-version="2.0.0",
  org.tomvej.fmassoc.model;bundle-version="2.0.0",
