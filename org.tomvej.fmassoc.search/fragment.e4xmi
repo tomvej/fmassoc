@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ASCII"?>
 <fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_WyFhcMflEeSdd9EYpvWwUQ">
+  <imports xsi:type="commands:BindingContext" xmi:id="_ijURcOKMEeSNg9vZSf7usg" elementId="org.eclipse.ui.contexts.dialogAndWindow"/>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_ZnoLMMflEeSdd9EYpvWwUQ" featurename="addons" parentElementId="org.tomvej.fmassoc.core.application">
     <elements xsi:type="application:Addon" xmi:id="_ir8rYMflEeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.addon.pathnumberlimiter" contributionURI="bundleclass://org.tomvej.fmassoc.search/org.tomvej.fmassoc.core.search.limit.PathNumberLimiter"/>
   </fragments>
@@ -42,6 +43,12 @@
     <elements xsi:type="menu:ToolBar" xmi:id="_2_080Mf8EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.toolbar">
       <children xsi:type="menu:HandledToolItem" xmi:id="_3ssp4Mf8EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.handledtoolitem.searchpaths" label="Search" command="_AtbiAMfmEeSdd9EYpvWwUQ"/>
       <children xsi:type="menu:HandledToolItem" xmi:id="_7IjFsMf8EeSdd9EYpvWwUQ" elementId="org.tomvej.fmassoc.search.handledtoolitem.stopsearch" label="Stop" command="_UxE1gMfxEeSdd9EYpvWwUQ"/>
+    </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_R1vg4OKMEeSNg9vZSf7usg" featurename="bindingTables" parentElementId="org.tomvej.fmassoc.core.application">
+    <elements xsi:type="commands:BindingTable" xmi:id="_VvmHUOKMEeSNg9vZSf7usg" elementId="org.tomvej.fmassoc.search.bindingtable" bindingContext="_ijURcOKMEeSNg9vZSf7usg">
+      <bindings xmi:id="_a-AF4OKMEeSNg9vZSf7usg" elementId="org.tomvej.fmassoc.search.keybinding.search" keySequence="M1+G" command="_AtbiAMfmEeSdd9EYpvWwUQ"/>
+      <bindings xmi:id="_1KrJ8OKTEeSNg9vZSf7usg" elementId="org.tomvej.fmassoc.search.keybinding.stop" keySequence="M1+D" command="_UxE1gMfxEeSdd9EYpvWwUQ"/>
     </elements>
   </fragments>
 </fragment:ModelFragments>

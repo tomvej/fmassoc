@@ -7,7 +7,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -29,7 +28,6 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
-import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
@@ -51,7 +49,6 @@ import org.tomvej.fmassoc.parts.paths.preference.PathPreferenceManager;
 import org.tomvej.fmassoc.parts.paths.preference.PathTablePreferenceTopic;
 import org.tomvej.fmassoc.swt.tables.ColumnSortSupport;
 import org.tomvej.fmassoc.swt.tables.SortEntry;
-import org.tomvej.fmassoc.swt.wrappers.KeyReleasedWrapper;
 import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.swt.wrappers.TextColumnLabelProvider;
 import org.tomvej.fmassoc.swt.wrappers.ViewerFilterWrapper;
@@ -79,7 +76,6 @@ public class Part {
 	private TableViewerColumn pathColumn;
 	private final Map<PathPropertyEntry<?>, TableColumn> propertyColumns = new HashMap<>();
 	private ColumnSortSupport sortSupport;
-	private Clipboard clipboard;
 	private Predicate<Path> filter = DEFAULT_FILTER;
 
 	/**
@@ -90,8 +86,6 @@ public class Part {
 			@Named(ContextObjects.FOUND_PATHS) List<Path> foundPaths, PathPreferenceManager preference,
 			IExtensionRegistry extensions) {
 		loadProviders(extensions);
-
-		clipboard = new Clipboard(display);
 
 		pathTable = new TableViewer(parent, SWT.SINGLE | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL);
 		pathTable.getTable().setHeaderVisible(true);
@@ -125,7 +119,6 @@ public class Part {
 				}
 			};
 		});
-		pathTable.getTable().addKeyListener(new KeyReleasedWrapper('c', SWT.CTRL, e -> copyTransformedPath()));
 		pathTable.addFilter(new ViewerFilterWrapper<Path>(p -> filter.test(p)));
 		// cannot be `filter' or `filter::test' since that would disregard
 		// filter change
@@ -135,13 +128,6 @@ public class Part {
 
 	private String getTransformedPath() {
 		return (String) context.get(ContextObjects.TRANSFORMED_PATH);
-	}
-
-	private void copyTransformedPath() {
-		String trans = getTransformedPath();
-		if (trans != null) {
-			clipboard.setContents(new Object[] { trans }, new Transfer[] { TextTransfer.getInstance() });
-		}
 	}
 
 	private void packColumns() {
@@ -284,14 +270,6 @@ public class Part {
 			this.filter = filter;
 		}
 		pathTable.refresh();
-	}
-
-	/**
-	 * Free system resources.
-	 */
-	@PreDestroy
-	public void dispose() {
-		clipboard.dispose();
 	}
 
 	private void loadProviders(IExtensionRegistry registry) {

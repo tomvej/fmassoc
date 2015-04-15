@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Path Aggregator
 Bundle-SymbolicName: org.tomvej.fmassoc.test.path.aggregator;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 2.0.0
 Require-Bundle: org.tomvej.fmassoc.core;bundle-version="2.0.0",
  org.tomvej.fmassoc.model;bundle-version="2.0.0",
  javax.inject,
