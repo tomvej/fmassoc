@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Status Bar
 Bundle-SymbolicName: org.tomvej.fmassoc.parts.status;singleton:=true
-Bundle-Version: 2.0.0.SNAPSHOT
+Bundle-Version: 2.0.0
 Require-Bundle: org.tomvej.fmassoc.model;bundle-version="2.0.0",
  org.tomvej.fmassoc.core;bundle-version="2.0.0",
  org.eclipse.e4.core.di,

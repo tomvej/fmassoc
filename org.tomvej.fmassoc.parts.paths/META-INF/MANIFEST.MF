@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Found paths table
 Bundle-SymbolicName: org.tomvej.fmassoc.parts.paths;singleton:=true
-Bundle-Version: 2.0.0.SNAPSHOT
+Bundle-Version: 2.0.0
 Export-Package: org.tomvej.fmassoc.parts.paths.labelprovider
 Require-Bundle: org.tomvej.fmassoc.core;bundle-version="2.0.0",
  org.tomvej.fmassoc.model;bundle-version="2.0.0",

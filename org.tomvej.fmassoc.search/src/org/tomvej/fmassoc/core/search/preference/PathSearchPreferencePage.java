@@ -3,7 +3,6 @@ package org.tomvej.fmassoc.core.search.preference;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.PreferencePage;
@@ -16,7 +15,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.osgi.service.prefs.BackingStoreException;
-import org.tomvej.fmassoc.core.preference.ContextPreferencePage;
 
 /**
  * Search preference page. Allows to specify:
@@ -28,7 +26,7 @@ import org.tomvej.fmassoc.core.preference.ContextPreferencePage;
  * 
  * @author Tomáš Vejpustek
  */
-public class PathSearchPreferencePage extends PreferencePage implements ContextPreferencePage {
+public class PathSearchPreferencePage extends PreferencePage {
 	private IEclipsePreferences defPreference = DefaultScope.INSTANCE.getNode(PathSearchPreference.NODE);
 	private IEclipsePreferences preference = InstanceScope.INSTANCE.getNode(PathSearchPreference.NODE);
 
@@ -57,10 +55,8 @@ public class PathSearchPreferencePage extends PreferencePage implements ContextP
 	 */
 	public PathSearchPreferencePage() {
 		super("Search");
+		noDefaultAndApplyButton();
 	}
-
-	@Override
-	public void init(IEclipseContext context) {}
 
 	@Override
 	protected Control createContents(Composite parent) {

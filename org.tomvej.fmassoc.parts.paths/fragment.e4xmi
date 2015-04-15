@@ -7,11 +7,13 @@
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_vqDYcDwrEeSKNJd9uleB0A" featurename="commands" parentElementId="org.tomvej.fmassoc.core.application">
     <elements xsi:type="commands:Command" xmi:id="_2JGfgDwrEeSKNJd9uleB0A" elementId="org.tomvej.fmassoc.parts.paths.command.multisort" commandName="Multisort"/>
     <elements xsi:type="commands:Command" xmi:id="_oHaGEJpUEeSb0YieiPJ1BA" elementId="org.tomvej.fmassoc.parts.paths.command.filter" commandName="Filter"/>
+    <elements xsi:type="commands:Command" xmi:id="_CIeVwOKXEeSNg9vZSf7usg" elementId="org.tomvej.fmassoc.parts.paths.command.copypath" commandName="Copy Transformed Path"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_rOrS0JgAEeSUkZphneFToA" featurename="children" parentElementId="org.tomvej.fmassoc.search.partstack.paths">
-    <elements xsi:type="basic:Part" xmi:id="_IuopUCEnEeSLQMaNm8aPHA" elementId="org.tomvej.fmassoc.parts.paths.part" contributionURI="bundleclass://org.tomvej.fmassoc.parts.paths/org.tomvej.fmassoc.parts.paths.Part" label="Found Paths">
+    <elements xsi:type="basic:Part" xmi:id="_IuopUCEnEeSLQMaNm8aPHA" elementId="org.tomvej.fmassoc.parts.paths.part" contributionURI="bundleclass://org.tomvej.fmassoc.parts.paths/org.tomvej.fmassoc.parts.paths.Part" label="Found Paths" bindingContexts="_XGpjYOKYEeSNg9vZSf7usg">
       <handlers xmi:id="_5LQo8DwrEeSKNJd9uleB0A" elementId="org.tomvej.fmassoc.parts.paths.handler.multisort" contributionURI="bundleclass://org.tomvej.fmassoc.parts.paths/org.tomvej.fmassoc.parts.paths.multisort.MultisortHandler" command="_2JGfgDwrEeSKNJd9uleB0A"/>
       <handlers xmi:id="_j9uXEJpYEeSb0YieiPJ1BA" elementId="org.tomvej.fmassoc.parts.paths.handler.filter" contributionURI="bundleclass://org.tomvej.fmassoc.parts.paths/org.tomvej.fmassoc.parts.paths.filter.FilterHandler" command="_oHaGEJpUEeSb0YieiPJ1BA"/>
+      <handlers xmi:id="_FX--sOKXEeSNg9vZSf7usg" elementId="org.tomvej.fmassoc.parts.paths.handler.copypath" contributionURI="bundleclass://org.tomvej.fmassoc.parts.paths/org.tomvej.fmassoc.parts.paths.CopyTransformedPath" command="_CIeVwOKXEeSNg9vZSf7usg"/>
       <toolbar xmi:id="_tlxgoDJ0EeSrIp1cpcOcAQ" elementId="org.tomvej.fmassoc.parts.paths.toolbar">
         <children xsi:type="menu:HandledToolItem" xmi:id="_9HXmQDJ0EeSrIp1cpcOcAQ" elementId="org.tomvej.fmassoc.parts.paths.handledtoolitem.preference" label="Preferences" tooltip="Preferences" command="_T1k8MDJ4EeSrIp1cpcOcAQ">
           <parameters xmi:id="_mYBcUDJ7EeSrIp1cpcOcAQ" elementId="org.tomvej.fmassoc.parts.paths.handledtoolitem.preference.pageid" name="org.eclipse.ui.window.preferences.pageid" value="org.tomvej.fmassoc.parts.paths.preference"/>
@@ -23,6 +25,14 @@
           <persistedState key="tooltip" value="Filter"/>
         </children>
       </toolbar>
+    </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_-7bVgOKXEeSNg9vZSf7usg" featurename="children" parentElementId="org.eclipse.ui.contexts.dialogAndWindow">
+    <elements xsi:type="commands:BindingContext" xmi:id="_XGpjYOKYEeSNg9vZSf7usg" elementId="org.tomvej.fmassoc.parts.paths.bindingcontext.pathtable" name="Path Table"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_bh41EOKXEeSNg9vZSf7usg" featurename="bindingTables" parentElementId="org.tomvej.fmassoc.core.application">
+    <elements xsi:type="commands:BindingTable" xmi:id="_lQtq0OKXEeSNg9vZSf7usg" elementId="org.tomvej.fmassoc.parts.paths.bindingtable" bindingContext="_XGpjYOKYEeSNg9vZSf7usg">
+      <bindings xmi:id="_ngtXgOKXEeSNg9vZSf7usg" elementId="org.tomvej.fmassoc.parts.paths.keybinding.copypath" keySequence="M1+C" command="_CIeVwOKXEeSNg9vZSf7usg"/>
     </elements>
   </fragments>
 </fragment:ModelFragments>
