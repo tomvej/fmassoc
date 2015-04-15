@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Field Manager Association Search" uid="org.tomvej.fmassoc" id="org.tomvej.fmassoc.core.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="2.0.0" useFeatures="true" includeLaunchers="true">
-
+<product name="Association Search" uid="org.tomvej.fmassoc" id="org.tomvej.fmassoc.core.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="2.0.0" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -14,7 +13,6 @@
 
    <windowImages/>
 
-
    <launcher name="fmassoc">
       <linux icon="/org.tomvej.fmassoc.product/icon.xpm"/>
       <solaris/>
@@ -24,10 +22,8 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
-
 
    <plugins>
    </plugins>
