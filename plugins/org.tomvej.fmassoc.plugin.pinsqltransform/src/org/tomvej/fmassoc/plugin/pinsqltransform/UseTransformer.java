@@ -6,9 +6,18 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.MHandledItem;
 import org.tomvej.fmassoc.core.communicate.PathTransformerTopic;
 
+/**
+ * Pin a transformer part so that it provides transformed path for other
+ * application parts.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class UseTransformer {
 	private MHandledItem lastItem;
 
+	/**
+	 * Switch the pinned state.
+	 */
 	@Execute
 	public void execute(MHandledItem currentItem, MPart part, IEventBroker broker) {
 		if (currentItem.isSelected()) {
