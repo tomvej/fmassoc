@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="ASCII"?>
 <fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_dC9FADdKEeSo-tYQ0-wwSQ">
-  <imports xsi:type="commands:Command" xmi:id="_LBCkcDnLEeSrK57h11jYsA" elementId="org.tomvej.fmassoc.core.command.pathtrans"/>
+  <imports xsi:type="commands:Command" xmi:id="_Zk4jYOdZEeSvg57G2f0y2Q" elementId="org.tomvej.fmassoc.plugin.pinsqltransform.command"/>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_XZFzAJgBEeSUkZphneFToA" featurename="children" parentElementId="org.tomvej.fmassoc.search.partstack.pathsettings">
     <elements xsi:type="basic:Part" xmi:id="_wlbJoDdLEeSo-tYQ0-wwSQ" elementId="org.tomvej.fmassoc.parts.sql.independent.part" contributionURI="bundleclass://org.tomvej.fmassoc.parts.sql.independent/org.tomvej.fmassoc.parts.sql.independent.Part" label="SQL">
-      <handlers xmi:id="_WFrzEDnKEeSrK57h11jYsA" elementId="org.tomvej.fmassoc.parts.sql.independent.handler.pathtrans" contributionURI="bundleclass://org.tomvej.fmassoc.parts.sql.independent/org.tomvej.fmassoc.parts.sql.independent.UseTransformer" command="_LBCkcDnLEeSrK57h11jYsA"/>
       <toolbar xmi:id="_9yPdUDnJEeSrK57h11jYsA" elementId="org.tomvej.fmassoc.parts.sql.independent.toolbar">
-        <children xsi:type="menu:HandledToolItem" xmi:id="_-_moUDnJEeSrK57h11jYsA" elementId="org.tomvej.fmassoc.parts.sql.independent.handledtoolitem.pathtrans" label="Pin" type="Check" command="_LBCkcDnLEeSrK57h11jYsA"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_-_moUDnJEeSrK57h11jYsA" elementId="org.tomvej.fmassoc.parts.sql.independent.handledtoolitem.pathtrans" label="Pin" type="Check" command="_Zk4jYOdZEeSvg57G2f0y2Q"/>
       </toolbar>
     </elements>
   </fragments>
