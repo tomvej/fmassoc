@@ -15,12 +15,21 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.tomvej.fmassoc.core.communicate.PathTransformerTopic;
 
+/**
+ * Used to store and retrieve pinned SQL transformation part.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class PersistTransformationPart {
 	private static final String KEY_SELECTED_TRANSFORMER = "selected_transformer";
 
 	@Inject
 	private MAddon addon;
 
+	/**
+	 * Retrieves pinned SQL transformation part and sends it as the
+	 * {@link PathTransformerTopic#SELECT} message.
+	 */
 	@PostConstruct
 	public void retrievePinnedState(EModelService models, MApplication app, IEventBroker broker, UISynchronize sync) {
 		String transformer = addon.getPersistedState().get(KEY_SELECTED_TRANSFORMER);
@@ -32,6 +41,9 @@ public class PersistTransformationPart {
 		}
 	}
 
+	/**
+	 * Stores pinned SQL transformation part.
+	 */
 	@Inject
 	@Optional
 	public void transformerSelected(@EventTopic(PathTransformerTopic.SELECT) MPart part) {
