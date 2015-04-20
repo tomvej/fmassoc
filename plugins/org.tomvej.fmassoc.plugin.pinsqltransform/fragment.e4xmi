@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="ASCII"?>
-<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmi:id="_tnasUOdTEeSvg57G2f0y2Q">
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmi:id="_tnasUOdTEeSvg57G2f0y2Q">
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_utsX4OdTEeSvg57G2f0y2Q" featurename="commands" parentElementId="org.tomvej.fmassoc.core.application">
     <elements xsi:type="commands:Command" xmi:id="_FdP5AOdUEeSvg57G2f0y2Q" elementId="org.tomvej.fmassoc.plugin.pinsqltransform.command" commandName="Provide Path Transformer"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_I0MmsOdUEeSvg57G2f0y2Q" featurename="handlers" parentElementId="org.tomvej.fmassoc.core.application">
     <elements xsi:type="commands:Handler" xmi:id="_Lr3-cOdUEeSvg57G2f0y2Q" elementId="org.tomvej.fmassoc.plugin.pinsqltransform.handler" contributionURI="bundleclass://org.tomvej.fmassoc.plugin.pinsqltransform/org.tomvej.fmassoc.plugin.pinsqltransform.UseTransformer" command="_FdP5AOdUEeSvg57G2f0y2Q"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_o3atwOdjEeSvg57G2f0y2Q" featurename="addons" parentElementId="org.tomvej.fmassoc.core.application">
+    <elements xsi:type="application:Addon" xmi:id="_qagRIOdjEeSvg57G2f0y2Q" elementId="org.tomvej.fmassoc.plugin.pinsqltransform.addon.persist" contributionURI="bundleclass://org.tomvej.fmassoc.plugin.pinsqltransform/org.tomvej.fmassoc.plugin.pinsqltransform.PersistTransformationPart"/>
   </fragments>
 </fragment:ModelFragments>
