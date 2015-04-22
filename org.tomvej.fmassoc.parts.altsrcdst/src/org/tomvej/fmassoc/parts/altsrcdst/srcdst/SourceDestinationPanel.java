@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.eclipse.jface.layout.GridDataFactory;
@@ -32,6 +34,8 @@ public class SourceDestinationPanel extends Composite {
 
 	private Consumer<List<Table>> listener;
 	private boolean cleaning;
+
+	private Function<Table, String> labelProvider;
 
 	/**
 	 * Specify parent component.
@@ -67,6 +71,7 @@ public class SourceDestinationPanel extends Composite {
 		newChooser.addDnDSupport(dnd);
 		newChooser.addDisposeListener(e -> dispose(newChooser));
 		newChooser.setTableListener(t -> refresh());
+		newChooser.setLabelProvider(labelProvider);
 		layout();
 		refresh();
 	}
@@ -121,6 +126,13 @@ public class SourceDestinationPanel extends Composite {
 	public void setTables(Collection<Table> tables) {
 		clearChoosers();
 		popup.setTables(tables);
+	}
+
+	public void setLabelProvider(Function<Table, String> labelProvider) {
+		this.labelProvider = Objects.requireNonNull(labelProvider);
+		popup.setSuspended(true);
+		choosers.forEach(c -> c.setLabelProvider(labelProvider));
+		popup.setSuspended(false);
 	}
 
 }

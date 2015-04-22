@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -25,6 +26,8 @@ import org.tomvej.fmassoc.core.communicate.DataModelTopic;
 import org.tomvej.fmassoc.core.search.SearchInput;
 import org.tomvej.fmassoc.model.db.DataModel;
 import org.tomvej.fmassoc.model.db.Table;
+import org.tomvej.fmassoc.parts.altsrcdst.preference.PreferenceManager;
+import org.tomvej.fmassoc.parts.altsrcdst.preference.PreferenceTopic;
 import org.tomvej.fmassoc.parts.altsrcdst.srcdst.SourceDestinationPanel;
 
 /**
@@ -48,7 +51,8 @@ public class Part {
 	 */
 	@PostConstruct
 	public void createComponents(Composite parent, Shell shell, @Optional DataModel model, MApplication application,
-			@Preference(value = "popup-width") Integer popupWidth, @Preference(value = "popup-height") Integer popupHeight) {
+			@Preference(value = "popup-width") Integer popupWidth, @Preference(value = "popup-height") Integer popupHeight,
+			PreferenceManager preference) {
 		context = application.getContext();
 		parent.setLayout(new GridLayout(2, true));
 		GridDataFactory layout = GridDataFactory.fillDefaults().grab(true, true);
@@ -63,6 +67,7 @@ public class Part {
 		forbiddenChooser.setLayoutData(layout.create());
 		forbiddenChooser.setTableListener(this::forbiddenChanged);
 
+		displayPropertyChanged(preference.getDisplayProperty());
 		setTables(model);
 	}
 
@@ -109,6 +114,13 @@ public class Part {
 		forbidden = model != null ? new HashSet<>(model.getForbiddenTables()) : Collections.emptySet();
 		srcDst.setTables(tables);
 		forbiddenChooser.setTables(tables, forbidden);
+	}
+
+	@Optional
+	@Inject
+	public void displayPropertyChanged(
+			@UIEventTopic(PreferenceTopic.DISPLAY_PROPERTY_CHANGE) Function<Table, String> property) {
+		srcDst.setLabelProvider(property);
 	}
 
 	/**

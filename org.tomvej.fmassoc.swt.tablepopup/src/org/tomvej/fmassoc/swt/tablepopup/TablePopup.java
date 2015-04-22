@@ -265,4 +265,8 @@ public class TablePopup {
 		target.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_UP, SWT.NONE, e -> moveOpener.accept(-1)));
 		target.addTraverseListener(new TraverseWrapper(SWT.TRAVERSE_RETURN, opener));
 	}
+
+	public void setSuspended(boolean isSuspended) {
+		accepting = isSuspended;
+	}
 }
