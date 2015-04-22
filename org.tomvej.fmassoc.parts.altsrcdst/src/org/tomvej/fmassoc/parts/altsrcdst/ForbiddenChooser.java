@@ -143,7 +143,9 @@ public class ForbiddenChooser extends Group {
 	@SuppressWarnings("unchecked")
 	private void addTable() {
 		forbidden.add(inputTable);
+		popup.setSuspended(true);
 		tableChosen(null);
+		popup.setSuspended(false);
 		popup.setFilter(forbidden);
 	}
 
