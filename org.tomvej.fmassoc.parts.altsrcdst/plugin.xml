@@ -5,8 +5,16 @@
          id="org.tomvej.fmassoc.parts.altsrcdst.fragment"
          point="org.eclipse.e4.workbench.model">
       <fragment
+            apply="initial"
             uri="fragment.e4xmi">
       </fragment>
+   </extension>
+   <extension
+         point="org.tomvej.fmassoc.core.preferencePage">
+      <client
+            class="org.tomvej.fmassoc.parts.altsrcdst.preference.PreferencePage"
+            id="org.tomvej.fmassoc.parts.altsrcdst.preference">
+      </client>
    </extension>
 
 </plugin>
