@@ -128,6 +128,9 @@ public class SourceDestinationPanel extends Composite {
 		popup.setTables(tables);
 	}
 
+	/**
+	 * Specify how selected tables will be displayed.
+	 */
 	public void setLabelProvider(Function<Table, String> labelProvider) {
 		this.labelProvider = Objects.requireNonNull(labelProvider);
 		popup.setSuspended(true);

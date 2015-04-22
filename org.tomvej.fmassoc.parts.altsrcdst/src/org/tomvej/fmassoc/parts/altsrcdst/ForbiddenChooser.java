@@ -194,6 +194,9 @@ public class ForbiddenChooser extends Group {
 		return (Set<Table>) forbidden.stream().filter(t -> table.getChecked(t)).collect(Collectors.toSet());
 	}
 
+	/**
+	 * Specify how selected table will be displayed.
+	 */
 	public void setLabelProvider(Function<Table, String> labelProvider) {
 		this.labelProvider = Objects.requireNonNull(labelProvider);
 		if (inputTable != null) {

@@ -88,6 +88,9 @@ public class TableChooser extends Composite {
 		this.listener = listener;
 	}
 
+	/**
+	 * Specify how selected table will be displayed.
+	 */
 	public void setLabelProvider(Function<Table, String> labelProvider) {
 		this.labelProvider = Objects.requireNonNull(labelProvider);
 		if (table != null) {

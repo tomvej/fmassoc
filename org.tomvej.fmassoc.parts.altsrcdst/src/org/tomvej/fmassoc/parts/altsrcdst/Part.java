@@ -116,6 +116,9 @@ public class Part {
 		forbiddenChooser.setTables(tables, forbidden);
 	}
 
+	/**
+	 * Listens to changes in how table should be displayed.
+	 */
 	@Optional
 	@Inject
 	public void displayPropertyChanged(
