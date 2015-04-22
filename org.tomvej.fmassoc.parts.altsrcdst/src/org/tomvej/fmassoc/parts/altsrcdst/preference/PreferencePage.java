@@ -12,11 +12,19 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
+/**
+ * Preference page for source and destination chooser.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class PreferencePage extends org.eclipse.jface.preference.PreferencePage {
 	@Inject
 	private PreferenceManager manager;
 	private ComboViewer displayInPopup;
 
+	/**
+	 * Default constructor.
+	 */
 	public PreferencePage() {
 		super("Source and destination");
 		noDefaultAndApplyButton();

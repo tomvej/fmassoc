@@ -4,6 +4,11 @@ import java.util.function.Function;
 
 import org.tomvej.fmassoc.model.db.Table;
 
+/**
+ * Event constants for source and destination chooser preference.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public interface PreferenceTopic {
 	/** Topic general name. Do not use as message */
 	static final String TOPIC = "TOPIC_SOURCE_DESTINATION_PREFERENCE";
