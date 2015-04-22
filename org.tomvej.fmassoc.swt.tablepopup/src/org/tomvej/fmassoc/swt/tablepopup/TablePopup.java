@@ -266,6 +266,10 @@ public class TablePopup {
 		target.addTraverseListener(new TraverseWrapper(SWT.TRAVERSE_RETURN, opener));
 	}
 
+	/**
+	 * Select suspended state. When the pop-up is suspended, it will not show
+	 * while it normally would.
+	 */
 	public void setSuspended(boolean isSuspended) {
 		accepting = isSuspended;
 	}
