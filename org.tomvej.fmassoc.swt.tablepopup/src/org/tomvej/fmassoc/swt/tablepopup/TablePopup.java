@@ -255,8 +255,11 @@ public class TablePopup {
 			}
 		});
 
-		Consumer<Integer> moveOpener =
-				i -> open(target, tableSupplier.get(), tableListener, target.getText(), target.getSelection(), i);
+		Consumer<Integer> moveOpener = i -> {
+			if (!accepting) {
+				open(target, tableSupplier.get(), tableListener, target.getText(), target.getSelection(), i);
+			}
+		};
 		Consumer<TypedEvent> opener = e -> moveOpener.accept(0);
 
 		target.addMouseListener(new MouseClickWrapper(opener));
@@ -267,10 +270,13 @@ public class TablePopup {
 	}
 
 	/**
-	 * Select suspended state. When the pop-up is suspended, it will not show
-	 * while it normally would.
+	 * Do an action while not showing the pop-up. Use this to perform
+	 * programmatically an action which would normally cause the pop-up to show,
+	 * such as {@link Text#setText(String)}.
 	 */
-	public void setSuspended(boolean isSuspended) {
-		accepting = isSuspended;
+	public void doWhileSuspended(Runnable action) {
+		accepting = true;
+		action.run();
+		accepting = false;
 	}
 }

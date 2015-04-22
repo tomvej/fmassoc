@@ -143,9 +143,7 @@ public class ForbiddenChooser extends Group {
 	@SuppressWarnings("unchecked")
 	private void addTable() {
 		forbidden.add(inputTable);
-		popup.setSuspended(true);
-		tableChosen(null);
-		popup.setSuspended(false);
+		popup.doWhileSuspended(() -> tableChosen(null));
 		popup.setFilter(forbidden);
 	}
 
@@ -200,9 +198,7 @@ public class ForbiddenChooser extends Group {
 	public void setLabelProvider(Function<Table, String> labelProvider) {
 		this.labelProvider = Objects.requireNonNull(labelProvider);
 		if (inputTable != null) {
-			popup.setSuspended(true);
-			input.setText(labelProvider.apply(inputTable));
-			popup.setSuspended(false);
+			popup.doWhileSuspended(() -> input.setText(labelProvider.apply(inputTable)));
 		}
 	}
 

@@ -133,9 +133,7 @@ public class SourceDestinationPanel extends Composite {
 	 */
 	public void setLabelProvider(Function<Table, String> labelProvider) {
 		this.labelProvider = Objects.requireNonNull(labelProvider);
-		popup.setSuspended(true);
-		choosers.forEach(c -> c.setLabelProvider(labelProvider));
-		popup.setSuspended(false);
+		popup.doWhileSuspended(() -> choosers.forEach(c -> c.setLabelProvider(labelProvider)));
 	}
 
 }
