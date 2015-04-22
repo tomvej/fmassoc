@@ -121,6 +121,7 @@ public class Part {
 	public void displayPropertyChanged(
 			@UIEventTopic(PreferenceTopic.DISPLAY_PROPERTY_CHANGE) Function<Table, String> property) {
 		srcDst.setLabelProvider(property);
+		forbiddenChooser.setLabelProvider(property);
 	}
 
 	/**

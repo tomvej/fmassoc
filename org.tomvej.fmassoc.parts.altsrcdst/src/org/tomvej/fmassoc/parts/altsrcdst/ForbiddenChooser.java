@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -52,6 +53,8 @@ public class ForbiddenChooser extends Group {
 	private Consumer<Set<Table>> tableListener;
 
 	private Table inputTable;
+
+	private Function<Table, String> labelProvider;
 
 	/**
 	 * Specify parent component.
@@ -133,7 +136,7 @@ public class ForbiddenChooser extends Group {
 
 	private void tableChosen(Table table) {
 		inputTable = table;
-		input.setText(table != null ? table.getName() : "");
+		input.setText(table != null ? labelProvider.apply(table) : "");
 		addBtn.setEnabled(table != null);
 	}
 
@@ -189,6 +192,14 @@ public class ForbiddenChooser extends Group {
 		return (Set<Table>) forbidden.stream().filter(t -> table.getChecked(t)).collect(Collectors.toSet());
 	}
 
+	public void setLabelProvider(Function<Table, String> labelProvider) {
+		this.labelProvider = Objects.requireNonNull(labelProvider);
+		if (inputTable != null) {
+			popup.setSuspended(true);
+			input.setText(labelProvider.apply(inputTable));
+			popup.setSuspended(false);
+		}
+	}
 
 	/**
 	 * Changes color for default forbidden tables.
