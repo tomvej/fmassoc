@@ -12,6 +12,7 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -41,9 +42,12 @@ public class ModelManagerDialog extends TitleAreaDialog {
 	@Inject
 	@Named(Constants.MODEL_LOADER_REGISTRY)
 	private List<ModelLoaderEntry> loaders;
+	@Inject
+	private ModelEntry current;
 
 	private ListViewer list;
 	private Button editBtn, removeBtn;
+	private boolean currentChanged;
 
 	/**
 	 * Create model manager dialog. Not to be used explicitly, only from
@@ -71,7 +75,7 @@ public class ModelManagerDialog extends TitleAreaDialog {
 		createButton(container, "Add",
 				e -> new LoaderSelectionPage(getParentShell(), loaders, models).getNewModelDialog().open());
 		editBtn = createButton(container, "Edit",
-				e -> new WizardDialog(getParentShell(), getSelected().createEditWizard()).open());
+				e -> new WizardDialogWithCheck(getParentShell(), getSelected().createEditWizard()).open());
 		removeBtn = createButton(container, "Remove",
 				e -> models.remove(list.getList().getSelectionIndex()));
 		refreshButtons();
@@ -112,6 +116,25 @@ public class ModelManagerDialog extends TitleAreaDialog {
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
 		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
+	}
+
+	public boolean isCurrentModelChanged() {
+		return currentChanged;
+	}
+
+	private class WizardDialogWithCheck extends WizardDialog {
+
+		public WizardDialogWithCheck(Shell parentShell, IWizard newWizard) {
+			super(parentShell, newWizard);
+		}
+
+		@Override
+		protected void finishPressed() {
+			if (current.equals(getSelected())) {
+				currentChanged = true;
+			}
+			super.finishPressed();
+		}
 	}
 
 
