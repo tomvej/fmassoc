@@ -118,6 +118,10 @@ public class ModelManagerDialog extends TitleAreaDialog {
 		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
 	}
 
+	/**
+	 * Return whether the currently loaded model has been edited in manager.
+	 * This only checks if "Finish" has been pressed in its edit dialog.
+	 */
 	public boolean isCurrentModelChanged() {
 		return currentChanged;
 	}
