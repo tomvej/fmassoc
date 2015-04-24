@@ -17,7 +17,9 @@ public enum Options {
 	/** Prefix column names with table names */
 	PREFIX_COLUMNS("Prefix column names with table names"),
 	/** Print internal ARM properties such as */
-	PRINT_VERSIONS("Print table versions properties", true);
+	PRINT_VERSIONS("Print table versions properties", true),
+	/** use {@code LEFT JOIN} instead of {@code JOIN} */
+	USE_LEFT_JOIN("Use LEFT JOIN");
 
 
 	private final String msg;

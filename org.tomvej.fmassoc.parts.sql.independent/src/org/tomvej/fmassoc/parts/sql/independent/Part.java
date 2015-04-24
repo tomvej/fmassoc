@@ -2,6 +2,7 @@ package org.tomvej.fmassoc.parts.sql.independent;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -115,10 +116,13 @@ public class Part {
 			return;
 		}
 		if (selected != null) {
+			Set<Options> selectedOptions = options.keySet().stream().filter(o -> options.get(o).getSelection())
+					.collect(Collectors.toSet());
 			IndependentHandleFactory factory = new IndependentHandleFactory(
-					options.keySet().stream().filter(o -> options.get(o).getSelection()).collect(Collectors.toSet()),
+					selectedOptions,
 					selected.getSource(), selected.getDestination());
-			String result = new JoinFormatter(factory, factory.displayAllColumns()).formatPath(selected);
+			String result = new JoinFormatter(factory, factory.displayAllColumns(),
+					selectedOptions.contains(Options.USE_LEFT_JOIN)).formatPath(selected);
 			setText(result);
 		} else {
 			setText(null);
