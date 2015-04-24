@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -43,6 +44,7 @@ public class ModelManagerDialog extends TitleAreaDialog {
 	@Named(Constants.MODEL_LOADER_REGISTRY)
 	private List<ModelLoaderEntry> loaders;
 	@Inject
+	@Optional
 	private ModelEntry current;
 
 	private ListViewer list;
@@ -134,7 +136,7 @@ public class ModelManagerDialog extends TitleAreaDialog {
 
 		@Override
 		protected void finishPressed() {
-			if (current.equals(getSelected())) {
+			if (getSelected().equals(current)) {
 				currentChanged = true;
 			}
 			super.finishPressed();
