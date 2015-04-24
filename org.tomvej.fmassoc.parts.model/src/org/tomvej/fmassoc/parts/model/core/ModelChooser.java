@@ -81,7 +81,8 @@ public class ModelChooser {
 		List<ModelEntry> modelEntries = new ArrayList<>();
 		IStatus status = manager.loadModels(modelEntries, loaders);
 		if (!status.equals(Status.OK_STATUS)) {
-			ErrorDialog.openError(parentShell, "Unaccessible Models", "Some models could not be loaded.", status);
+			ErrorDialog.openError(parentShell, "Unaccessible Models",
+					"Some models could not be loaded. You can remove them in the model manager dialog.", status);
 		}
 		models = new ModelList(manager, modelEntries);
 		appContext.set(ModelList.class, models);
