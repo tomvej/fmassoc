@@ -94,7 +94,7 @@ public class ModelManagerDialog extends TitleAreaDialog {
 
 	private void refreshButtons() {
 		boolean selected = !list.getSelection().isEmpty();
-		editBtn.setEnabled(selected);
+		editBtn.setEnabled(selected && getSelected().isValid());
 		removeBtn.setEnabled(selected);
 	}
 

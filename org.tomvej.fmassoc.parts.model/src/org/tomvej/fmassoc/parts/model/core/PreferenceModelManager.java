@@ -143,9 +143,8 @@ public class PreferenceModelManager {
 						+ loaderId;
 				logger.error(message);
 				status.add(new Status(IStatus.WARNING, Constants.PLUGIN_ID, message));
-			} else {
-				target.add(new ModelEntry(id, label, loader));
 			}
+			target.add(new ModelEntry(id, label, loader));
 		}
 
 		if (status.getChildren().length == 0) {

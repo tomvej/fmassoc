@@ -37,6 +37,7 @@ import org.tomvej.fmassoc.core.communicate.DataModelTopic;
 import org.tomvej.fmassoc.model.db.DataModel;
 import org.tomvej.fmassoc.parts.model.ModelLoader;
 import org.tomvej.fmassoc.swt.wrappers.TextLabelProvider;
+import org.tomvej.fmassoc.swt.wrappers.ViewerFilterWrapper;
 
 /**
  * Toolbar widget used to switch data models.
@@ -96,6 +97,7 @@ public class ModelChooser {
 		switcher.setLabelProvider(new TextLabelProvider<ModelEntry>(entry -> entry.getLabel()));
 		switcher.setInput(models);
 		switcher.addSelectionChangedListener(event -> modelSelected());
+		switcher.addFilter(new ViewerFilterWrapper<ModelEntry>(e -> e.isValid()));
 
 		parentShell.getDisplay().asyncExec(this::loadSelectedModel);
 	}
