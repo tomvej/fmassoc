@@ -19,7 +19,9 @@ public enum Options {
 	/** Print internal ARM properties such as */
 	PRINT_VERSIONS("Print table versions properties", true),
 	/** use {@code LEFT JOIN} instead of {@code JOIN} */
-	USE_LEFT_JOIN("Use LEFT JOIN");
+	USE_LEFT_JOIN("Use LEFT JOIN"),
+	/** Print only ID_OBJECT columns */
+	PRINT_OIDS_ONLY("Print only ID_OBJECTs");
 
 
 	private final String msg;

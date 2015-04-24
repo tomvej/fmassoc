@@ -49,7 +49,11 @@ public class IndependentHandleFactory implements HandleFactory {
 
 	private boolean displayWholeTables() {
 		return isSet(Options.PRINT_OIDS) && isSet(Options.PRINT_ASSOC) && isSet(Options.PRINT_VERSIONS)
-				&& !isSet(Options.PREFIX_COLUMNS);
+				&& !prefixColumns();
+	}
+
+	private boolean prefixColumns() {
+		return isSet(Options.PREFIX_COLUMNS) || isSet(Options.PRINT_OIDS_ONLY);
 	}
 
 	@Override
@@ -69,7 +73,8 @@ public class IndependentHandleFactory implements HandleFactory {
 
 			@Override
 			public boolean isDisplayed() {
-				return isSet(Options.PRINT_VERSIONS) || !VERSIONS.contains(property.getImplName());
+				return !isSet(Options.PRINT_OIDS_ONLY)
+						&& (isSet(Options.PRINT_VERSIONS) || !VERSIONS.contains(property.getImplName()));
 			}
 		};
 	}
@@ -80,7 +85,7 @@ public class IndependentHandleFactory implements HandleFactory {
 
 			@Override
 			public boolean isDisplayed() {
-				return isSet(Options.PRINT_ASSOC);
+				return isSet(Options.PRINT_ASSOC) && !isSet(Options.PRINT_OIDS_ONLY);
 
 			}
 		};
@@ -96,7 +101,7 @@ public class IndependentHandleFactory implements HandleFactory {
 		}
 
 		private boolean appendColumns() {
-			return isSet(Options.PREFIX_COLUMNS) && isDisplayed()
+			return prefixColumns() && isDisplayed()
 					&& !getTableHandle(parent).isDisplayed().equals(DisplayState.NONE);
 		}
 
