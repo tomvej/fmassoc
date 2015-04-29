@@ -2,7 +2,7 @@
 <feature
       id="org.tomvej.fmassoc.extras"
       label="Extra Features"
-      version="2.0.0">
+      version="2.1.0.SNAPSHOT">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -18,6 +18,13 @@
 
    <plugin
          id="org.tomvej.fmassoc.parts.srcdst"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.tomvej.fmassoc.parts.sql.tree"
          download-size="0"
          install-size="0"
          version="0.0.0"
