@@ -12,6 +12,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.parts.sql.tree.content.PathContentProvider;
 
@@ -22,10 +24,16 @@ public class Part {
 	public void createComponents(Composite parent, @Optional @Named(IServiceConstants.ACTIVE_SELECTION) Path selected) {
 		parent.setLayout(new GridLayout(2, false));
 
+		Text result = new Text(parent, SWT.WRAP | SWT.BORDER | SWT.MULTI | SWT.READ_ONLY);
+		result.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).hint(0, 2 * result.getLineHeight()).span(2, 1)
+				.create());
+		result.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
+
 		tree = new CheckboxTreeViewer(parent, SWT.BORDER);
 		tree.setContentProvider(new PathContentProvider());
 		tree.setLabelProvider(new PathTreeLabelProvider());
 		tree.getTree().setLayoutData(GridDataFactory.fillDefaults().grab(true, true).span(1, 8).create());
+
 
 		for (String text : new String[] {
 				"Print ID_OBJECTs",
