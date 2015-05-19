@@ -2,6 +2,7 @@ package org.tomvej.fmassoc.parts.sql.tree.model;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -94,7 +95,11 @@ public class PathContentProvider implements ITreeContentProvider {
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		if (newInput != null) {
-			columns = getTables(newInput).collect(Collectors.toMap(Function.identity(), t -> new TableChildren(t)));
+			Validate.isInstanceOf(Path.class, newInput);
+			Set<AssociationProperty> pathAssociations =
+					(((Path) newInput).getAssociations()).stream().collect(Collectors.toSet());
+			columns = getTables(newInput).collect(
+					Collectors.toMap(Function.identity(), t -> new TableChildren(t, pathAssociations)));
 		}
 	}
 

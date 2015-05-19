@@ -1,9 +1,11 @@
 package org.tomvej.fmassoc.parts.sql.tree.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.Validate;
+import org.tomvej.fmassoc.model.db.AssociationProperty;
 import org.tomvej.fmassoc.model.db.Table;
 
 /**
@@ -22,10 +24,10 @@ class TableChildren {
 	/**
 	 * Specify parent table.
 	 */
-	TableChildren(Table target) {
+	TableChildren(Table target, Collection<AssociationProperty> pathAssociations) {
 		Validate.notNull(target);
 		objectIdColumn = new ObjectIdColumn(target);
-		AssociationColumns associationColumns = new AssociationColumns(target);
+		AssociationColumns associationColumns = new AssociationColumns(target, pathAssociations);
 		this.associationColumns = associationColumns.getChildren().length > 0 ? associationColumns : null;
 		PropertyColumns propertyColumns = new PropertyColumns(target);
 		this.propertyColumns = propertyColumns.getChildren().length > 0 ? propertyColumns : null;
