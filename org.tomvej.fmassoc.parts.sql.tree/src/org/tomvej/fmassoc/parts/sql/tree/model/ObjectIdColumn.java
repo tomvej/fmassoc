@@ -2,6 +2,11 @@ package org.tomvej.fmassoc.parts.sql.tree.model;
 
 import org.tomvej.fmassoc.model.db.Table;
 
+/**
+ * ID_OBJECT column of a table.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class ObjectIdColumn extends TableChild {
 
 	private ObjectIdColumn(Table parent) {
@@ -35,6 +40,9 @@ public class ObjectIdColumn extends TableChild {
 		}
 	}
 
+	/**
+	 * Return an instance of this column.
+	 */
 	public static ObjectIdColumn getInstance(Table parent) {
 		return new ObjectIdColumn(parent);
 	}

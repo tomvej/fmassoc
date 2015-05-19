@@ -2,15 +2,20 @@ package org.tomvej.fmassoc.parts.sql.tree.model;
 
 import org.tomvej.fmassoc.model.db.Table;
 
+/**
+ * All association columns of a table.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class AssociationColumns extends TableChild {
 
-	public AssociationColumns(Table parent) {
+	AssociationColumns(Table parent) {
 		super(parent);
 	}
 
 	@Override
 	public Object[] getChildren() {
-		return getParent().getAssociations().toArray();
+		return getParent().getAssociations().stream().filter(a -> !a.isReverse()).toArray();
 	}
 
 	@Override
