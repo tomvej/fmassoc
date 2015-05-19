@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 import org.apache.commons.lang3.Validate;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
+import org.eclipse.jface.viewers.ICheckStateProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -35,6 +36,7 @@ public class PathTreeCheckModel {
 	private Map<Button, Supplier<Collection<? extends TreeNode>>> suppliers = new HashMap<>();
 
 	private final SelectionListener selectionListener = new SelectionWrapper(this::buttonSelected);
+	private CheckStateProvider checkStateProvider = new CheckStateProvider();
 
 	/**
 	 * Specify tree and content provider. Content provider must be the same as
@@ -45,6 +47,7 @@ public class PathTreeCheckModel {
 		tree = treeViewer;
 		provider = contentProvider;
 		tree.addCheckStateListener(this::checkStateChanged);
+		tree.setCheckStateProvider(checkStateProvider);
 	}
 
 	/**
@@ -99,9 +102,9 @@ public class PathTreeCheckModel {
 		if (event.getElement() instanceof Table) {
 			buttons.values().forEach(this::updateButtonState);
 		} else if (event.getElement() instanceof TreeNode) {
-			checkButtonFor(event.getElement());
+			updateButtonState(getButton(event.getElement()));
 		} else if (event.getElement() instanceof Property) {
-			checkButtonFor(getParent(event.getElement()));
+			updateButtonState(getButton(getParent(event.getElement())));
 		} else {
 			throw new IllegalArgumentException("Unsupported element class: " + event.getElement().getClass());
 		}
@@ -144,12 +147,13 @@ public class PathTreeCheckModel {
 		btn.setGrayed(checked > 0 && number != checked);
 	}
 
+
 	/**
-	 * Update button checked state for given element.
+	 * Returns button for given element.
 	 */
-	private void checkButtonFor(Object element) {
-		updateButtonState(Validate.notNull(buttons.get(element.getClass()),
-				"Button for " + element.getClass() + " not specified."));
+	private Button getButton(Object element) {
+		return Validate.notNull(buttons.get(element.getClass()),
+				"Button for " + element.getClass() + " not specified.");
 	}
 
 	/**
@@ -178,4 +182,33 @@ public class PathTreeCheckModel {
 		return suppliers.get(btn).get();
 	}
 
+	private class CheckStateProvider implements ICheckStateProvider {
+
+		@Override
+		public boolean isChecked(Object element) {
+			if (element instanceof Table) {
+				return buttons.values().stream().anyMatch(PathTreeCheckModel::isButtonChecked);
+			} else if (element instanceof TreeNode) {
+				return getButton(element).getSelection();
+			} else if (element instanceof Property) {
+				return getButton(element).getSelection();
+			}
+			throw new IllegalArgumentException("Unsupported element type: " + element.getClass());
+		}
+
+		public boolean isGrayed(Object element) {
+			if (element instanceof Table) {
+				return isChecked(element) && !buttons.values().stream().allMatch(PathTreeCheckModel::isButtonChecked);
+			} else {
+				return false;
+			}
+		};
+	}
+
+	private static boolean isButtonChecked(Button btn) {
+		if (btn.getGrayed()) {
+			btn.setSelection(false);
+		}
+		return btn.getSelection();
+	}
 }
