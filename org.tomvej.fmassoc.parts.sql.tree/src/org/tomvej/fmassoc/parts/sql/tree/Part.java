@@ -1,7 +1,5 @@
 package org.tomvej.fmassoc.parts.sql.tree;
 
-import java.util.Arrays;
-
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -9,10 +7,7 @@ import javax.inject.Named;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
-import org.eclipse.jface.viewers.ICheckStateListener;
-import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -20,6 +15,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.model.path.Path;
+import org.tomvej.fmassoc.parts.sql.tree.check.PathTreeCheckModel;
 import org.tomvej.fmassoc.parts.sql.tree.model.PathContentProvider;
 
 public class Part {
@@ -35,15 +31,13 @@ public class Part {
 		result.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 
 		tree = new CheckboxTreeViewer(parent, SWT.BORDER);
-		tree.setContentProvider(new PathContentProvider());
+		PathContentProvider provider = new PathContentProvider();
+		tree.setContentProvider(provider);
+		PathTreeCheckModel checkModel = new PathTreeCheckModel(tree, provider);
 		tree.setLabelProvider(new PathTreeLabelProvider());
 		tree.getTree().setLayoutData(GridDataFactory.fillDefaults().grab(true, true).span(1, 8).create());
 
 		for (String text : new String[] {
-				"Print ID_OBJECTs",
-				"Print associations",
-				"Print properties",
-				"Print version properties",
 				"Abbreviate table names (i.e. T195)",
 				"Prefix column names with table name",
 				"Use LEFT JOIN" }) {
@@ -51,29 +45,21 @@ public class Part {
 			btn.setText(text);
 		}
 
-		tree.addCheckStateListener(new ICheckStateListener() {
+		Button btn = new Button(parent, SWT.CHECK);
+		btn.setText("Print ID_OBJECTs");
+		checkModel.setOidButton(btn);
 
-			@Override
-			public void checkStateChanged(CheckStateChangedEvent event) {
-				CheckboxTreeViewer tree = (CheckboxTreeViewer) event.getCheckable();
-				ITreeContentProvider provider = (ITreeContentProvider)
-						tree.getContentProvider();
+		btn = new Button(parent, SWT.CHECK);
+		btn.setText("Print associations");
+		checkModel.setAssociationButton(btn);
 
-				tree.setSubtreeChecked(event.getElement(), event.getChecked());
-				tree.setGrayed(event.getElement(), false);
+		btn = new Button(parent, SWT.CHECK);
+		btn.setText("Print properties");
+		checkModel.setPropertyButton(btn);
 
-				Object parent = provider.getParent(event.getElement());
-				while (parent != null) {
-					Object[] children = provider.getChildren(parent);
-					int number = children.length;
-					long checked = Arrays.stream(children).filter(tree::getChecked).count();
-					tree.setChecked(parent, checked != 0);
-					tree.setGrayed(parent, number != checked);
-
-					parent = provider.getParent(parent);
-				}
-			}
-		});
+		btn = new Button(parent, SWT.CHECK);
+		btn.setText("Print version properties");
+		checkModel.setVersionButton(btn);
 
 		pathSelected(selected);
 	}
