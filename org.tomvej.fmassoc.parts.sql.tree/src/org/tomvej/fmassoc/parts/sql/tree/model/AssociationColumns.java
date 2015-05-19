@@ -3,7 +3,7 @@ package org.tomvej.fmassoc.parts.sql.tree.model;
 import org.tomvej.fmassoc.model.db.Table;
 
 /**
- * All association columns of a table.
+ * Proxy tree element containing all association columns of a table.
  * 
  * @author Tomáš Vejpustek
  */

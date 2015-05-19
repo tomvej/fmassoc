@@ -6,13 +6,23 @@ import java.util.List;
 import org.apache.commons.lang3.Validate;
 import org.tomvej.fmassoc.model.db.Table;
 
-public class TableChildren {
+/**
+ * Auxiliary structure containing all proxy tree elements attached under a
+ * {@link Table}. Contains OID column, associations, properties and version
+ * properties.
+ * 
+ * @author Tomáš Vejpustek
+ */
+class TableChildren {
 	private final ObjectIdColumn objectIdColumn;
 	private final PropertyColumns propertyColumns;
 	private final VersionColumns versionColumns;
 	private final AssociationColumns associationColumns;
 
-	public TableChildren(Table target) {
+	/**
+	 * Specify parent table.
+	 */
+	TableChildren(Table target) {
 		Validate.notNull(target);
 		objectIdColumn = ObjectIdColumn.getInstance(target);
 		AssociationColumns associationColumns = new AssociationColumns(target);
@@ -22,7 +32,11 @@ public class TableChildren {
 		versionColumns = new VersionColumns(target);
 	}
 
-	public Object[] getChildren() {
+	/**
+	 * Returns all children attached under the table. There are no {@code null}
+	 * elements.
+	 */
+	Object[] getChildren() {
 		List<Object> children = new ArrayList<>();
 		children.add(objectIdColumn);
 		if (associationColumns != null) {
@@ -35,19 +49,31 @@ public class TableChildren {
 		return children.toArray();
 	}
 
-	public ObjectIdColumn getObjectIdColumn() {
+	/**
+	 * Returns OID column of the table.
+	 */
+	ObjectIdColumn getObjectIdColumn() {
 		return objectIdColumn;
 	}
 
-	public PropertyColumns getPropertyColumns() {
+	/**
+	 * Returns all properties of the table (except version properties).
+	 */
+	PropertyColumns getPropertyColumns() {
 		return propertyColumns;
 	}
 
-	public VersionColumns getVersionColumns() {
+	/**
+	 * Returns all version properties of the table.
+	 */
+	VersionColumns getVersionColumns() {
 		return versionColumns;
 	}
 
-	public AssociationColumns getAssociationColumns() {
+	/**
+	 * Return all associations of the table.
+	 */
+	AssociationColumns getAssociationColumns() {
 		return associationColumns;
 	}
 }

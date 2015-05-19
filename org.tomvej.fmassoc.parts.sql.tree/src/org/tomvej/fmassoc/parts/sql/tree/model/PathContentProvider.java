@@ -13,6 +13,11 @@ import org.tomvej.fmassoc.model.db.Property;
 import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.model.path.Path;
 
+/**
+ * Content provider for a path.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class PathContentProvider implements ITreeContentProvider {
 	private Map<Table, TableChildren> columns;
 

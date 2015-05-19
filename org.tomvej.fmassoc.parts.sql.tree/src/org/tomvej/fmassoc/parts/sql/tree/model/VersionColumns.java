@@ -2,9 +2,14 @@ package org.tomvej.fmassoc.parts.sql.tree.model;
 
 import org.tomvej.fmassoc.model.db.Table;
 
+/**
+ * Proxy tree element containing all version properties of a table.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class VersionColumns extends TableChild {
 
-	public VersionColumns(Table parent) {
+	VersionColumns(Table parent) {
 		super(parent);
 	}
 
