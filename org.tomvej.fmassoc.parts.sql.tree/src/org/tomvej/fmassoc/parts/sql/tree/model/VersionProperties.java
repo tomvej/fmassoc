@@ -21,7 +21,7 @@ enum VersionProperties {
 
 	private static Set<String> properties = Arrays.stream(values()).map(VersionProperties::name).collect(Collectors.toSet());
 
-	public static boolean isVersionProperty(Property target) {
+	static boolean isVersionProperty(Property target) {
 		return properties.contains(target.getImplName().toUpperCase());
 	}
 }

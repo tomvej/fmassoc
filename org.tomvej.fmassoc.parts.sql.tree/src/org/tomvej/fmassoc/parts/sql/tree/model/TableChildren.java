@@ -1,14 +1,10 @@
-package org.tomvej.fmassoc.parts.sql.tree.content;
+package org.tomvej.fmassoc.parts.sql.tree.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.Validate;
 import org.tomvej.fmassoc.model.db.Table;
-import org.tomvej.fmassoc.parts.sql.tree.model.AssociationColumns;
-import org.tomvej.fmassoc.parts.sql.tree.model.ObjectIdColumn;
-import org.tomvej.fmassoc.parts.sql.tree.model.PropertyColumns;
-import org.tomvej.fmassoc.parts.sql.tree.model.VersionColumns;
 
 public class TableChildren {
 	private final ObjectIdColumn objectIdColumn;

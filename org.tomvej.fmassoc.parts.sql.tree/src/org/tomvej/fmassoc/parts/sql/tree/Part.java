@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.model.path.Path;
-import org.tomvej.fmassoc.parts.sql.tree.content.PathContentProvider;
+import org.tomvej.fmassoc.parts.sql.tree.model.PathContentProvider;
 
 public class Part {
 	private CheckboxTreeViewer tree;
