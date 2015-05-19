@@ -1,5 +1,6 @@
 package org.tomvej.fmassoc.parts.sql.tree.model;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -100,5 +101,37 @@ public class PathContentProvider implements ITreeContentProvider {
 	@Override
 	public void dispose() {
 		// do nothing
+	}
+
+	private <T> Collection<T> getFromTableChildren(Function<TableChildren, T> getter) {
+		return columns.values().stream().map(getter).filter(t -> t != null).collect(Collectors.toList());
+	}
+
+	/**
+	 * Returns all ID_OBJECT proxies.
+	 */
+	public Collection<ObjectIdColumn> getOidColumns() {
+		return getFromTableChildren(TableChildren::getObjectIdColumn);
+	}
+
+	/**
+	 * Return all proxies for association collections.
+	 */
+	public Collection<AssociationColumns> getAssociationProxies() {
+		return getFromTableChildren(TableChildren::getAssociationColumns);
+	}
+
+	/**
+	 * Returns all proxies for properties collections.
+	 */
+	public Collection<PropertyColumns> getPropertyProxies() {
+		return getFromTableChildren(TableChildren::getPropertyColumns);
+	}
+
+	/**
+	 * Returns all proxies for version properties collections.
+	 */
+	public Collection<VersionColumns> getVersionProxies() {
+		return getFromTableChildren(TableChildren::getVersionColumns);
 	}
 }

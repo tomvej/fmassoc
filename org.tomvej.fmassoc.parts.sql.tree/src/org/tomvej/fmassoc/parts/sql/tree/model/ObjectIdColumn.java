@@ -9,7 +9,7 @@ import org.tomvej.fmassoc.model.db.Table;
  */
 public class ObjectIdColumn extends TableChild {
 
-	private ObjectIdColumn(Table parent) {
+	ObjectIdColumn(Table parent) {
 		super(parent);
 	}
 
@@ -22,30 +22,4 @@ public class ObjectIdColumn extends TableChild {
 	public Object[] getChildren() {
 		return null;
 	}
-
-	@Override
-	public int hashCode() {
-		return getParent().hashCode();
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj instanceof ObjectIdColumn) {
-			return ((ObjectIdColumn) obj).getParent().equals(getParent());
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * Return an instance of this column.
-	 */
-	public static ObjectIdColumn getInstance(Table parent) {
-		return new ObjectIdColumn(parent);
-	}
-
-
 }

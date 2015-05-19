@@ -24,7 +24,7 @@ class TableChildren {
 	 */
 	TableChildren(Table target) {
 		Validate.notNull(target);
-		objectIdColumn = ObjectIdColumn.getInstance(target);
+		objectIdColumn = new ObjectIdColumn(target);
 		AssociationColumns associationColumns = new AssociationColumns(target);
 		this.associationColumns = associationColumns.getChildren().length > 0 ? associationColumns : null;
 		PropertyColumns propertyColumns = new PropertyColumns(target);
