@@ -2,10 +2,20 @@ package org.tomvej.fmassoc.parts.sql.tree.model;
 
 import org.tomvej.fmassoc.model.db.Table;
 
-public class ObjectIdColumn extends TableChild {
+public class ObjectIdColumn extends TableChild implements TreeNode {
 
 	private ObjectIdColumn(Table parent) {
 		super(parent);
+	}
+
+	@Override
+	public boolean hasChildren() {
+		return false;
+	}
+
+	@Override
+	public Object[] getChildren() {
+		return null;
 	}
 
 	@Override

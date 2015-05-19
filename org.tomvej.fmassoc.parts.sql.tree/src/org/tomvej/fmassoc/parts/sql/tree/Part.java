@@ -1,5 +1,7 @@
 package org.tomvej.fmassoc.parts.sql.tree;
 
+import java.util.Arrays;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -7,7 +9,10 @@ import javax.inject.Named;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
+import org.eclipse.jface.viewers.ICheckStateListener;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -34,7 +39,6 @@ public class Part {
 		tree.setLabelProvider(new PathTreeLabelProvider());
 		tree.getTree().setLayoutData(GridDataFactory.fillDefaults().grab(true, true).span(1, 8).create());
 
-
 		for (String text : new String[] {
 				"Print ID_OBJECTs",
 				"Print associations",
@@ -46,6 +50,30 @@ public class Part {
 			Button btn = new Button(parent, SWT.CHECK);
 			btn.setText(text);
 		}
+
+		tree.addCheckStateListener(new ICheckStateListener() {
+
+			@Override
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				CheckboxTreeViewer tree = (CheckboxTreeViewer) event.getCheckable();
+				ITreeContentProvider provider = (ITreeContentProvider)
+						tree.getContentProvider();
+
+				tree.setSubtreeChecked(event.getElement(), event.getChecked());
+				tree.setGrayed(event.getElement(), false);
+
+				Object parent = provider.getParent(event.getElement());
+				while (parent != null) {
+					Object[] children = provider.getChildren(parent);
+					int number = children.length;
+					long checked = Arrays.stream(children).filter(tree::getChecked).count();
+					tree.setChecked(parent, checked != 0);
+					tree.setGrayed(parent, number != checked);
+
+					parent = provider.getParent(parent);
+				}
+			}
+		});
 
 		pathSelected(selected);
 	}
