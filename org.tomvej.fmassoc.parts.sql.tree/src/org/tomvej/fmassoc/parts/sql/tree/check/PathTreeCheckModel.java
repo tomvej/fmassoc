@@ -23,6 +23,11 @@ import org.tomvej.fmassoc.parts.sql.tree.model.TreeNode;
 import org.tomvej.fmassoc.parts.sql.tree.model.VersionColumns;
 import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 
+/**
+ * Handles checked state for path tree.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class PathTreeCheckModel {
 	private CheckboxTreeViewer tree;
 	private PathContentProvider provider;
@@ -31,6 +36,10 @@ public class PathTreeCheckModel {
 
 	private final SelectionListener selectionListener = new SelectionWrapper(this::buttonSelected);
 
+	/**
+	 * Specify tree and content provider. Content provider must be the same as
+	 * the one used by the tree.
+	 */
 	public PathTreeCheckModel(CheckboxTreeViewer treeViewer, PathContentProvider contentProvider) {
 		Validate.isTrue(contentProvider.equals(treeViewer.getContentProvider()));
 		tree = treeViewer;
@@ -38,18 +47,30 @@ public class PathTreeCheckModel {
 		tree.addCheckStateListener(this::checkStateChanged);
 	}
 
+	/**
+	 * Specify button for ID_OBJECTs.
+	 */
 	public void setOidButton(Button btn) {
 		addButton(btn, ObjectIdColumn.class, provider::getOidColumns);
 	}
 
+	/**
+	 * Specify button for associations.
+	 */
 	public void setAssociationButton(Button btn) {
 		addButton(btn, AssociationColumns.class, provider::getAssociationProxies);
 	}
 
+	/**
+	 * Specify buttons for properties (except version properties).
+	 */
 	public void setPropertyButton(Button btn) {
 		addButton(btn, PropertyColumns.class, provider::getPropertyProxies);
 	}
 
+	/**
+	 * Specify button for version properties.
+	 */
 	public void setVersionButton(Button btn) {
 		addButton(btn, VersionColumns.class, provider::getVersionProxies);
 	}
@@ -66,6 +87,9 @@ public class PathTreeCheckModel {
 	}
 
 
+	/**
+	 * Listens to checked state changes on the treeviewer.
+	 */
 	private void checkStateChanged(CheckStateChangedEvent event) {
 		assert event.getCheckable().equals(tree); // event from the right tree
 		assert tree.getContentProvider().equals(provider); // correct provider
@@ -73,7 +97,7 @@ public class PathTreeCheckModel {
 		changeCheckState(event.getElement(), event.getChecked());
 
 		if (event.getElement() instanceof Table) {
-			buttons.values().forEach(this::checkButtonState);
+			buttons.values().forEach(this::updateButtonState);
 		} else if (event.getElement() instanceof TreeNode) {
 			checkButtonFor(event.getElement());
 		} else if (event.getElement() instanceof Property) {
@@ -83,12 +107,19 @@ public class PathTreeCheckModel {
 		}
 	}
 
+	/**
+	 * For given element state change, makes its children and parents checked
+	 * accordingly.
+	 */
 	private void changeCheckState(Object element, boolean checked) {
 		tree.setSubtreeChecked(element, checked);
 		tree.setGrayed(element, false);
 		processParents(element);
 	}
 
+	/**
+	 * Makes parents checked accordingly from children status.
+	 */
 	private void processParents(Object element) {
 		Object parent = getParent(element);
 		while (parent != null) {
@@ -102,7 +133,10 @@ public class PathTreeCheckModel {
 		}
 	}
 
-	private void checkButtonState(Button btn) {
+	/**
+	 * Updates button checked state from its children.
+	 */
+	private void updateButtonState(Button btn) {
 		Collection<? extends TreeNode> children = getChildren(btn);
 		int number = children.size();
 		long checked = children.stream().filter(tree::getChecked).count();
@@ -110,11 +144,17 @@ public class PathTreeCheckModel {
 		btn.setGrayed(checked > 0 && number != checked);
 	}
 
+	/**
+	 * Update button checked state for given element.
+	 */
 	private void checkButtonFor(Object element) {
-		checkButtonState(Validate.notNull(buttons.get(element.getClass()),
+		updateButtonState(Validate.notNull(buttons.get(element.getClass()),
 				"Button for " + element.getClass() + " not specified."));
 	}
 
+	/**
+	 * Listener to checkbox selection events.
+	 */
 	private void buttonSelected(SelectionEvent event) {
 		assert event.widget instanceof Button;
 		assert tree.getContentProvider().equals(provider);
@@ -124,10 +164,16 @@ public class PathTreeCheckModel {
 		getChildren(btn).forEach(o -> changeCheckState(o, btn.getSelection()));
 	}
 
+	/**
+	 * Returns parent in tree for given element.
+	 */
 	private Object getParent(Object element) {
 		return provider.getParent(element);
 	}
 
+	/**
+	 * Returns children elements for given button.
+	 */
 	private Collection<? extends TreeNode> getChildren(Button btn) {
 		return suppliers.get(btn).get();
 	}
