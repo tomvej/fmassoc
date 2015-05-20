@@ -23,6 +23,7 @@ import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -33,6 +34,8 @@ import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.parts.sql.tree.model.PathContentProvider;
 import org.tomvej.fmassoc.parts.sql.tree.transform.Option;
 import org.tomvej.fmassoc.parts.sql.tree.transform.TreeHandleFactory;
+import org.tomvej.fmassoc.swt.wrappers.FocusGainedWrapper;
+import org.tomvej.fmassoc.swt.wrappers.KeyReleasedWrapper;
 import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.transform.sql.formatters.JoinFormatter;
 
@@ -63,20 +66,26 @@ public class Part {
 		parent.setLayout(new GridLayout(2, false));
 
 		output = new Text(parent, SWT.WRAP | SWT.BORDER | SWT.MULTI | SWT.READ_ONLY);
-		output.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).hint(0, 5 * output.getLineHeight()).span(2, 1)
+		output.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).hint(0, 2 * output.getLineHeight()).span(2, 1)
 				.create());
 		output.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
+		output.addFocusListener(new FocusGainedWrapper(e -> output.selectAll()));
+		output.addKeyListener(new KeyReleasedWrapper('a', SWT.CTRL, e -> output.selectAll()));
 
 		tree = new CheckboxTreeViewer(parent, SWT.BORDER);
 		PathContentProvider provider = new PathContentProvider();
 		tree.setContentProvider(provider);
 		PathTreeCheckModel checkModel = new PathTreeCheckModel(tree, provider);
 		tree.setLabelProvider(new PathTreeLabelProvider());
-		tree.getTree().setLayoutData(GridDataFactory.fillDefaults().grab(true, true).span(1, 8).create());
+		tree.getTree().setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
 		tree.addCheckStateListener(e -> delayedTransformPath());
 
+		Composite buttons = new Composite(parent, SWT.NONE);
+		buttons.setLayoutData(GridDataFactory.fillDefaults().create());
+		buttons.setLayout(new RowLayout(SWT.VERTICAL));
+
 		options = Arrays.stream(Option.values()).collect(
-				Collectors.toMap(Function.identity(), o -> createOptionButton(parent, o, part)));
+				Collectors.toMap(Function.identity(), o -> createOptionButton(buttons, o, part)));
 		checkModel.setOidButton(options.get(Option.OIDS));
 		checkModel.setAssociationButton(options.get(Option.ASSOC));
 		checkModel.setPropertyButton(options.get(Option.PROPERTY));

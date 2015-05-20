@@ -20,7 +20,7 @@ public enum Option {
 	/** Prefix column names with table names */
 	PREFIX_COL("Prefix column names with table names"),
 	/** Use left join instead of inner join */
-	LEFT_JOIN("Use left join");
+	LEFT_JOIN("Use LEFT JOIN");
 
 
 	private final String msg;
