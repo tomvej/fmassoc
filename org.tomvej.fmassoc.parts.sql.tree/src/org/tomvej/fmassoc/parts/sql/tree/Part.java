@@ -11,8 +11,12 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.di.UISynchronize;
+import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
@@ -23,6 +27,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
+import org.tomvej.fmassoc.core.communicate.ContextObjects;
+import org.tomvej.fmassoc.core.communicate.PathTransformerTopic;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.parts.sql.tree.check.PathTreeCheckModel;
 import org.tomvej.fmassoc.parts.sql.tree.model.PathContentProvider;
@@ -36,11 +42,15 @@ public class Part {
 	private Text output;
 	private Map<Option, Button> options;
 	private SelectionListener transformPath = new SelectionWrapper(e -> delayedTransformPath());
+	private IEclipseContext context;
 
 	private Path selected;
+	private boolean pinned = false;
 
 	@PostConstruct
-	public void createComponents(Composite parent, @Optional @Named(IServiceConstants.ACTIVE_SELECTION) Path selected) {
+	public void createComponents(Composite parent, @Optional @Named(IServiceConstants.ACTIVE_SELECTION) Path selected,
+			MApplication app) {
+		context = app.getContext();
 		parent.setLayout(new GridLayout(2, false));
 
 		output = new Text(parent, SWT.WRAP | SWT.BORDER | SWT.MULTI | SWT.READ_ONLY);
@@ -96,7 +106,9 @@ public class Part {
 					allSelected, selectedOptions.contains(Option.LEFT_JOIN)).formatPath(selected);
 		}
 
-		// TODO send path if pinned
+		if (pinned) {
+			context.set(ContextObjects.TRANSFORMED_PATH, result);
+		}
 		output.setText(result != null ? result : "");
 	}
 
@@ -105,6 +117,15 @@ public class Part {
 		this.selected = selected;
 		if (tree != null && !tree.getTree().isDisposed()) {
 			tree.setInput(selected);
+			transformPath();
+		}
+	}
+
+	@Inject
+	@Optional
+	public void partPinned(@UIEventTopic(PathTransformerTopic.SELECT) MPart otherPart, MPart thisPart) {
+		pinned = thisPart.equals(otherPart);
+		if (pinned) {
 			transformPath();
 		}
 	}

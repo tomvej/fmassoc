@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="ASCII"?>
-<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmi:id="_-0kIsO5BEeSW6I9o86sYaw">
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_-0kIsO5BEeSW6I9o86sYaw">
+  <imports xsi:type="commands:Command" xmi:id="_WDcskP7JEeSvhKlr__U33w" elementId="org.tomvej.fmassoc.plugin.pinsqltransform.command"/>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_q3v_gO5CEeSW6I9o86sYaw" featurename="children" parentElementId="org.tomvej.fmassoc.search.partstack.paths" positionInList="">
-    <elements xsi:type="basic:Part" xmi:id="_uODM8O5CEeSW6I9o86sYaw" elementId="org.tomvej.fmassoc.parts.sql.tree.part" contributionURI="bundleclass://org.tomvej.fmassoc.parts.sql.tree/org.tomvej.fmassoc.parts.sql.tree.Part" label="SQL (advanced)"/>
+    <elements xsi:type="basic:Part" xmi:id="_uODM8O5CEeSW6I9o86sYaw" elementId="org.tomvej.fmassoc.parts.sql.tree.part" contributionURI="bundleclass://org.tomvej.fmassoc.parts.sql.tree/org.tomvej.fmassoc.parts.sql.tree.Part" label="SQL (advanced)">
+      <toolbar xmi:id="_TKilwP7JEeSvhKlr__U33w" elementId="org.tomvej.fmassoc.parts.sql.tree.toolbar">
+        <children xsi:type="menu:HandledToolItem" xmi:id="_UW2A0P7JEeSvhKlr__U33w" elementId="org.tomvej.fmassoc.parts.sql.tree.handledtoolitem.pin" label="Pin" type="Check" command="_WDcskP7JEeSvhKlr__U33w"/>
+      </toolbar>
+    </elements>
   </fragments>
 </fragment:ModelFragments>
