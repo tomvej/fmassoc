@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.parts.sql.tree.check.PathTreeCheckModel;
 import org.tomvej.fmassoc.parts.sql.tree.model.PathContentProvider;
+import org.tomvej.fmassoc.parts.sql.tree.transform.Option;
 
 public class Part {
 	private CheckboxTreeViewer tree;
@@ -62,6 +63,10 @@ public class Part {
 		checkModel.setVersionButton(btn);
 
 		pathSelected(selected);
+	}
+
+	private Button createOptionButton(Composite parent, Option option) {
+		return null;
 	}
 
 	@Inject

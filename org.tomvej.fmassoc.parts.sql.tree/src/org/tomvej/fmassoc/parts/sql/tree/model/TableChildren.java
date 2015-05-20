@@ -26,7 +26,7 @@ class TableChildren {
 	 */
 	TableChildren(Table target, Collection<AssociationProperty> pathAssociations) {
 		Validate.notNull(target);
-		objectIdColumn = new ObjectIdColumn(target);
+		objectIdColumn = ObjectIdColumn.getInstance(target);
 		AssociationColumns associationColumns = new AssociationColumns(target, pathAssociations);
 		this.associationColumns = associationColumns.getChildren().length > 0 ? associationColumns : null;
 		PropertyColumns propertyColumns = new PropertyColumns(target);
