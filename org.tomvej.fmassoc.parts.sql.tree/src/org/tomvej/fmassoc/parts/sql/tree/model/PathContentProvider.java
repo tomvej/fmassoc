@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.Validate;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -23,17 +22,10 @@ import org.tomvej.fmassoc.model.path.Path;
 public class PathContentProvider implements ITreeContentProvider {
 	private Map<Table, TableChildren> columns;
 
-	private Stream<Table> getTables(Object input) {
-		Validate.isInstanceOf(Path.class, input);
-		Path path = (Path) input;
-		return Stream.concat(Stream.of(path.getSource()),
-				path.getAssociations().stream().map(a -> a.getDestination()));
-	}
-
 	@Override
 	public Object[] getElements(Object inputElement) {
 		if (inputElement != null) {
-			return getTables(inputElement).collect(Collectors.toList()).toArray();
+			return ((Path) inputElement).getTables().toArray();
 		} else {
 			return null;
 		}
@@ -96,10 +88,10 @@ public class PathContentProvider implements ITreeContentProvider {
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		if (newInput != null) {
 			Validate.isInstanceOf(Path.class, newInput);
-			Set<AssociationProperty> pathAssociations =
-					(((Path) newInput).getAssociations()).stream().collect(Collectors.toSet());
-			columns = getTables(newInput).collect(
-					Collectors.toMap(Function.identity(), t -> new TableChildren(t, pathAssociations)));
+			Path path = (Path) newInput;
+			Set<AssociationProperty> pathAssociations = path.getAssociations().stream().collect(Collectors.toSet());
+			columns = path.getTables().stream()
+					.collect(Collectors.toMap(Function.identity(), t -> new TableChildren(t, pathAssociations)));
 		}
 	}
 
