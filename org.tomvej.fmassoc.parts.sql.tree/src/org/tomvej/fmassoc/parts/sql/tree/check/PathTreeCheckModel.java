@@ -193,7 +193,7 @@ public class PathTreeCheckModel {
 			} else if (element instanceof TreeNode) {
 				return getButton(element).getSelection();
 			} else if (element instanceof Property) {
-				return getButton(element).getSelection();
+				return getButton(getParent(element)).getSelection();
 			}
 			throw new IllegalArgumentException("Unsupported element type: " + element.getClass());
 		}
