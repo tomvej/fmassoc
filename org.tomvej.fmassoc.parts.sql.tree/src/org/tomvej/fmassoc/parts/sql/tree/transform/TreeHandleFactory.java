@@ -12,11 +12,19 @@ import org.tomvej.fmassoc.transform.sql.handles.ColumnHandle;
 import org.tomvej.fmassoc.transform.sql.handles.HandleFactory;
 import org.tomvej.fmassoc.transform.sql.handles.TableHandle;
 
+/**
+ * Generates SQL query wrt elements checked inside a tree viewer.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class TreeHandleFactory implements HandleFactory {
 	private CheckboxTreeViewer tree;
 	private Set<Option> options;
 
 
+	/**
+	 * Specify tree viewer and selected options.
+	 */
 	public TreeHandleFactory(CheckboxTreeViewer tree, Set<Option> options) {
 		this.tree = Validate.notNull(tree);
 		this.options = Validate.notNull(options);

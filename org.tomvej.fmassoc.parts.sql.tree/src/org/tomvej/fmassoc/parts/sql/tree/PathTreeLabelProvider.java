@@ -9,6 +9,11 @@ import org.tomvej.fmassoc.parts.sql.tree.model.ObjectIdColumn;
 import org.tomvej.fmassoc.parts.sql.tree.model.PropertyColumns;
 import org.tomvej.fmassoc.parts.sql.tree.model.VersionColumns;
 
+/**
+ * Label provider for path tree.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class PathTreeLabelProvider extends ColumnLabelProvider {
 	@Override
 	public String getText(Object element) {

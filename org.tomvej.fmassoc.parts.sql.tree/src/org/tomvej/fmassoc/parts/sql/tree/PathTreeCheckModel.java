@@ -1,4 +1,4 @@
-package org.tomvej.fmassoc.parts.sql.tree.check;
+package org.tomvej.fmassoc.parts.sql.tree;
 
 import java.util.Arrays;
 import java.util.Collection;

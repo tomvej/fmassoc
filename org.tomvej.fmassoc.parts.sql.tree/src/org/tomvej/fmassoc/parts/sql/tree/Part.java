@@ -30,13 +30,19 @@ import org.eclipse.swt.widgets.Text;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
 import org.tomvej.fmassoc.core.communicate.PathTransformerTopic;
 import org.tomvej.fmassoc.model.path.Path;
-import org.tomvej.fmassoc.parts.sql.tree.check.PathTreeCheckModel;
 import org.tomvej.fmassoc.parts.sql.tree.model.PathContentProvider;
 import org.tomvej.fmassoc.parts.sql.tree.transform.Option;
 import org.tomvej.fmassoc.parts.sql.tree.transform.TreeHandleFactory;
 import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.transform.sql.formatters.JoinFormatter;
 
+/**
+ * Part which displays path as a tree of tables, association and properties
+ * (grouped) and enables the user to specify which of to use in SELECT
+ * statement.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class Part {
 	private CheckboxTreeViewer tree;
 	private Text output;
@@ -47,6 +53,9 @@ public class Part {
 	private Path selected;
 	private boolean pinned = false;
 
+	/**
+	 * Initialize components.
+	 */
 	@PostConstruct
 	public void createComponents(Composite parent, @Optional @Named(IServiceConstants.ACTIVE_SELECTION) Path selected,
 			MApplication app, MPart part) {
@@ -121,6 +130,9 @@ public class Part {
 		output.setText(result != null ? result : "");
 	}
 
+	/**
+	 * Listen for path selection change.
+	 */
 	@Inject
 	public void pathSelected(@Optional @Named(IServiceConstants.ACTIVE_SELECTION) Path selected) {
 		this.selected = selected;
@@ -130,6 +142,9 @@ public class Part {
 		}
 	}
 
+	/**
+	 * Listen for part pinning.
+	 */
 	@Inject
 	@Optional
 	public void partPinned(@UIEventTopic(PathTransformerTopic.SELECT) MPart otherPart, MPart thisPart) {
