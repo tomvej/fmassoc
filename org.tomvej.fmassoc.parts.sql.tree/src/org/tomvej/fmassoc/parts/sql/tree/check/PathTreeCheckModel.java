@@ -165,7 +165,9 @@ public class PathTreeCheckModel {
 		Button btn = (Button) event.widget;
 
 		btn.setGrayed(false);
-		getChildren(btn).forEach(o -> changeCheckState(o, btn.getSelection()));
+		if (tree.getInput() != null) {
+			getChildren(btn).forEach(o -> changeCheckState(o, btn.getSelection()));
+		}
 	}
 
 	/**
