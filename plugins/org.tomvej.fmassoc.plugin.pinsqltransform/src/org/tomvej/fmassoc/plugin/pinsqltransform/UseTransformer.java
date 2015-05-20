@@ -1,10 +1,10 @@
 package org.tomvej.fmassoc.plugin.pinsqltransform;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.MHandledItem;
-import org.tomvej.fmassoc.core.communicate.PathTransformerTopic;
+import org.tomvej.fmassoc.core.communicate.ContextObjects;
 
 /**
  * Pin a transformer part so that it provides transformed path for other
@@ -19,17 +19,17 @@ public class UseTransformer {
 	 * Switch the pinned state.
 	 */
 	@Execute
-	public void execute(MHandledItem currentItem, MPart part, IEventBroker broker) {
+	public void execute(MHandledItem currentItem, MPart part, MApplication app) {
 		if (currentItem.isSelected()) {
 			if (lastItem != null) {
 				lastItem.setSelected(false);
 			}
 			lastItem = currentItem;
-			broker.post(PathTransformerTopic.SELECT, part);
+			app.getContext().set(ContextObjects.TRANSFORMATION_PART, part);
 		} else {
 			assert currentItem.equals(lastItem);
 			lastItem = null;
-			broker.post(PathTransformerTopic.SELECT, null);
+			app.getContext().set(ContextObjects.TRANSFORMATION_PART, null);
 		}
 	}
 

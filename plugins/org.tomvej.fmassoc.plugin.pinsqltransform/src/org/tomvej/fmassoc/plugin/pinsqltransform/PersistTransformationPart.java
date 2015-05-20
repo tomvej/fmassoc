@@ -2,18 +2,16 @@ package org.tomvej.fmassoc.plugin.pinsqltransform;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.inject.Named;
 
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
-import org.eclipse.e4.core.di.extensions.EventTopic;
-import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.UISynchronize;
 import org.eclipse.e4.ui.model.application.MAddon;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.tomvej.fmassoc.core.communicate.PathTransformerTopic;
+import org.tomvej.fmassoc.core.communicate.ContextObjects;
 
 /**
  * Used to store and retrieve pinned SQL transformation part.
@@ -23,30 +21,30 @@ import org.tomvej.fmassoc.core.communicate.PathTransformerTopic;
 public class PersistTransformationPart {
 	private static final String KEY_SELECTED_TRANSFORMER = "selected_transformer";
 
-	@Inject
 	private MAddon addon;
 
 	/**
-	 * Retrieves pinned SQL transformation part and sends it as the
-	 * {@link PathTransformerTopic#SELECT} message.
+	 * Retrieves pinned SQL transformation part and puts it into context (
+	 * {@link ContextObjects#TRANSFORMATION_PART}).
 	 */
-	@PostConstruct
-	public void retrievePinnedState(EModelService models, MApplication app, IEventBroker broker, UISynchronize sync) {
+	@Inject
+	public PersistTransformationPart(EModelService models, MApplication app, IEclipseContext context, MAddon addon) {
+		this.addon = addon;
 		String transformer = addon.getPersistedState().get(KEY_SELECTED_TRANSFORMER);
 		if (transformer != null) {
 			List<MPart> parts = models.findElements(app, transformer, MPart.class, null);
 			if (parts.size() == 1) {
-				sync.asyncExec(() -> broker.post(PathTransformerTopic.SELECT, parts.get(0)));
+				context.set(ContextObjects.TRANSFORMATION_PART, parts.get(0));
 			}
 		}
 	}
+
 
 	/**
 	 * Stores pinned SQL transformation part.
 	 */
 	@Inject
-	@Optional
-	public void transformerSelected(@EventTopic(PathTransformerTopic.SELECT) MPart part) {
+	public void transformerSelected(@Optional @Named(ContextObjects.TRANSFORMATION_PART) MPart part) {
 		addon.getPersistedState().put(KEY_SELECTED_TRANSFORMER, part != null ? part.getElementId() : null);
 	}
 

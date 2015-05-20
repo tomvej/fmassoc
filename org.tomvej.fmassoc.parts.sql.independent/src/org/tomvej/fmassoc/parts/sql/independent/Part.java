@@ -16,7 +16,6 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.e4.ui.di.PersistState;
-import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
@@ -30,7 +29,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.service.prefs.BackingStoreException;
 import org.tomvej.fmassoc.core.communicate.ContextObjects;
-import org.tomvej.fmassoc.core.communicate.PathTransformerTopic;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.swt.wrappers.FocusGainedWrapper;
 import org.tomvej.fmassoc.swt.wrappers.KeyReleasedWrapper;
@@ -53,14 +51,15 @@ public class Part {
 	private Map<Options, Button> options;
 	private Path selected;
 	private Text output;
-	boolean pinned;
+	private boolean pinned;
 
 	/**
 	 * Create components comprising this part.
 	 */
 	@PostConstruct
 	public void createComponents(Composite parent, MApplication app,
-			@Optional @Named(IServiceConstants.ACTIVE_SELECTION) Path path) {
+			@Optional @Named(IServiceConstants.ACTIVE_SELECTION) Path path,
+			MPart thisPart, @Optional @Named(ContextObjects.TRANSFORMATION_PART) MPart pinnedPart) {
 		parent.setLayout(new GridLayout(1, false));
 		context = app.getContext();
 
@@ -77,6 +76,8 @@ public class Part {
 		options = Arrays.stream(Options.values())
 				.collect(Collectors.toMap(Function.identity(), o -> createOptionButton(optionPanel, o)));
 		selected = path;
+
+		pinned = thisPart.equals(pinnedPart);
 		transformPath();
 	}
 
@@ -142,11 +143,11 @@ public class Part {
 	 * Listens to part pinning.
 	 */
 	@Inject
-	@Optional
-	public void partPinned(@UIEventTopic(PathTransformerTopic.SELECT) MPart other, MPart thisPart) {
-		pinned = thisPart.equals(other);
+	public void partPinned(@Optional @Named(ContextObjects.TRANSFORMATION_PART) MPart otherPart, MPart thisPart) {
+		pinned = thisPart.equals(otherPart);
 		if (pinned) {
 			transformPath();
 		}
 	}
+
 }
