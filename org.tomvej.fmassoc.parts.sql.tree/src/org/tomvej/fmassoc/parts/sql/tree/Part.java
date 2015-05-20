@@ -49,7 +49,7 @@ public class Part {
 
 	@PostConstruct
 	public void createComponents(Composite parent, @Optional @Named(IServiceConstants.ACTIVE_SELECTION) Path selected,
-			MApplication app) {
+			MApplication app, MPart part) {
 		context = app.getContext();
 		parent.setLayout(new GridLayout(2, false));
 
@@ -67,7 +67,7 @@ public class Part {
 		tree.addCheckStateListener(e -> delayedTransformPath());
 
 		options = Arrays.stream(Option.values()).collect(
-				Collectors.toMap(Function.identity(), o -> createOptionButton(parent, o)));
+				Collectors.toMap(Function.identity(), o -> createOptionButton(parent, o, part)));
 		checkModel.setOidButton(options.get(Option.OIDS));
 		checkModel.setAssociationButton(options.get(Option.ASSOC));
 		checkModel.setPropertyButton(options.get(Option.PROPERTY));
@@ -76,10 +76,19 @@ public class Part {
 		pathSelected(selected);
 	}
 
-	private Button createOptionButton(Composite parent, Option option) {
+	private Button createOptionButton(Composite parent, Option option, MPart part) {
 		Button result = new Button(parent, SWT.CHECK);
 		result.setText(option.getMessage());
 		result.addSelectionListener(transformPath);
+
+		result.setSelection(part.getTags().contains(option.getTag()));
+		result.addSelectionListener(new SelectionWrapper(e -> {
+			if (result.getSelection()) {
+				part.getTags().add(option.getTag());
+			} else {
+				part.getTags().remove(option.getTag());
+			}
+		}));
 		return result;
 	}
 
