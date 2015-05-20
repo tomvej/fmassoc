@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -87,10 +88,14 @@ public class Part {
 		if (selected != null) {
 			Set<Option> selectedOptions = options.entrySet().stream().filter(e -> e.getValue().getSelection())
 					.map(e -> e.getKey()).collect(Collectors.toSet());
-			TreeHandleFactory handleFactory = new TreeHandleFactory(tree, selectedOptions);
-			result = new JoinFormatter(handleFactory, false, selectedOptions.contains(Option.LEFT_JOIN))
-					.formatPath(selected);
+			boolean allSelected = !selectedOptions.contains(Option.PREFIX_COL) &&
+					Stream.concat(Stream.of(selected.getSource()),
+							selected.getAssociations().stream().map(a -> a.getDestination())).
+							allMatch(t -> tree.getChecked(t) && !tree.getGrayed(t));
+			result = new JoinFormatter(new TreeHandleFactory(tree, selectedOptions),
+					allSelected, selectedOptions.contains(Option.LEFT_JOIN)).formatPath(selected);
 		}
+
 		// TODO send path if pinned
 		output.setText(result != null ? result : "");
 	}
