@@ -1,5 +1,10 @@
 package org.tomvej.fmassoc.parts.sql.tree;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,6 +26,7 @@ import org.tomvej.fmassoc.parts.sql.tree.transform.Option;
 
 public class Part {
 	private CheckboxTreeViewer tree;
+	private Map<Option, Button> options;
 
 	@PostConstruct
 	public void createComponents(Composite parent, @Optional @Named(IServiceConstants.ACTIVE_SELECTION) Path selected) {
@@ -38,35 +44,20 @@ public class Part {
 		tree.setLabelProvider(new PathTreeLabelProvider());
 		tree.getTree().setLayoutData(GridDataFactory.fillDefaults().grab(true, true).span(1, 8).create());
 
-		for (String text : new String[] {
-				"Abbreviate table names (i.e. T195)",
-				"Prefix column names with table name",
-				"Use LEFT JOIN" }) {
-			Button btn = new Button(parent, SWT.CHECK);
-			btn.setText(text);
-		}
-
-		Button btn = new Button(parent, SWT.CHECK);
-		btn.setText("Print ID_OBJECTs");
-		checkModel.setOidButton(btn);
-
-		btn = new Button(parent, SWT.CHECK);
-		btn.setText("Print associations");
-		checkModel.setAssociationButton(btn);
-
-		btn = new Button(parent, SWT.CHECK);
-		btn.setText("Print properties");
-		checkModel.setPropertyButton(btn);
-
-		btn = new Button(parent, SWT.CHECK);
-		btn.setText("Print version properties");
-		checkModel.setVersionButton(btn);
+		options = Arrays.stream(Option.values()).collect(
+				Collectors.toMap(Function.identity(), o -> createOptionButton(parent, o)));
+		checkModel.setOidButton(options.get(Option.OIDS));
+		checkModel.setAssociationButton(options.get(Option.ASSOC));
+		checkModel.setPropertyButton(options.get(Option.PROPERTY));
+		checkModel.setVersionButton(options.get(Option.VERSION));
 
 		pathSelected(selected);
 	}
 
 	private Button createOptionButton(Composite parent, Option option) {
-		return null;
+		Button result = new Button(parent, SWT.CHECK);
+		result.setText(option.getMessage());
+		return result;
 	}
 
 	@Inject

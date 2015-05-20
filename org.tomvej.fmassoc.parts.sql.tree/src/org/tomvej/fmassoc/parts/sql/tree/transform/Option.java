@@ -16,6 +16,10 @@ public enum Option {
 		msg = message;
 	}
 
+	public String getMessage() {
+		return msg;
+	}
+
 	public String getTag() {
 		return "OPTION_" + name();
 	}
