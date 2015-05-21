@@ -76,7 +76,12 @@ public class ModelLabelProvider extends ColumnLabelProvider {
 		if (!target.isValid()) {
 			return "No associated model loader.";
 		} else {
-			return target.getDescription();
+			ModelLoadingException exception = errors.get(target);
+			StringBuilder result = new StringBuilder(target.getDescription());
+			if (exception != null) {
+				result.append("\nUnable to load model: ").append(exception.getLocalizedMessage());
+			}
+			return result.toString();
 		}
 	}
 }
