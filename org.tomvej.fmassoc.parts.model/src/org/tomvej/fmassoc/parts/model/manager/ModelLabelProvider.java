@@ -1,11 +1,14 @@
 package org.tomvej.fmassoc.parts.model.manager;
 
+import java.util.Map;
+
 import org.apache.commons.lang3.Validate;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 import org.tomvej.fmassoc.parts.model.core.ModelEntry;
 
 /**
@@ -15,13 +18,17 @@ import org.tomvej.fmassoc.parts.model.core.ModelEntry;
  * @author Tomáš Vejpustek
  */
 public class ModelLabelProvider extends ColumnLabelProvider {
-	private final Image error;
+	private final static int SIZE = 14;
+	private final Image error, warn;
+	private final Map<ModelEntry, ModelLoadingException> errors;
 
 	/**
-	 * Initialize icons.
+	 * Specify model loading exceptions. Initialize icons.
 	 */
-	public ModelLabelProvider() {
-		error = resize(Display.getCurrent().getSystemImage(SWT.ICON_ERROR), 14);
+	public ModelLabelProvider(Map<ModelEntry, ModelLoadingException> errors) {
+		error = resize(Display.getCurrent().getSystemImage(SWT.ICON_ERROR), SIZE);
+		warn = resize(Display.getCurrent().getSystemImage(SWT.ICON_WARNING), SIZE);
+		this.errors = errors;
 	}
 
 	private static Image resize(Image source, int size) {
@@ -39,6 +46,7 @@ public class ModelLabelProvider extends ColumnLabelProvider {
 	public void dispose() {
 		super.dispose();
 		error.dispose();
+		warn.dispose();
 	}
 
 	private static ModelEntry getElement(Object element) {
@@ -56,6 +64,8 @@ public class ModelLabelProvider extends ColumnLabelProvider {
 		ModelEntry target = getElement(element);
 		if (!target.isValid()) {
 			return error;
+		} else if (errors.get(target) != null) {
+			return warn;
 		}
 		return null;
 	}

@@ -1,6 +1,7 @@
 package org.tomvej.fmassoc.parts.model.manager;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import javax.inject.Inject;
@@ -26,6 +27,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 import org.tomvej.fmassoc.parts.model.core.Constants;
 import org.tomvej.fmassoc.parts.model.core.ModelEntry;
 import org.tomvej.fmassoc.parts.model.core.ModelList;
@@ -50,6 +52,10 @@ public class ModelManagerDialog extends TitleAreaDialog {
 	@Optional
 	private ModelEntry current;
 
+	@Inject
+	@Named(Constants.MODEL_ERRORS)
+	private Map<ModelEntry, ModelLoadingException> errors;
+
 	private TableViewer list;
 	private Button editBtn, removeBtn;
 	private boolean currentChanged;
@@ -73,7 +79,7 @@ public class ModelManagerDialog extends TitleAreaDialog {
 		list = TableLayoutSupport.createTableViewer(container, SWT.SINGLE | SWT.BORDER | SWT.V_SCROLL | SWT.FULL_SELECTION,
 				GridDataFactory.fillDefaults().grab(true, true).span(1, 3).create());
 		TableViewerColumn model = new TableViewerColumn(list, SWT.LEFT);
-		model.setLabelProvider(new ModelLabelProvider());
+		model.setLabelProvider(new ModelLabelProvider(errors));
 		TableLayoutSupport.create(list, 1, false, model);
 		ColumnViewerToolTipSupport.enableFor(list, ToolTip.NO_RECREATE);
 
