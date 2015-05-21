@@ -11,8 +11,9 @@ import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
@@ -27,8 +28,9 @@ import org.tomvej.fmassoc.parts.model.core.Constants;
 import org.tomvej.fmassoc.parts.model.core.ModelEntry;
 import org.tomvej.fmassoc.parts.model.core.ModelList;
 import org.tomvej.fmassoc.parts.model.core.ModelLoaderEntry;
+import org.tomvej.fmassoc.swt.tables.TableLayoutSupport;
 import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
-import org.tomvej.fmassoc.swt.wrappers.TextLabelProvider;
+import org.tomvej.fmassoc.swt.wrappers.TextColumnLabelProvider;
 
 /**
  * Dialog used to manage (add, edit, remove) available data models. Uses
@@ -47,7 +49,7 @@ public class ModelManagerDialog extends TitleAreaDialog {
 	@Optional
 	private ModelEntry current;
 
-	private ListViewer list;
+	private TableViewer list;
 	private Button editBtn, removeBtn;
 	private boolean currentChanged;
 
@@ -67,9 +69,12 @@ public class ModelManagerDialog extends TitleAreaDialog {
 		container.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
 		container.setLayout(new GridLayout(2, false));
 
-		list = new ListViewer(container, SWT.SINGLE | SWT.BORDER | SWT.V_SCROLL);
-		list.getList().setLayoutData(GridDataFactory.fillDefaults().grab(true, true).span(1, 3).create());
-		list.setLabelProvider(new TextLabelProvider<ModelEntry>(model -> model.getLabel()));
+		list = TableLayoutSupport.createTableViewer(container, SWT.SINGLE | SWT.BORDER | SWT.V_SCROLL | SWT.FULL_SELECTION,
+				GridDataFactory.fillDefaults().grab(true, true).span(1, 3).create());
+		TableViewerColumn model = new TableViewerColumn(list, SWT.LEFT);
+		model.setLabelProvider(new TextColumnLabelProvider<ModelEntry>(m -> m.getLabel()));
+		TableLayoutSupport.create(list, 1, false, model);
+
 		list.setContentProvider(new ObservableListContentProvider());
 		list.setInput(models);
 		list.addSelectionChangedListener(e -> refreshButtons());
@@ -79,7 +84,7 @@ public class ModelManagerDialog extends TitleAreaDialog {
 		editBtn = createButton(container, "Edit",
 				e -> new WizardDialogWithCheck(getParentShell(), getSelected().createEditWizard()).open());
 		removeBtn = createButton(container, "Remove",
-				e -> models.remove(list.getList().getSelectionIndex()));
+				e -> models.remove(list.getTable().getSelectionIndex()));
 		refreshButtons();
 		return dialog;
 	}
