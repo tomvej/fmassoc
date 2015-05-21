@@ -19,6 +19,8 @@ public interface Constants {
 	 */
 	public static final String MODEL_LOADER_REGISTRY = PLUGIN_ID + ".ModelLoaderRegistry";
 
+	public static final String MODEL_ERRORS = PLUGIN_ID + ".ModelErrors";
+
 	/**
 	 * Property key for model loading timeout preference (in ms, stored as
 	 * long).

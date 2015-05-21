@@ -2,7 +2,10 @@ package org.tomvej.fmassoc.parts.model.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -36,6 +39,7 @@ import org.osgi.service.prefs.BackingStoreException;
 import org.tomvej.fmassoc.core.communicate.DataModelTopic;
 import org.tomvej.fmassoc.model.db.DataModel;
 import org.tomvej.fmassoc.parts.model.ModelLoader;
+import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 import org.tomvej.fmassoc.swt.wrappers.TextLabelProvider;
 import org.tomvej.fmassoc.swt.wrappers.ViewerFilterWrapper;
 
@@ -58,6 +62,8 @@ public class ModelChooser {
 	@Preference(nodePath = "org.tomvej.fmassoc.parts.model.models")
 	private IEclipsePreferences modelPreference;
 
+	private Map<ModelEntry, ModelLoadingException> errors = new HashMap<>();
+
 	private IEclipseContext appContext;
 	private ModelList models;
 	private ComboViewer switcher;
@@ -68,6 +74,7 @@ public class ModelChooser {
 	@PostConstruct
 	public void createComponents(Composite container, Shell parentShell, IExtensionRegistry registry, MApplication app) {
 		appContext = app.getContext();
+		appContext.set(Constants.MODEL_ERRORS, errors);
 
 		Composite parent = new Composite(container, SWT.NONE);
 		parent.setLayout(new GridLayout(2, false));
@@ -95,7 +102,7 @@ public class ModelChooser {
 		switcher.getCombo().setLayoutData(GridDataFactory.fillDefaults().hint(120, SWT.DEFAULT).create());
 
 		switcher.setContentProvider(new ObservableListContentProvider());
-		switcher.setLabelProvider(new TextLabelProvider<ModelEntry>(entry -> entry.getLabel()));
+		switcher.setLabelProvider(new TextLabelProvider<ModelEntry>(new LabelProvider()));
 		switcher.setInput(models);
 		switcher.addSelectionChangedListener(event -> modelSelected());
 		switcher.addFilter(new ViewerFilterWrapper<ModelEntry>(e -> e.isValid()));
@@ -148,6 +155,7 @@ public class ModelChooser {
 		if (model == null) {
 			switcher.setSelection(StructuredSelection.EMPTY);
 		}
+		switcher.refresh(); // refresh labels
 	}
 
 
@@ -171,6 +179,17 @@ public class ModelChooser {
 				}
 			}
 			logger.warn("Could not find last selected model of id: " + selectedModel);
+		}
+	}
+
+	private class LabelProvider implements Function<ModelEntry, String> {
+		@Override
+		public String apply(ModelEntry arg0) {
+			StringBuilder result = new StringBuilder(arg0.getLabel());
+			if (errors.get(arg0) != null) {
+				result.append(" [!]");
+			}
+			return result.toString();
 		}
 	}
 }

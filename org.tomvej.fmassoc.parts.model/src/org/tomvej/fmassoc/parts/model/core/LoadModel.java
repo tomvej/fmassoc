@@ -1,6 +1,9 @@
 package org.tomvej.fmassoc.parts.model.core;
 
+import java.util.Map;
+
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -38,7 +41,8 @@ public class LoadModel {
 	 */
 	@Execute
 	public void execute(ModelEntry current, Shell shell,
-			@Preference(nodePath = Constants.PLUGIN_ID, value = Constants.LOADING_TIMEOUT) Long timeout) {
+			@Preference(nodePath = Constants.PLUGIN_ID, value = Constants.LOADING_TIMEOUT) Long timeout,
+			@Named(Constants.MODEL_ERRORS) Map<ModelEntry, ModelLoadingException> errors) {
 		events.send(DataModelTopic.MODEL_LOADING, current.getLabel());
 
 		Thread uiThread = Thread.currentThread(); // runs timeout process
@@ -58,6 +62,7 @@ public class LoadModel {
 					uiThread.interrupt(); // interrupt timeout process
 					dataModelChanged(model);
 					logger.info("Model loaded in " + time + " ms: " + current);
+					errors.remove(current);
 					return Status.OK_STATUS;
 				} catch (ModelLoadingException mle) {
 					if (!monitor.isCanceled()) { // timeout has not happened
@@ -67,6 +72,7 @@ public class LoadModel {
 
 						String message = "Unable to load model " + current.getDescription() + ": "
 								+ mle.getLocalizedMessage();
+						errors.put(current, mle);
 						shell.getDisplay().asyncExec(() -> MessageDialog.openError(shell, "Cannot load model", message));
 					}
 					// return error status which is logged (automatically)
@@ -89,6 +95,7 @@ public class LoadModel {
 				loader.cancel(); // cancel loading job
 				dataModelChanged(null);
 				logger.error("Loader timeout on model " + current);
+				errors.put(current, new ModelLoadingException("Timeout"));
 				MessageDialog.openError(shell, "Cannot load model",
 						"Unable to load model " + current.getDescription() + ": Timeout.");
 			} catch (InterruptedException e) {
