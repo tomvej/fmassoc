@@ -1,5 +1,9 @@
 package org.tomvej.fmassoc.parts.model.core;
 
+import java.util.Map;
+
+import org.tomvej.fmassoc.parts.model.ModelLoadingException;
+
 
 /**
  * Constants used by the org.tomvej.fmassoc.parts.model plugin.
@@ -19,6 +23,10 @@ public interface Constants {
 	 */
 	public static final String MODEL_LOADER_REGISTRY = PLUGIN_ID + ".ModelLoaderRegistry";
 
+	/**
+	 * Last errors encountered when loading models. {@link Map} from
+	 * {@link ModelEntry} to {@link ModelLoadingException}.
+	 */
 	public static final String MODEL_ERRORS = PLUGIN_ID + ".ModelErrors";
 
 	/**
