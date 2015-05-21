@@ -8,9 +8,18 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.tomvej.fmassoc.parts.model.core.ModelEntry;
 
+/**
+ * Provides label for model entries in the model manager. Displays model name
+ * and error icon for model with inaccessible model loaders.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class ModelLabelProvider extends ColumnLabelProvider {
 	private final Image error;
 
+	/**
+	 * Initialize icons.
+	 */
 	public ModelLabelProvider() {
 		error = resize(Display.getCurrent().getSystemImage(SWT.ICON_ERROR), 14);
 	}
