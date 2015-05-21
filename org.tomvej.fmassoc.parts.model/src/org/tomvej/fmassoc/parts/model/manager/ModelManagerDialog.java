@@ -11,9 +11,11 @@ import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.window.ToolTip;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
@@ -30,7 +32,6 @@ import org.tomvej.fmassoc.parts.model.core.ModelList;
 import org.tomvej.fmassoc.parts.model.core.ModelLoaderEntry;
 import org.tomvej.fmassoc.swt.tables.TableLayoutSupport;
 import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
-import org.tomvej.fmassoc.swt.wrappers.TextColumnLabelProvider;
 
 /**
  * Dialog used to manage (add, edit, remove) available data models. Uses
@@ -72,8 +73,9 @@ public class ModelManagerDialog extends TitleAreaDialog {
 		list = TableLayoutSupport.createTableViewer(container, SWT.SINGLE | SWT.BORDER | SWT.V_SCROLL | SWT.FULL_SELECTION,
 				GridDataFactory.fillDefaults().grab(true, true).span(1, 3).create());
 		TableViewerColumn model = new TableViewerColumn(list, SWT.LEFT);
-		model.setLabelProvider(new TextColumnLabelProvider<ModelEntry>(m -> m.getLabel()));
+		model.setLabelProvider(new ModelLabelProvider());
 		TableLayoutSupport.create(list, 1, false, model);
+		ColumnViewerToolTipSupport.enableFor(list, ToolTip.NO_RECREATE);
 
 		list.setContentProvider(new ObservableListContentProvider());
 		list.setInput(models);
