@@ -149,9 +149,13 @@ public class ModelManagerDialog extends TitleAreaDialog {
 
 		@Override
 		protected void finishPressed() {
-			if (getSelected().equals(current)) {
+			ModelEntry selected = getSelected();
+			if (selected.equals(current)) {
 				currentChanged = true;
 			}
+			// remove errors for edited model
+			errors.remove(selected);
+			list.refresh(selected);
 			super.finishPressed();
 		}
 	}
