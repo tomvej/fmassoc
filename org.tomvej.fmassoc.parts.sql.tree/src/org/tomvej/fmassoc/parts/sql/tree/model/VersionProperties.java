@@ -6,7 +6,13 @@ import java.util.stream.Collectors;
 
 import org.tomvej.fmassoc.model.db.Property;
 
-enum VersionProperties {
+/**
+ * Version property columns.
+ * 
+ * @author Tomáš Vejpustek
+ */
+@SuppressWarnings("javadoc")
+public enum VersionProperties {
 	ID_VERSION,
 	ID_BRANCH,
 	ID_PREV_VERSION1,
@@ -21,7 +27,10 @@ enum VersionProperties {
 
 	private static Set<String> properties = Arrays.stream(values()).map(VersionProperties::name).collect(Collectors.toSet());
 
-	static boolean isVersionProperty(Property target) {
+	/**
+	 * Returns whether target property is a version property.
+	 */
+	public static boolean isVersionProperty(Property target) {
 		return properties.contains(target.getImplName().toUpperCase());
 	}
 }
