@@ -30,11 +30,13 @@ import org.tomvej.fmassoc.core.communicate.ContextObjects;
 import org.tomvej.fmassoc.model.path.Path;
 import org.tomvej.fmassoc.parts.sql.tree.model.PathContentProvider;
 import org.tomvej.fmassoc.parts.sql.tree.transform.Option;
+import org.tomvej.fmassoc.parts.sql.tree.transform.OptionHandleFactory;
 import org.tomvej.fmassoc.parts.sql.tree.transform.TreeHandleFactory;
 import org.tomvej.fmassoc.swt.wrappers.FocusGainedWrapper;
 import org.tomvej.fmassoc.swt.wrappers.KeyReleasedWrapper;
 import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 import org.tomvej.fmassoc.transform.sql.formatters.JoinFormatter;
+import org.tomvej.fmassoc.transform.sql.handles.HandleFactory;
 
 /**
  * Part which displays path as a tree of tables, association and properties
@@ -112,10 +114,10 @@ public class Part {
 	private UISynchronize sync;
 
 	private void delayedTransformPath() {
-		sync.asyncExec(this::transformPath);
+		sync.asyncExec(() -> transformPath(false));
 	}
 
-	private void transformPath() {
+	private void transformPath(boolean pathChanged) {
 		if (output == null || output.isDisposed()) {
 			return;
 		}
@@ -125,8 +127,11 @@ public class Part {
 					.map(e -> e.getKey()).collect(Collectors.toSet());
 			boolean allSelected = !selectedOptions.contains(Option.PREFIX_COL) &&
 					selected.getTables().stream().allMatch(t -> tree.getChecked(t) && !tree.getGrayed(t));
-			result = new JoinFormatter(new TreeHandleFactory(tree, selectedOptions),
-					allSelected, selectedOptions.contains(Option.LEFT_JOIN)).formatPath(selected);
+			HandleFactory handles = pathChanged ?
+					new OptionHandleFactory(selectedOptions) :
+					new TreeHandleFactory(tree, selectedOptions);
+			result = new JoinFormatter(handles, allSelected,
+					selectedOptions.contains(Option.LEFT_JOIN)).formatPath(selected);
 		}
 
 		if (pinned) {
@@ -143,7 +148,7 @@ public class Part {
 		this.selected = selected;
 		if (tree != null && !tree.getTree().isDisposed()) {
 			tree.setInput(selected);
-			transformPath();
+			transformPath(true);
 		}
 	}
 
@@ -154,7 +159,7 @@ public class Part {
 	public void partPinned(@Optional @Named(ContextObjects.TRANSFORMATION_PART) MPart otherPart, MPart thisPart) {
 		pinned = thisPart.equals(otherPart);
 		if (pinned) {
-			transformPath();
+			transformPath(false);
 		}
 	}
 }
