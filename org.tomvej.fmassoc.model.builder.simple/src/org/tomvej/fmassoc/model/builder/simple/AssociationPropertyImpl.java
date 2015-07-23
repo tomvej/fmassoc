@@ -54,6 +54,17 @@ class AssociationPropertyImpl extends NamedImpl implements AssociationProperty {
 		return new Reverse(this);
 	}
 
+	private static String toString(AssociationProperty property) {
+		return property.getClass().getSimpleName()
+				+ "[" + property.getSource().getName() + "." + property.getName() + "_"
+				+ property.getDestination().getName() + "]";
+	}
+
+	@Override
+	public String toString() {
+		return toString(this);
+	}
+
 	private static class Reverse implements AssociationProperty {
 		private final AssociationPropertyImpl inner;
 
@@ -79,6 +90,11 @@ class AssociationPropertyImpl extends NamedImpl implements AssociationProperty {
 		@Override
 		public boolean isReverse() {
 			return true;
+		}
+
+		@Override
+		public String toString() {
+			return AssociationPropertyImpl.toString(this);
 		}
 
 		// delegate methods
