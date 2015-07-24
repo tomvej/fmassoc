@@ -125,7 +125,7 @@ public class PathTreeCheckModel {
 		while (parent != null) {
 			Object[] children = provider.getChildren(parent);
 			int number = children.length;
-			long checked = Arrays.stream(children).filter(tree::getChecked).count();
+			long checked = Arrays.stream(children).filter(this::isElementChecked).count();
 			tree.setChecked(parent, checked > 0);
 			tree.setGrayed(parent, checked > 0 && number != checked);
 
@@ -139,7 +139,7 @@ public class PathTreeCheckModel {
 	private void updateButtonState(Button btn) {
 		Collection<? extends TreeNode> children = getChildren(btn);
 		int number = children.size();
-		long checked = children.stream().filter(tree::getChecked).count();
+		long checked = children.stream().filter(this::isElementChecked).count();
 		btn.setSelection(checked > 0);
 		btn.setGrayed(checked > 0 && number != checked);
 	}
@@ -204,5 +204,9 @@ public class PathTreeCheckModel {
 			btn.setSelection(false);
 		}
 		return btn.getSelection();
+	}
+
+	private boolean isElementChecked(Object element) {
+		return tree.getChecked(element) && !tree.getGrayed(element);
 	}
 }
