@@ -9,7 +9,6 @@ import java.util.function.Supplier;
 import org.apache.commons.lang3.Validate;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
-import org.eclipse.jface.viewers.ICheckStateProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -36,7 +35,6 @@ public class PathTreeCheckModel {
 	private Map<Button, Supplier<Collection<? extends TreeNode>>> suppliers = new HashMap<>();
 
 	private final SelectionListener selectionListener = new SelectionWrapper(this::buttonSelected);
-	private CheckStateProvider checkStateProvider = new CheckStateProvider();
 
 	/**
 	 * Specify tree and content provider. Content provider must be the same as
@@ -47,7 +45,6 @@ public class PathTreeCheckModel {
 		tree = treeViewer;
 		provider = contentProvider;
 		tree.addCheckStateListener(this::checkStateChanged);
-		tree.setCheckStateProvider(checkStateProvider);
 	}
 
 	/**
@@ -184,27 +181,22 @@ public class PathTreeCheckModel {
 		return suppliers.get(btn).get();
 	}
 
-	private class CheckStateProvider implements ICheckStateProvider {
-
-		@Override
-		public boolean isChecked(Object element) {
-			if (element instanceof Table) {
-				return buttons.values().stream().anyMatch(PathTreeCheckModel::isButtonChecked);
-			} else if (element instanceof TreeNode) {
-				return getButton(element).getSelection();
-			} else if (element instanceof Property) {
-				return getButton(getParent(element)).getSelection();
+	/**
+	 * Refreshes checked state from buttons.
+	 */
+	public void refresh() {
+		if (tree.getInput() != null) {
+			Object[] elements = provider.getElements(tree.getInput());
+			Collection<Button> btns = buttons.values();
+			if (btns.stream().allMatch(PathTreeCheckModel::isButtonChecked)) {
+				Arrays.stream(elements).forEach(e -> tree.setSubtreeChecked(e, true));
+			} else if (btns.stream().anyMatch(PathTreeCheckModel::isButtonChecked)) {
+				Arrays.stream(elements).forEach(e -> tree.setGrayChecked(e, true));
+				btns.stream().filter(PathTreeCheckModel::isButtonChecked)
+						.flatMap(b -> getChildren(b).stream())
+						.forEach(e -> tree.setSubtreeChecked(e, true));
 			}
-			throw new IllegalArgumentException("Unsupported element type: " + element.getClass());
 		}
-
-		public boolean isGrayed(Object element) {
-			if (element instanceof Table) {
-				return isChecked(element) && !buttons.values().stream().allMatch(PathTreeCheckModel::isButtonChecked);
-			} else {
-				return false;
-			}
-		};
 	}
 
 	private static boolean isButtonChecked(Button btn) {

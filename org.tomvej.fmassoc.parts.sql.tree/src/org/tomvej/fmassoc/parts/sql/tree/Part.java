@@ -74,7 +74,7 @@ public class Part {
 		tree = new CheckboxTreeViewer(parent, SWT.BORDER);
 		PathContentProvider provider = new PathContentProvider();
 		tree.setContentProvider(provider);
-		PathTreeCheckModel checkModel = new PathTreeCheckModel(tree, provider);
+		checkModel = new PathTreeCheckModel(tree, provider);
 		tree.setLabelProvider(new PathTreeLabelProvider());
 		tree.getTree().setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
 		tree.addCheckStateListener(e -> delayedTransformPath());
@@ -112,6 +112,7 @@ public class Part {
 
 	@Inject
 	private UISynchronize sync;
+	private PathTreeCheckModel checkModel;
 
 	private void delayedTransformPath() {
 		sync.asyncExec(() -> transformPath(false));
@@ -148,6 +149,7 @@ public class Part {
 		this.selected = selected;
 		if (tree != null && !tree.getTree().isDisposed()) {
 			tree.setInput(selected);
+			checkModel.refresh();
 			transformPath(true);
 		}
 	}
