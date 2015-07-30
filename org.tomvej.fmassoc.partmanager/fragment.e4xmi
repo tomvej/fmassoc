@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_W0NBgDXnEeWxDdfVIw8IWA">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_MZzLQDX_EeWxDdfVIw8IWA" featurename="commands" parentElementId="org.tomvej.fmassoc.core.application">
+    <elements xsi:type="commands:Command" xmi:id="_OwGUQDX_EeWxDdfVIw8IWA" elementId="org.tomvej.fmassoc.partmanager.command.openview" commandName="Open View">
+      <parameters xmi:id="_24CloDaQEeW54Kx8dDcDsw" elementId="org.tomvej.fmassoc.partmanager.command.openview.partid" name="Part ID" optional="false"/>
+    </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_RWmccDX_EeWxDdfVIw8IWA" featurename="children" parentElementId="org.eclipse.ui.main.menu">
+    <elements xsi:type="menu:Menu" xmi:id="_Wt6fYDX_EeWxDdfVIw8IWA" elementId="org.tomvej.fmassoc.partmanager.menu" label="Views">
+      <children xsi:type="menu:DynamicMenuContribution" xmi:id="_YObP4DX_EeWxDdfVIw8IWA" elementId="org.tomvej.fmassoc.partmanager.menu.dynamic" label="[View]" contributionURI="bundleclass://org.tomvej.fmassoc.partmanager/org.tomvej.fmassoc.partmanager.Menu"/>
+    </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_zRLCEDaPEeW54Kx8dDcDsw" featurename="handlers" parentElementId="org.tomvej.fmassoc.core.window.main">
+    <elements xsi:type="commands:Handler" xmi:id="_sOWDEDaQEeW54Kx8dDcDsw" elementId="org.tomvej.fmassoc.partmanager.handler.openview" contributionURI="bundleclass://org.tomvej.fmassoc.partmanager/org.tomvej.fmassoc.partmanager.OpenView" command="_OwGUQDX_EeWxDdfVIw8IWA"/>
+  </fragments>
+</fragment:ModelFragments>
