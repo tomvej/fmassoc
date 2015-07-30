@@ -13,6 +13,7 @@ import org.eclipse.e4.ui.model.application.commands.MParameter;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
+import org.eclipse.e4.ui.model.application.ui.menu.ItemType;
 import org.eclipse.e4.ui.model.application.ui.menu.MHandledMenuItem;
 import org.eclipse.e4.ui.model.application.ui.menu.MMenuElement;
 import org.eclipse.e4.ui.model.application.ui.menu.MMenuFactory;
@@ -24,11 +25,13 @@ public class Menu {
 	private EModelService modelService;
 	@Inject
 	private MTrimmedWindow window;
-	private MCommand command;
+	private MCommand openView, closeView;
 
 	@PostConstruct
 	public void initialize(MApplication app) {
-		command = modelService.findElements(app, "org.tomvej.fmassoc.partmanager.command.openview", MCommand.class, null)
+		openView = modelService.findElements(app, "org.tomvej.fmassoc.partmanager.command.openview", MCommand.class, null)
+				.get(0);
+		closeView = modelService.findElements(app, "org.tomvej.fmassoc.partmanager.command.closeview", MCommand.class, null)
 				.get(0);
 	}
 
@@ -44,10 +47,16 @@ public class Menu {
 	private MMenuItem createMenuItem(MPart part) {
 		MHandledMenuItem item = MMenuFactory.INSTANCE.createHandledMenuItem();
 		item.setLabel(part.getLabel());
-		item.setCommand(command);
+		item.setType(ItemType.CHECK);
+
+		boolean open = part.isToBeRendered(); // empirically chosen
+		item.setCommand(open ? closeView : openView);
+		item.setSelected(open);
 
 		MParameter parameter = MCommandsFactory.INSTANCE.createParameter();
-		parameter.setName("org.tomvej.fmassoc.partmanager.command.openview.partid");
+		parameter.setName(open ?
+				"org.tomvej.fmassoc.partmanager.command.closeview.partid" :
+				"org.tomvej.fmassoc.partmanager.command.openview.partid");
 		parameter.setValue(part.getElementId());
 		item.getParameters().add(parameter);
 
