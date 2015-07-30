@@ -21,7 +21,6 @@ public class OpenView {
 	@Execute
 	public void execute(EPartService partService, Logger logger,
 			@Named("org.tomvej.fmassoc.partmanager.command.openview.partid") String id) {
-		System.err.println("Open view!");
 		MPart part = partService.findPart(id);
 		if (part != null) {
 			partService.showPart(part, PartState.VISIBLE);
