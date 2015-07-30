@@ -10,7 +10,6 @@ import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.commands.MCommand;
 import org.eclipse.e4.ui.model.application.commands.MCommandsFactory;
 import org.eclipse.e4.ui.model.application.commands.MParameter;
-import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
 import org.eclipse.e4.ui.model.application.ui.menu.ItemType;
@@ -29,8 +28,6 @@ import org.eclipse.e4.ui.workbench.modeling.EModelService;
 public class Menu {
 	@Inject
 	private EModelService modelService;
-	@Inject
-	private MTrimmedWindow window;
 	private MCommand openView, closeView;
 
 	/**
@@ -49,9 +46,8 @@ public class Menu {
 	 * Expands menu into available parts.
 	 */
 	@AboutToShow
-	public void show(List<MMenuElement> items) {
-		modelService.findElements(window, null, MPerspective.class, null).stream()
-				.flatMap(p -> p.getChildren().stream())
+	public void show(List<MMenuElement> items, MTrimmedWindow window) {
+		modelService.getActivePerspective(window).getChildren().stream()
 				.flatMap(e -> modelService.findElements(e, null, MPart.class, null).stream())
 				.map(this::createMenuItem).forEach(i -> items.add(i));
 	}
