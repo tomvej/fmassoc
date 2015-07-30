@@ -20,6 +20,12 @@ import org.eclipse.e4.ui.model.application.ui.menu.MMenuFactory;
 import org.eclipse.e4.ui.model.application.ui.menu.MMenuItem;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 
+/**
+ * Dynamic menu contribution which expands into all available parts. Allows part
+ * closing and opening.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class Menu {
 	@Inject
 	private EModelService modelService;
@@ -27,6 +33,9 @@ public class Menu {
 	private MTrimmedWindow window;
 	private MCommand openView, closeView;
 
+	/**
+	 * Initializes values.
+	 */
 	@PostConstruct
 	public void initialize(MApplication app) {
 		openView = modelService.findElements(app, "org.tomvej.fmassoc.partmanager.command.openview", MCommand.class, null)
@@ -36,6 +45,9 @@ public class Menu {
 	}
 
 
+	/**
+	 * Expands menu into available parts.
+	 */
 	@AboutToShow
 	public void show(List<MMenuElement> items) {
 		modelService.findElements(window, null, MPerspective.class, null).stream()

@@ -7,7 +7,15 @@ import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
+/**
+ * Handler for part closing.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class CloseView {
+	/**
+	 * Closes part by id.
+	 */
 	@Execute
 	public void execute(EPartService partService, Logger logger,
 			@Named("org.tomvej.fmassoc.partmanager.command.closeview.partid") String partId) {

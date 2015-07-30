@@ -8,8 +8,16 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 
+/**
+ * Handler for part opening.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class OpenView {
 
+	/**
+	 * Opens part by id.
+	 */
 	@Execute
 	public void execute(EPartService partService, Logger logger,
 			@Named("org.tomvej.fmassoc.partmanager.command.openview.partid") String id) {
