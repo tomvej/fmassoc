@@ -5,6 +5,6 @@
 	</table>
 	<table name="character">
 		<property name="name"/>
-		<association reverse="owns" name="owned_by" table="character"/>
+		<association reverse="owns" name="owned_by" table="user"/>
 	</table>
 </datamodel>
