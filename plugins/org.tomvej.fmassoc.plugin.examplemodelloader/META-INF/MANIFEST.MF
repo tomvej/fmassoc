@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Example Model Loader
+Bundle-SymbolicName: org.tomvej.fmassoc.plugin.examplemodelloader
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.tomvej.fmassoc.parts.model;bundle-version="2.0.0",
+ org.eclipse.persistence.core;bundle-version="2.6.0",
+ org.eclipse.persistence.moxy;bundle-version="2.6.0",
+ org.eclipse.persistence.asm;bundle-version="3.3.1",
+ org.tomvej.fmassoc.model;bundle-version="2.0.0",
+ org.tomvej.fmassoc.model.builder.simple;bundle-version="2.0.0",
+ org.eclipse.jface
