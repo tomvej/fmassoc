@@ -16,7 +16,7 @@ public class TableNode {
 	@XmlElement(name = "property")
 	private List<PropertyNode> properties;
 	@XmlElement(name = "association")
-	private List<AssociationNode> association;
+	private List<AssociationNode> associations;
 
 	public String getName() {
 		return name;
@@ -27,11 +27,17 @@ public class TableNode {
 	}
 
 	public List<PropertyNode> getProperties() {
+		if (properties == null) {
+			return Collections.emptyList();
+		}
 		return Collections.unmodifiableList(properties);
 	}
 
 	public List<AssociationNode> getAssociation() {
-		return Collections.unmodifiableList(association);
+		if (associations == null) {
+			return Collections.emptyList();
+		}
+		return Collections.unmodifiableList(associations);
 	}
 
 	public void validate() throws ModelLoadingException {
