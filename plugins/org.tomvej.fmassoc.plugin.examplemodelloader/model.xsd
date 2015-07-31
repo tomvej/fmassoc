@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://fmassoc.tomvej.org/plugins/examplemodelloader"
-	xmlns:fm="http://fmassoc.tomvej.org/plugins/examplemodelloader"
-	elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:element name="datamodel">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="table" type="fm:table" minOccurs="0"
+				<xs:element name="table" type="table" minOccurs="0"
 					maxOccurs="unbounded" />
 			</xs:sequence>
 		</xs:complexType>
@@ -14,9 +11,9 @@
 
 	<xs:complexType name="table">
 		<xs:sequence>
-			<xs:element name="property" type="fm:property" minOccurs="0"
+			<xs:element name="property" type="property" minOccurs="0"
 				maxOccurs="unbounded" />
-			<xs:element name="association" type="fm:association"
+			<xs:element name="association" type="association"
 				minOccurs="0" maxOccurs="unbounded" />
 		</xs:sequence>
 		<xs:attribute name="name" type="xs:token" use="required"/>
