@@ -17,11 +17,19 @@ import org.tomvej.fmassoc.model.db.DataModel;
 import org.tomvej.fmassoc.model.db.Multiplicity;
 import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 
+/**
+ * XML element containing the whole data model
+ * 
+ * @author Tomáš Vejpustek
+ */
 @XmlRootElement(name = "datamodel")
 public class DataModelNode {
 	@XmlElement(name = "table")
 	private List<TableNode> tables;
 
+	/**
+	 * Transform this XML element into actual java data model.
+	 */
 	public DataModel transform() throws ModelLoadingException {
 		if (tables == null) {
 			throw new ModelLoadingException("Data model contains no tables.");

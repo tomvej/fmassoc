@@ -12,6 +12,11 @@ import org.tomvej.fmassoc.parts.model.ModelLoader;
 import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 import org.tomvej.fmassoc.plugin.examplemodelloader.xml.DataModelNode;
 
+/**
+ * Loads single example model.
+ * 
+ * @author Tomáš Vejpustek
+ */
 public class ExampleModelLoader implements ModelLoader {
 
 	@Override
