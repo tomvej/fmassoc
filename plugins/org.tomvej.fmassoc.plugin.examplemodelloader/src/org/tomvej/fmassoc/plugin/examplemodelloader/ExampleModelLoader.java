@@ -16,23 +16,23 @@ public class ExampleModelLoader implements ModelLoader {
 
 	@Override
 	public IWizard createNewWizard(String id) {
-		return null; // empty implementation
+		return new SinglePageWizard(new ExampleWizardPage("New Example Data Model", "Create new example data model."));
 	}
 
 	@Override
 	public IWizard createEditWizard(String id) {
-		return null; // empty implementation
+		return new SinglePageWizard(new ExampleWizardPage("Edit Example Data Model", "Edit new example data model."));
 	}
 
 	@Override
 	public DataModel loadModel(String id) throws ModelLoadingException {
-		throw new ModelLoadingException("Not yet supported");
+		try {
+			InputStream input = getClass().getClassLoader().getResourceAsStream("fate.xml");
+			Unmarshaller unmarshaller = JAXBContext.newInstance(DataModelNode.class).createUnmarshaller();
+			return ((DataModelNode) unmarshaller.unmarshal(input)).transform();
+		} catch (JAXBException jaxbe) {
+			throw new ModelLoadingException("Unable to load model from file.", jaxbe);
+		}
 	}
-
-	private static DataModel loadModel(InputStream is) throws ModelLoadingException, JAXBException {
-		Unmarshaller unmarshaller = JAXBContext.newInstance(DataModelNode.class).createUnmarshaller();
-		return ((DataModelNode) unmarshaller.unmarshal(is)).transform();
-	}
-
 
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datamodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="model.xsd">
+	<table name="user">
+		<property name="name"/>
+	</table>
+	<table name="character">
+		<property name="name"/>
+		<association reverse="owns" name="owned_by" table="character"/>
+	</table>
+</datamodel>
