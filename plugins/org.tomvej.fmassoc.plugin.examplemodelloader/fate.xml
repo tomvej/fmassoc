@@ -7,6 +7,8 @@
 		<property name="name"/>
 		<association reverse="owns" name="owned_by" table="USER"/>
 		<association reverse="contains" name="plays_in" table="CAMPAIGN" mandatory="true"/>
+		<association reverse="is_high_concept_of" name="has_high_concept" table="ASPECT" mandatory="true"/>
+		<association reverse="is_trouble_of" name="has_trouble" table="ASPECT" mandatory="true"/>
 	</table>
 	<table name="CAMPAIGN">
 		<property name="name"/>
@@ -45,5 +47,18 @@
 	<table name="CHARACTER_STUNT"><!-- JUNCTION table -->
 		<association reverse="defines" name="is" table="STUNT" mandatory="true"/>
 		<association reverse="has" name="describes" table="CHARACTER" mandatory="true"/>
+	</table>
+	<table name="ASPECT">
+		<property name="name"/>
+	</table>
+	<table name="CHARACTER_ASPECT"><!-- JUNCTION table -->
+		<!-- does not contain high concepts and troubles -->
+		<association reverse="defines" name="is" table="ASPECT" mandatory="true"/>
+		<association reverse="has" name="describes" table="CHARACTER" mandatory="true"/>
+	</table>
+	<table name="CAMPAIGN_ASPECT"><!-- JUNCTION table -->
+		<property name="trouble"/><!-- boolean: campaign aspect can be theme or trouble -->
+		<association reverse="defines" name="is" table="ASPECT"/>
+		<association reverse="theme_of" name="has_theme" table="CAMPAIGN"/>
 	</table>
 </datamodel>
