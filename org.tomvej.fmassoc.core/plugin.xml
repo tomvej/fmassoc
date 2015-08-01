@@ -9,10 +9,10 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="org.eclipse.e4.ui.workbench.swt.E4Application"
-            name="fmassoc">
+            name="Association Search">
          <property
                name="appName"
-               value="fmassoc">
+               value="Association Search">
          </property>
       </product>
    </extension>

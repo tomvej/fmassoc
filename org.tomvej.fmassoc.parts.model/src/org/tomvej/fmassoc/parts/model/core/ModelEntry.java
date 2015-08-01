@@ -19,13 +19,14 @@ public class ModelEntry {
 	ModelEntry(String id, String label, ModelLoaderEntry loader) {
 		this.id = Validate.notBlank(id);
 		this.label = label;
-		this.loader = Validate.notNull(loader);
+		this.loader = loader;
 	}
 
 	/**
 	 * Return model loader used to load this model.
 	 */
-	public ModelLoaderEntry getLoader() {
+	private ModelLoaderEntry getLoader() {
+		Validate.validState(loader != null, "Model loader for " + getId() + " unavailable.");
 		return loader;
 	}
 
@@ -45,6 +46,8 @@ public class ModelEntry {
 
 	/**
 	 * Create new wizard for this model from the associated loader.
+	 * 
+	 * @see #isValid()
 	 */
 	public IWizard createNewWizard() {
 		return getLoader().getLoader().createNewWizard(getId());
@@ -52,6 +55,8 @@ public class ModelEntry {
 
 	/**
 	 * Create edit wizard for this model from the associated loader.
+	 * 
+	 * @see #isValid()
 	 */
 	public IWizard createEditWizard() {
 		return getLoader().getLoader().createEditWizard(getId());
@@ -63,6 +68,7 @@ public class ModelEntry {
 	 * @return Loaded model.
 	 * @throws ModelLoadingException
 	 *             when the loading was not successful.
+	 * @see #isValid()
 	 */
 	public DataModel load() throws ModelLoadingException {
 		return getLoader().getLoader().loadModel(getId());
@@ -73,6 +79,14 @@ public class ModelEntry {
 	 */
 	public String getDescription() {
 		return getLabel() + " (" + getLoader().getName() + ")";
+	}
+
+	/**
+	 * Return whether this model entry has a loader, i.e. can be used to load or
+	 * edit model.
+	 */
+	public boolean isValid() {
+		return loader != null;
 	}
 
 	@Override
@@ -93,6 +107,7 @@ public class ModelEntry {
 
 	@Override
 	public String toString() {
-		return "Model " + getLabel() + " [" + getId() + ", " + getLoader().toString() + "]";
+		return "Model " + getLabel() + " [" + getId() + ", "
+				+ (loader != null ? loader.toString() : "unavailable loader") + "]";
 	}
 }

@@ -15,7 +15,11 @@ public enum Options {
 	/** Print only columns of source and destination tables */
 	SRC_DST_ONLY("Print only source and destination"),
 	/** Prefix column names with table names */
-	PREFIX_COLUMNS("Prefix column names with table names");
+	PREFIX_COLUMNS("Prefix column names with table names"),
+	/** use {@code LEFT JOIN} instead of {@code JOIN} */
+	USE_LEFT_JOIN("Use LEFT JOIN"),
+	/** Print only ID_OBJECT columns */
+	PRINT_OIDS_ONLY("Print only ID_OBJECTs");
 
 
 	private final String msg;

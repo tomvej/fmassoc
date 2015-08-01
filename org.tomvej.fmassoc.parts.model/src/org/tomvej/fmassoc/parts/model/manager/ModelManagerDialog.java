@@ -1,17 +1,23 @@
 package org.tomvej.fmassoc.parts.model.manager;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.window.ToolTip;
+import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -21,12 +27,13 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 import org.tomvej.fmassoc.parts.model.core.Constants;
 import org.tomvej.fmassoc.parts.model.core.ModelEntry;
 import org.tomvej.fmassoc.parts.model.core.ModelList;
 import org.tomvej.fmassoc.parts.model.core.ModelLoaderEntry;
+import org.tomvej.fmassoc.swt.tables.TableLayoutSupport;
 import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
-import org.tomvej.fmassoc.swt.wrappers.TextLabelProvider;
 
 /**
  * Dialog used to manage (add, edit, remove) available data models. Uses
@@ -41,9 +48,17 @@ public class ModelManagerDialog extends TitleAreaDialog {
 	@Inject
 	@Named(Constants.MODEL_LOADER_REGISTRY)
 	private List<ModelLoaderEntry> loaders;
+	@Inject
+	@Optional
+	private ModelEntry current;
 
-	private ListViewer list;
+	@Inject
+	@Named(Constants.MODEL_ERRORS)
+	private Map<ModelEntry, ModelLoadingException> errors;
+
+	private TableViewer list;
 	private Button editBtn, removeBtn;
+	private boolean currentChanged;
 
 	/**
 	 * Create model manager dialog. Not to be used explicitly, only from
@@ -61,9 +76,13 @@ public class ModelManagerDialog extends TitleAreaDialog {
 		container.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
 		container.setLayout(new GridLayout(2, false));
 
-		list = new ListViewer(container, SWT.SINGLE | SWT.BORDER | SWT.V_SCROLL);
-		list.getList().setLayoutData(GridDataFactory.fillDefaults().grab(true, true).span(1, 3).create());
-		list.setLabelProvider(new TextLabelProvider<ModelEntry>(model -> model.getLabel()));
+		list = TableLayoutSupport.createTableViewer(container, SWT.SINGLE | SWT.BORDER | SWT.V_SCROLL | SWT.FULL_SELECTION,
+				GridDataFactory.fillDefaults().grab(true, true).span(1, 3).create());
+		TableViewerColumn model = new TableViewerColumn(list, SWT.LEFT);
+		model.setLabelProvider(new ModelLabelProvider(errors));
+		TableLayoutSupport.create(list, 1, false, model);
+		ColumnViewerToolTipSupport.enableFor(list, ToolTip.NO_RECREATE);
+
 		list.setContentProvider(new ObservableListContentProvider());
 		list.setInput(models);
 		list.addSelectionChangedListener(e -> refreshButtons());
@@ -71,9 +90,9 @@ public class ModelManagerDialog extends TitleAreaDialog {
 		createButton(container, "Add",
 				e -> new LoaderSelectionPage(getParentShell(), loaders, models).getNewModelDialog().open());
 		editBtn = createButton(container, "Edit",
-				e -> new WizardDialog(getParentShell(), getSelected().createEditWizard()).open());
+				e -> new WizardDialogWithCheck(getParentShell(), getSelected().createEditWizard()).open());
 		removeBtn = createButton(container, "Remove",
-				e -> models.remove(list.getList().getSelectionIndex()));
+				e -> models.remove(list.getTable().getSelectionIndex()));
 		refreshButtons();
 		return dialog;
 	}
@@ -88,7 +107,7 @@ public class ModelManagerDialog extends TitleAreaDialog {
 
 	private void refreshButtons() {
 		boolean selected = !list.getSelection().isEmpty();
-		editBtn.setEnabled(selected);
+		editBtn.setEnabled(selected && getSelected().isValid());
 		removeBtn.setEnabled(selected);
 	}
 
@@ -112,6 +131,33 @@ public class ModelManagerDialog extends TitleAreaDialog {
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
 		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
+	}
+
+	/**
+	 * Return whether the currently loaded model has been edited in manager.
+	 * This only checks if "Finish" has been pressed in its edit dialog.
+	 */
+	public boolean isCurrentModelChanged() {
+		return currentChanged;
+	}
+
+	private class WizardDialogWithCheck extends WizardDialog {
+
+		public WizardDialogWithCheck(Shell parentShell, IWizard newWizard) {
+			super(parentShell, newWizard);
+		}
+
+		@Override
+		protected void finishPressed() {
+			ModelEntry selected = getSelected();
+			if (selected.equals(current)) {
+				currentChanged = true;
+			}
+			// remove errors for edited model
+			errors.remove(selected);
+			list.refresh(selected);
+			super.finishPressed();
+		}
 	}
 
 

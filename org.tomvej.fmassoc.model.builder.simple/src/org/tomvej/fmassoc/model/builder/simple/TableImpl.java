@@ -57,4 +57,9 @@ public class TableImpl extends NamedImpl implements Table {
 		Validate.isTrue(equals(target.getDestination()) || equals(target.getSource()));
 		associations.add(target);
 	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "[" + getName() + "]";
+	}
 }

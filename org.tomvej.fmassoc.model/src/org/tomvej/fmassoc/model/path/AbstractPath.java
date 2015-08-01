@@ -24,4 +24,11 @@ public abstract class AbstractPath implements Path {
 	public int hashCode() {
 		return getAssociations().hashCode();
 	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() +
+				"[" + getSource().getName() + " -> " + getDestination().getName() + "; "
+				+ getLength() + "]";
+	}
 }

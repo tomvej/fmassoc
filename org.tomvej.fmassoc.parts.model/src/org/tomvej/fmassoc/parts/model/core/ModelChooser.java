@@ -2,7 +2,9 @@ package org.tomvej.fmassoc.parts.model.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -36,7 +38,9 @@ import org.osgi.service.prefs.BackingStoreException;
 import org.tomvej.fmassoc.core.communicate.DataModelTopic;
 import org.tomvej.fmassoc.model.db.DataModel;
 import org.tomvej.fmassoc.parts.model.ModelLoader;
+import org.tomvej.fmassoc.parts.model.ModelLoadingException;
 import org.tomvej.fmassoc.swt.wrappers.TextLabelProvider;
+import org.tomvej.fmassoc.swt.wrappers.ViewerFilterWrapper;
 
 /**
  * Toolbar widget used to switch data models.
@@ -57,6 +61,8 @@ public class ModelChooser {
 	@Preference(nodePath = "org.tomvej.fmassoc.parts.model.models")
 	private IEclipsePreferences modelPreference;
 
+	private Map<ModelEntry, ModelLoadingException> errors = new HashMap<>();
+
 	private IEclipseContext appContext;
 	private ModelList models;
 	private ComboViewer switcher;
@@ -67,6 +73,7 @@ public class ModelChooser {
 	@PostConstruct
 	public void createComponents(Composite container, Shell parentShell, IExtensionRegistry registry, MApplication app) {
 		appContext = app.getContext();
+		appContext.set(Constants.MODEL_ERRORS, errors);
 
 		Composite parent = new Composite(container, SWT.NONE);
 		parent.setLayout(new GridLayout(2, false));
@@ -80,7 +87,8 @@ public class ModelChooser {
 		List<ModelEntry> modelEntries = new ArrayList<>();
 		IStatus status = manager.loadModels(modelEntries, loaders);
 		if (!status.equals(Status.OK_STATUS)) {
-			ErrorDialog.openError(parentShell, "Unaccessible Models", "Some models could not be loaded.", status);
+			ErrorDialog.openError(parentShell, "Unaccessible Models",
+					"Some models could not be loaded. You can remove them in the model manager dialog.", status);
 		}
 		models = new ModelList(manager, modelEntries);
 		appContext.set(ModelList.class, models);
@@ -93,9 +101,10 @@ public class ModelChooser {
 		switcher.getCombo().setLayoutData(GridDataFactory.fillDefaults().hint(120, SWT.DEFAULT).create());
 
 		switcher.setContentProvider(new ObservableListContentProvider());
-		switcher.setLabelProvider(new TextLabelProvider<ModelEntry>(entry -> entry.getLabel()));
+		switcher.setLabelProvider(new TextLabelProvider<ModelEntry>(m -> m.getLabel()));
 		switcher.setInput(models);
 		switcher.addSelectionChangedListener(event -> modelSelected());
+		switcher.addFilter(new ViewerFilterWrapper<ModelEntry>(e -> e.isValid()));
 
 		parentShell.getDisplay().asyncExec(this::loadSelectedModel);
 	}

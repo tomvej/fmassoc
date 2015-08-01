@@ -29,4 +29,8 @@ class PropertyImpl implements Property {
 		return parent;
 	}
 
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "[" + getParent().getName() + "." + getName() + "]";
+	}
 }
