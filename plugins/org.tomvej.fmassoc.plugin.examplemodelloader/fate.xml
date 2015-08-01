@@ -7,9 +7,12 @@
 		<property name="name"/>
 		<association reverse="owns" name="owned_by" table="USER"/>
 		<association reverse="contains" name="plays_in" table="CAMPAIGN" mandatory="true"/>
+		<association reverse="is_high_concept_of" name="has_high_concept" table="ASPECT" mandatory="true"/>
+		<association reverse="is_trouble_of" name="has_trouble" table="ASPECT" mandatory="true"/>
 	</table>
 	<table name="CAMPAIGN">
 		<property name="name"/>
+		<association reverse="owns" name="owned_by" table="USER" mandatory="true"/>
 	</table>
 	<table name="USER_CAMPAIGN"><!-- JUNCTION table -->
 		<association reverse="is_assigned_by" name="assigns" table="USER" mandatory="true"/>
@@ -44,5 +47,41 @@
 	<table name="CHARACTER_STUNT"><!-- JUNCTION table -->
 		<association reverse="defines" name="is" table="STUNT" mandatory="true"/>
 		<association reverse="has" name="describes" table="CHARACTER" mandatory="true"/>
+	</table>
+	<table name="ASPECT">
+		<property name="name"/>
+	</table>
+	<table name="CHARACTER_ASPECT"><!-- JUNCTION table -->
+		<!-- does not contain high concepts and troubles -->
+		<association reverse="defines" name="is" table="ASPECT" mandatory="true"/>
+		<association reverse="has" name="describes" table="CHARACTER" mandatory="true"/>
+	</table>
+	<table name="CAMPAIGN_ASPECT"><!-- JUNCTION table -->
+		<property name="trouble"/><!-- boolean: campaign aspect can be theme or trouble -->
+		<association reverse="defines" name="is" table="ASPECT"/>
+		<association reverse="theme_of" name="has_theme" table="CAMPAIGN"/>
+	</table>
+	<table name="PLACE">
+		<property name="name"/>
+		<property name="description"/>
+		<association reverse="is_face_of" name="has_face" table="CHARACTER"/>
+		<association reverse="is_concept_of" name="has_concept" table="ASPECT" mandatory="true"/>
+		<association reverse="contains" name="is_in" table="PLACE"/>
+	</table>
+	<table name="PLACE_ASPECT"><!-- JUNCTION table, sparse -->
+		<association reverse="defines" name="is" table="ASPECT" mandatory="true"/>
+		<association reverse="has" name="describes" table="PLACE" mandatory="true"/>
+	</table>
+	<table name="PLACE_CHARACTER"><!-- JUNCTION table -->
+		<property name="relation"/>
+		<association reverse="has_relation" name="owner" table="CHARACTER" mandatory="true"/>
+		<association reverse="has_relation" name="target" table="PLACE" mandatory="true"/>
+	</table>
+	<table name="CHARACTER_RELATION"><!-- JUNCTION table -->
+		<property name="rating"/>
+		<property name="description"/>
+		<association reverse="has_relation" name="owner" table="CHARACTER" mandatory="true"/>
+		<association reverse="has_relation" name="target" table="CHARACTER" mandatory="true"/>
+		<association reverse="describes" name="has_aspect" table="ASPECT"/>
 	</table>
 </datamodel>
