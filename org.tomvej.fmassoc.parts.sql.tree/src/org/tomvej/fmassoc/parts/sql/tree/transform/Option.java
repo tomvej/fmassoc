@@ -11,8 +11,6 @@ public enum Option {
 	OIDS("Print ID_OBJECTs"),
 	/** Print associations (except those in path) */
 	ASSOC("Print associations"),
-	/** Print version properties (ID_VERSION, ...) */
-	VERSION("Print version properties"),
 	/** Print properties */
 	PROPERTY("Print properties"),
 	/** Abbreviate table names (e.g. T259) */

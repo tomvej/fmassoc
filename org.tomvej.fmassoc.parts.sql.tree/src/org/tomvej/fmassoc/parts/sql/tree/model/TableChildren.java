@@ -18,7 +18,6 @@ import org.tomvej.fmassoc.model.db.Table;
 class TableChildren {
 	private final ObjectIdColumn objectIdColumn;
 	private final PropertyColumns propertyColumns;
-	private final VersionColumns versionColumns;
 	private final AssociationColumns associationColumns;
 
 	/**
@@ -31,7 +30,6 @@ class TableChildren {
 		this.associationColumns = associationColumns.getChildren().length > 0 ? associationColumns : null;
 		PropertyColumns propertyColumns = new PropertyColumns(target);
 		this.propertyColumns = propertyColumns.getChildren().length > 0 ? propertyColumns : null;
-		versionColumns = new VersionColumns(target);
 	}
 
 	/**
@@ -47,7 +45,6 @@ class TableChildren {
 		if (propertyColumns != null) {
 			children.add(propertyColumns);
 		}
-		children.add(versionColumns);
 		return children.toArray();
 	}
 
@@ -63,13 +60,6 @@ class TableChildren {
 	 */
 	PropertyColumns getPropertyColumns() {
 		return propertyColumns;
-	}
-
-	/**
-	 * Returns all version properties of the table.
-	 */
-	VersionColumns getVersionColumns() {
-		return versionColumns;
 	}
 
 	/**

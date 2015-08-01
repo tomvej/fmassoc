@@ -7,7 +7,6 @@ import java.util.Set;
 import org.tomvej.fmassoc.model.db.AssociationProperty;
 import org.tomvej.fmassoc.model.db.Property;
 import org.tomvej.fmassoc.model.db.Table;
-import org.tomvej.fmassoc.parts.sql.tree.model.VersionProperties;
 import org.tomvej.fmassoc.transform.sql.handles.ColumnHandle;
 import org.tomvej.fmassoc.transform.sql.handles.TableHandle;
 
@@ -19,7 +18,7 @@ import org.tomvej.fmassoc.transform.sql.handles.TableHandle;
  */
 public class OptionHandleFactory extends AbstractHandleFactory {
 	private static final Collection<Option> TABLE_OPTIONS =
-			EnumSet.of(Option.OIDS, Option.ASSOC, Option.VERSION, Option.PROPERTY);
+			EnumSet.of(Option.OIDS, Option.ASSOC, Option.PROPERTY);
 
 	/**
 	 * Specify selected options.
@@ -56,11 +55,7 @@ public class OptionHandleFactory extends AbstractHandleFactory {
 
 			@Override
 			public boolean isDisplayed() {
-				if (VersionProperties.isVersionProperty(property)) {
-					return isSet(Option.VERSION);
-				} else {
-					return isSet(Option.PROPERTY);
-				}
+				return isSet(Option.PROPERTY);
 			}
 		};
 	}

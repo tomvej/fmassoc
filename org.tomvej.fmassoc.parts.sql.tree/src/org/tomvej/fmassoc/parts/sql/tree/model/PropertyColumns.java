@@ -21,7 +21,7 @@ public class PropertyColumns extends TableChild {
 
 	@Override
 	public Object[] getChildren() {
-		return getParent().getProperties().stream().filter(p -> !VersionProperties.isVersionProperty(p)).toArray();
+		return getParent().getProperties().toArray();
 	}
 
 }

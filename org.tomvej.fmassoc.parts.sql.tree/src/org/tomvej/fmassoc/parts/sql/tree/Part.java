@@ -88,7 +88,6 @@ public class Part {
 		checkModel.setOidButton(options.get(Option.OIDS));
 		checkModel.setAssociationButton(options.get(Option.ASSOC));
 		checkModel.setPropertyButton(options.get(Option.PROPERTY));
-		checkModel.setVersionButton(options.get(Option.VERSION));
 
 		pinned = thisPart.equals(pinnedPart);
 		pathSelected(selected);

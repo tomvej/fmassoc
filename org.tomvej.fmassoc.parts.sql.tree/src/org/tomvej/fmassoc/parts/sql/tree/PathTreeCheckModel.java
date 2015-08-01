@@ -20,7 +20,6 @@ import org.tomvej.fmassoc.parts.sql.tree.model.ObjectIdColumn;
 import org.tomvej.fmassoc.parts.sql.tree.model.PathContentProvider;
 import org.tomvej.fmassoc.parts.sql.tree.model.PropertyColumns;
 import org.tomvej.fmassoc.parts.sql.tree.model.TreeNode;
-import org.tomvej.fmassoc.parts.sql.tree.model.VersionColumns;
 import org.tomvej.fmassoc.swt.wrappers.SelectionWrapper;
 
 /**
@@ -66,13 +65,6 @@ public class PathTreeCheckModel {
 	 */
 	public void setPropertyButton(Button btn) {
 		addButton(btn, PropertyColumns.class, provider::getPropertyProxies);
-	}
-
-	/**
-	 * Specify button for version properties.
-	 */
-	public void setVersionButton(Button btn) {
-		addButton(btn, VersionColumns.class, provider::getVersionProxies);
 	}
 
 	private void addButton(Button btn, Class<? extends TreeNode> clazz, Supplier<Collection<? extends TreeNode>> supplier) {

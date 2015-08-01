@@ -71,8 +71,6 @@ public class PathContentProvider implements ITreeContentProvider {
 			TableChildren tableChildren = columns.get(target.getParent());
 			if (element instanceof AssociationProperty) {
 				return tableChildren.getAssociationColumns();
-			} else if (VersionProperties.isVersionProperty(target)) {
-				return tableChildren.getVersionColumns();
 			} else {
 				return tableChildren.getPropertyColumns();
 			}
@@ -123,12 +121,5 @@ public class PathContentProvider implements ITreeContentProvider {
 	 */
 	public Collection<PropertyColumns> getPropertyProxies() {
 		return getFromTableChildren(TableChildren::getPropertyColumns);
-	}
-
-	/**
-	 * Returns all proxies for version properties collections.
-	 */
-	public Collection<VersionColumns> getVersionProxies() {
-		return getFromTableChildren(TableChildren::getVersionColumns);
 	}
 }

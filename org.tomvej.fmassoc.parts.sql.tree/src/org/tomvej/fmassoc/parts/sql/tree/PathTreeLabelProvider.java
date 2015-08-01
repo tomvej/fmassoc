@@ -7,7 +7,6 @@ import org.tomvej.fmassoc.model.db.Table;
 import org.tomvej.fmassoc.parts.sql.tree.model.AssociationColumns;
 import org.tomvej.fmassoc.parts.sql.tree.model.ObjectIdColumn;
 import org.tomvej.fmassoc.parts.sql.tree.model.PropertyColumns;
-import org.tomvej.fmassoc.parts.sql.tree.model.VersionColumns;
 
 /**
  * Label provider for path tree.
@@ -36,8 +35,6 @@ public class PathTreeLabelProvider extends ColumnLabelProvider {
 		} else if (element instanceof PropertyColumns) {
 			return "properties";
 
-		} else if (element instanceof VersionColumns) {
-			return "version properties";
 		}
 
 		throw new IllegalArgumentException("Unknown element type: " + element.getClass());
