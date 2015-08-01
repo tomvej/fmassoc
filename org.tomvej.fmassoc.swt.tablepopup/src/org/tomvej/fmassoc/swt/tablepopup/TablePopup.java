@@ -255,8 +255,11 @@ public class TablePopup {
 			}
 		});
 
-		Consumer<Integer> moveOpener =
-				i -> open(target, tableSupplier.get(), tableListener, target.getText(), target.getSelection(), i);
+		Consumer<Integer> moveOpener = i -> {
+			if (!accepting) {
+				open(target, tableSupplier.get(), tableListener, target.getText(), target.getSelection(), i);
+			}
+		};
 		Consumer<TypedEvent> opener = e -> moveOpener.accept(0);
 
 		target.addMouseListener(new MouseClickWrapper(opener));
@@ -264,5 +267,16 @@ public class TablePopup {
 		target.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_DOWN, SWT.NONE, e -> moveOpener.accept(1)));
 		target.addKeyListener(new KeyReleasedWrapper(SWT.ARROW_UP, SWT.NONE, e -> moveOpener.accept(-1)));
 		target.addTraverseListener(new TraverseWrapper(SWT.TRAVERSE_RETURN, opener));
+	}
+
+	/**
+	 * Do an action while not showing the pop-up. Use this to perform
+	 * programmatically an action which would normally cause the pop-up to show,
+	 * such as {@link Text#setText(String)}.
+	 */
+	public void doWhileSuspended(Runnable action) {
+		accepting = true;
+		action.run();
+		accepting = false;
 	}
 }

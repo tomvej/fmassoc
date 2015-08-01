@@ -26,7 +26,10 @@ public class ShowModelManager {
 		dialog.open();
 
 		// reload the model
-		handlerService.executeHandler(
-				commandService.createCommand("org.tomvej.fmassoc.parts.model.command.loadmodel", Collections.emptyMap()));
+		if (dialog.isCurrentModelChanged()) {
+			handlerService
+					.executeHandler(
+					commandService.createCommand("org.tomvej.fmassoc.parts.model.command.loadmodel", Collections.emptyMap()));
+		}
 	}
 }

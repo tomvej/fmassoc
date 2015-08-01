@@ -1,6 +1,8 @@
 package org.tomvej.fmassoc.parts.altsrcdst.srcdst;
 
+import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
@@ -26,6 +28,8 @@ public class TableChooser extends Composite {
 
 	private Table table;
 	private Consumer<Table> listener;
+
+	private Function<Table, String> labelProvider;
 
 	/**
 	 * Specify parent panel and pop-up used to select table.
@@ -63,7 +67,7 @@ public class TableChooser extends Composite {
 
 	private void tableSet(Table table) {
 		this.table = table;
-		input.setText(table.getName());
+		input.setText(labelProvider.apply(table));
 		input.setSelection(input.getText().length());
 		if (listener != null) {
 			listener.accept(table);
@@ -82,6 +86,16 @@ public class TableChooser extends Composite {
 	 */
 	public void setTableListener(Consumer<Table> listener) {
 		this.listener = listener;
+	}
+
+	/**
+	 * Specify how selected table will be displayed.
+	 */
+	public void setLabelProvider(Function<Table, String> labelProvider) {
+		this.labelProvider = Objects.requireNonNull(labelProvider);
+		if (table != null) {
+			input.setText(labelProvider.apply(table));
+		}
 	}
 
 }

@@ -9,7 +9,7 @@
     <elements xsi:type="commands:Command" xmi:id="_oHaGEJpUEeSb0YieiPJ1BA" elementId="org.tomvej.fmassoc.parts.paths.command.filter" commandName="Filter"/>
     <elements xsi:type="commands:Command" xmi:id="_CIeVwOKXEeSNg9vZSf7usg" elementId="org.tomvej.fmassoc.parts.paths.command.copypath" commandName="Copy Transformed Path"/>
   </fragments>
-  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_rOrS0JgAEeSUkZphneFToA" featurename="children" parentElementId="org.tomvej.fmassoc.search.partstack.paths">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_rOrS0JgAEeSUkZphneFToA" featurename="children" parentElementId="org.tomvej.fmassoc.search.partstack.paths" positionInList="first">
     <elements xsi:type="basic:Part" xmi:id="_IuopUCEnEeSLQMaNm8aPHA" elementId="org.tomvej.fmassoc.parts.paths.part" contributionURI="bundleclass://org.tomvej.fmassoc.parts.paths/org.tomvej.fmassoc.parts.paths.Part" label="Found Paths" bindingContexts="_XGpjYOKYEeSNg9vZSf7usg">
       <handlers xmi:id="_5LQo8DwrEeSKNJd9uleB0A" elementId="org.tomvej.fmassoc.parts.paths.handler.multisort" contributionURI="bundleclass://org.tomvej.fmassoc.parts.paths/org.tomvej.fmassoc.parts.paths.multisort.MultisortHandler" command="_2JGfgDwrEeSKNJd9uleB0A"/>
       <handlers xmi:id="_j9uXEJpYEeSb0YieiPJ1BA" elementId="org.tomvej.fmassoc.parts.paths.handler.filter" contributionURI="bundleclass://org.tomvej.fmassoc.parts.paths/org.tomvej.fmassoc.parts.paths.filter.FilterHandler" command="_oHaGEJpUEeSb0YieiPJ1BA"/>

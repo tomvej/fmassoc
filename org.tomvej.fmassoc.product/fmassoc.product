@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Association Search" uid="org.tomvej.fmassoc" id="org.tomvej.fmassoc.core.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="2.0.0" useFeatures="true" includeLaunchers="true">
+<product name="Association Search" uid="org.tomvej.fmassoc" id="org.tomvej.fmassoc.core.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="2.1.0.SNAPSHOT" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -35,6 +35,7 @@
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.emf.common"/>
       <feature id="org.eclipse.persistence.moxy"/>
+      <feature id="org.tomvej.fmassoc.extras"/>
    </features>
 
 

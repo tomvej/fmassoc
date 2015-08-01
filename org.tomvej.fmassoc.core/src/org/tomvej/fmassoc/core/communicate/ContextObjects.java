@@ -29,4 +29,8 @@ public interface ContextObjects {
 	 * {@link String}.
 	 */
 	public static final String TRANSFORMED_PATH = PLUGIN + ".transformedPath";
+	/**
+	 * Currently pinned transformation part.
+	 */
+	public static final String TRANSFORMATION_PART = PLUGIN + ".transformationPart";
 }
