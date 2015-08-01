@@ -6,14 +6,14 @@
 	<table name="CHARACTER">
 		<property name="name"/>
 		<association reverse="owns" name="owned_by" table="USER"/>
-		<association reverse="contains" name="plays_in" table="CAMPAIGN"/>
+		<association reverse="contains" name="plays_in" table="CAMPAIGN" mandatory="true"/>
 	</table>
 	<table name="CAMPAIGN">
 		<property name="name"/>
 	</table>
-	<table name="USER_CAMPAIGN">
-		<association reverse="is_assigned_by" name="assigns" table="USER"/>
-		<association reverse="is_assigned_by" name="assigns_to" table="CAMPAIGN"/>
+	<table name="USER_CAMPAIGN"><!-- JUNCTION table -->
+		<association reverse="is_assigned_by" name="assigns" table="USER" mandatory="true"/>
+		<association reverse="is_assigned_by" name="assigns_to" table="CAMPAIGN" mandatory="true"/>
 	</table>
 	<table name="SKILL">
 		<property name="name"/>
@@ -26,23 +26,23 @@
 	<table name="STUNT">
 		<property name="name"/>
 		<property name="rules"/>
-		<association reverse="has" name="uses" table="SKILL"/>
+		<association reverse="has" name="uses" table="SKILL" mandatory="true"/>
 	</table>
-	<table name="CAMPAIGN_SKILL">
-		<association reverse="is_assigned_by" name="assigns" table="SKILL"/>
-		<association reverse="is_assigned_by" name="assigns_to" table="CAMPAIGN"/>
+	<table name="CAMPAIGN_SKILL"><!-- JUNCTION table -->
+		<association reverse="is_assigned_by" name="assigns" table="SKILL" mandatory="true"/>
+		<association reverse="is_assigned_by" name="assigns_to" table="CAMPAIGN" mandatory="true"/>
 	</table>
-	<table name="CAMPAIGN_STUNT">
-		<association reverse="is_assigned_by" name="assigns" table="STUNT"/>
-		<association reverse="is_assigned_by" name="assigns_to" table="CAMPAIGN"/>
+	<table name="CAMPAIGN_STUNT"><!-- JUNCTION table -->
+		<association reverse="is_assigned_by" name="assigns" table="STUNT" mandatory="true"/>
+		<association reverse="is_assigned_by" name="assigns_to" table="CAMPAIGN" mandatory="true"/>
 	</table>
-	<table name="CHARACTER_SKILL">
+	<table name="CHARACTER_SKILL"><!-- JUNCTION table -->
 		<property name="rating"/>
-		<association reverse="defines" name="is" table="SKILL"/>
-		<association reverse="has" name="describes" table="CHARACTER"/>
+		<association reverse="defines" name="is" table="SKILL" mandatory="true"/>
+		<association reverse="has" name="describes" table="CHARACTER" mandatory="true"/>
 	</table>
-	<table name="CHARACTER_STUNT">
-		<association reverse="defines" name="is" table="STUNT"/>
-		<association reverse="has" name="describes" table="CHARACTER"/>
+	<table name="CHARACTER_STUNT"><!-- JUNCTION table -->
+		<association reverse="defines" name="is" table="STUNT" mandatory="true"/>
+		<association reverse="has" name="describes" table="CHARACTER" mandatory="true"/>
 	</table>
 </datamodel>
