@@ -61,4 +61,14 @@
 		<association reverse="defines" name="is" table="ASPECT"/>
 		<association reverse="theme_of" name="has_theme" table="CAMPAIGN"/>
 	</table>
+	<table name="PLACE">
+		<property name="name"/>
+		<property name="description"/>
+		<association reverse="is_face_of" name="has_face" table="CHARACTER"/>
+		<association reverse="is_concept_of" name="has_concept" table="ASPECT" mandatory="true"/>
+	</table>
+	<table name="PLACE_ASPECT"><!-- JUNCTION table, sparse -->
+		<association reverse="defines" name="is" table="ASPECT" mandatory="true"/>
+		<association reverse="has" name="describes" table="PLACE" mandatory="true"/>
+	</table>
 </datamodel>
