@@ -66,9 +66,22 @@
 		<property name="description"/>
 		<association reverse="is_face_of" name="has_face" table="CHARACTER"/>
 		<association reverse="is_concept_of" name="has_concept" table="ASPECT" mandatory="true"/>
+		<association reverse="contains" name="is_in" table="PLACE"/>
 	</table>
 	<table name="PLACE_ASPECT"><!-- JUNCTION table, sparse -->
 		<association reverse="defines" name="is" table="ASPECT" mandatory="true"/>
 		<association reverse="has" name="describes" table="PLACE" mandatory="true"/>
+	</table>
+	<table name="PLACE_CHARACTER"><!-- JUNCTION table -->
+		<property name="relation"/>
+		<association reverse="has_relation" name="owner" table="CHARACTER" mandatory="true"/>
+		<association reverse="has_relation" name="target" table="PLACE" mandatory="true"/>
+	</table>
+	<table name="CHARACTER_RELATION"><!-- JUNCTION table -->
+		<property name="rating"/>
+		<property name="description"/>
+		<association reverse="has_relation" name="owner" table="CHARACTER" mandatory="true"/>
+		<association reverse="has_relation" name="target" table="CHARACTER" mandatory="true"/>
+		<association reverse="describes" name="has_aspect" table="ASPECT"/>
 	</table>
 </datamodel>
