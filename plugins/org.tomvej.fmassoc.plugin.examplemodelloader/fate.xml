@@ -10,6 +10,7 @@
 	</table>
 	<table name="CAMPAIGN">
 		<property name="name"/>
+		<association reverse="owns" name="owned_by" table="USER" mandatory="true"/>
 	</table>
 	<table name="USER_CAMPAIGN"><!-- JUNCTION table -->
 		<association reverse="is_assigned_by" name="assigns" table="USER" mandatory="true"/>
