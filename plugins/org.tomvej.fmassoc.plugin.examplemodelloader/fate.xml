@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datamodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="model.xsd">
+	<table name="USER">
+		<property name="name"/>
+	</table>
+	<table name="CHARACTER">
+		<property name="name"/>
+		<association reverse="owns" name="owned_by" table="USER"/>
+		<association reverse="contains" name="plays_in" table="CAMPAIGN" mandatory="true"/>
+	</table>
+	<table name="CAMPAIGN">
+		<property name="name"/>
+	</table>
+	<table name="USER_CAMPAIGN"><!-- JUNCTION table -->
+		<association reverse="is_assigned_by" name="assigns" table="USER" mandatory="true"/>
+		<association reverse="is_assigned_by" name="assigns_to" table="CAMPAIGN" mandatory="true"/>
+	</table>
+	<table name="SKILL">
+		<property name="name"/>
+		<property name="description"/>
+		<property name="attack"/>
+		<property name="defense"/>
+		<property name="advantage"/>
+		<property name="overcome"/>
+	</table>
+	<table name="STUNT">
+		<property name="name"/>
+		<property name="rules"/>
+		<association reverse="has" name="uses" table="SKILL" mandatory="true"/>
+	</table>
+	<table name="CAMPAIGN_SKILL"><!-- JUNCTION table -->
+		<association reverse="is_assigned_by" name="assigns" table="SKILL" mandatory="true"/>
+		<association reverse="is_assigned_by" name="assigns_to" table="CAMPAIGN" mandatory="true"/>
+	</table>
+	<table name="CAMPAIGN_STUNT"><!-- JUNCTION table -->
+		<association reverse="is_assigned_by" name="assigns" table="STUNT" mandatory="true"/>
+		<association reverse="is_assigned_by" name="assigns_to" table="CAMPAIGN" mandatory="true"/>
+	</table>
+	<table name="CHARACTER_SKILL"><!-- JUNCTION table -->
+		<property name="rating"/>
+		<association reverse="defines" name="is" table="SKILL" mandatory="true"/>
+		<association reverse="has" name="describes" table="CHARACTER" mandatory="true"/>
+	</table>
+	<table name="CHARACTER_STUNT"><!-- JUNCTION table -->
+		<association reverse="defines" name="is" table="STUNT" mandatory="true"/>
+		<association reverse="has" name="describes" table="CHARACTER" mandatory="true"/>
+	</table>
+</datamodel>
